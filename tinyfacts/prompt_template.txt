@@ -1,0 +1,6 @@
+Answer the query so that a small child can understand it, using only the allowed word list below:
+
+"""
+${words}
+"""
+Respond in plain text using only these words, including capitalized and plural forms if necessary.
