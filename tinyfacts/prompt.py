@@ -4,8 +4,13 @@ from pathlib import Path
 _WORDS_PATH = Path(__file__).parent / "thing-explainer/thing-explainer-1000.txt"
 _TEMPLATE_PATH = Path(__file__).parent / "prompt_template.txt"
 
-def make_prompt():
+def get_words() -> list[str]:
     words = sorted(list(_WORDS_PATH.read_text().splitlines()), key=str.lower)
+    return words
+    
+
+def make_prompt() -> str:
+    words = get_words()
     with open(_TEMPLATE_PATH, "r") as f:
         template = Template(f.read())
     return template.substitute(words=' '.join(words))
