@@ -1,4 +1,6 @@
 import sys
+import json
+from openai import OpenAI
 from pathlib import Path
 from datetime import datetime
 from typer import Typer
@@ -33,6 +35,21 @@ def submit_batch(model: str = "gpt-5-nano", task: str = "explain",):
     if ans:
         batch_info = submit_batch_job(batch_dest)
         batch_dest.with_suffix(".out.jsonl").write_text(batch_info.model_dump_json(indent=2))
+
+@app.command()
+def submit_single(question: str, model: str = "gpt-5-nano"):
+    console = Console()
+    console.print(f"[bold green]Submitting single query to model: {model}[/bold green]")
+    query = Query(model=model)
+    query_args = query(question)
+    query_dest = Path(f"query_{model}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
+    query_dest.write_text(json.dumps(query_args))
+
+    client = OpenAI()
+    response = client.chat.completions.create(**query_args)
+    with open(query_dest.with_suffix(".out.json"), "w") as f:
+        f.write(response.model_dump_json(indent=2))
+
 
 if __name__ == "__main__":
     app()
