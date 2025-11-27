@@ -37,10 +37,10 @@ def submit_batch(model: str = "gpt-5-nano", task: str = "explain",):
         batch_dest.with_suffix(".out.jsonl").write_text(batch_info.model_dump_json(indent=2))
 
 @app.command()
-def submit_single(question: str, model: str = "gpt-5-nano"):
+def submit_single(question: str, model: str = "gpt-5-nano", allow_reasoning: bool = False):
     console = Console()
     console.print(f"[bold green]Submitting single query to model: {model}[/bold green]")
-    query = Query(model=model)
+    query = Query(model=model, avoid_reasoning=not allow_reasoning)
     query_args = query(question)
     query_dest = Path(f"query_{model}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
     query_dest.write_text(json.dumps(query_args))

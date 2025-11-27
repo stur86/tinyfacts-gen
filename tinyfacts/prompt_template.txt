@@ -1,4 +1,4 @@
-Answer the query so that a small child can understand it, using only the allowed word list below:
+Answer the query so that an adult who has only a very basic grasp of English can understand it, using only the allowed word list below:
 
 """
 ${words}

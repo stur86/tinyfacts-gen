@@ -6,7 +6,8 @@ class Query:
     
     _query_args: dict[str, Any]
     
-    def __init__(self, model: str, cache_key: str = "tinyfacts_cache"):
+    def __init__(self, model: str, cache_key: str = "tinyfacts_cache", 
+                 avoid_reasoning: bool = True):
         self._query_args = {
             "model": model,
             "prompt_cache_key": cache_key,
@@ -18,7 +19,7 @@ class Query:
             ]
         }
         
-        if "gpt-5" in model:
+        if ("gpt-5" in model) and avoid_reasoning:
             # We're focusing on no reasoning here, so we turn it off
             self._query_args["reasoning_effort"] = "minimal"
         
