@@ -1,11 +1,11 @@
-Computers all over the world can talk to each other through long lines. Some of these lines are under the ground and some are under the water between different lands. The computers send little pieces of information through these lines very fast.
+Computers all over the world can talk to each other through long lines. Some of these lines are under the ground and some are under the water between different lands. The computers send little pieces of things through these lines very fast.
 
-When you want to see something on your computer, your computer asks another computer far away to send it to you. That computer breaks what you want into many tiny pieces. Each piece travels through the lines, sometimes going through many other computers on the way. Then all the pieces come back together on your computer and you can see what you asked for.
+When you want to see something on your computer, your computer asks another computer far away to send it to you. That computer breaks what you want into many tiny pieces. Each piece goes through the lines, sometimes going through many other computers on the way. Then all the pieces come back together on your computer and you can see what you asked for.
 
-People can send words to each other this way. You can write something and send it to a friend on the other side of the world. Your words turn into little pieces of information that travel through the lines. In less than a second, your friend can see what you wrote.
+People can send words to each other this way. You can write something and send it to a friend on the other side of the world. Your words turn into little pieces that go through the lines. In less than a second, your friend can see what you wrote.
 
 You can also watch moving pictures this way. The pictures get broken into many many tiny pieces. Your computer gets all these pieces and puts them back together very quickly so it looks like the picture is moving.
 
 All these computers talking to each other make it possible for people to share things. You can read what someone wrote many years ago or see pictures from a place you have never been. You can also buy things or learn new things without leaving your home.
 
-The whole system only works because many smart people agreed on the same way for computers to talk to each other. Without everyone following the same rules, the computers would not understand each other.
+The whole thing only works because many people agreed on the same way for computers to talk to each other. Without everyone following the same ways, the computers would not understand each other.
