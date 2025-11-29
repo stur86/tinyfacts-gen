@@ -15,3 +15,4 @@ wheels/
 # Any generated files
 **/*.jsonl
 **/*.json
+query_logs/
