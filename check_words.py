@@ -9,7 +9,7 @@ import json
 from pathlib import Path
 
 
-def load_word_list(word_forms_path):
+def load_word_list(word_forms_path) -> set[str]:
     """Load the allowed words from the word forms JSON dictionary."""
     with open(word_forms_path, 'r') as f:
         data = json.load(f)
@@ -19,13 +19,9 @@ def load_word_list(word_forms_path):
     for base_word, forms in data['words'].items():
         # forms is a dictionary with POS tags as keys and word forms as values
         # e.g., {"base": "be", "VBD": "was", "VBG": "being", ...}
-        if isinstance(forms, dict):
-            # Add all word forms from the dictionary values
-            for form in forms.values():
-                allowed_words.add(form.lower())
-        else:
-            # Fallback for simple string values
-            allowed_words.add(str(forms).lower())
+        # Add all word forms from the dictionary values
+        for form in forms.values():
+            allowed_words.add(form.lower())
     
     return allowed_words
 

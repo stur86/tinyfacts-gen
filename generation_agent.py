@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""
+Pydantic AI agent for generating text using the Thing Explainer word list.
+"""
+
+import rich
+from rich.prompt import Prompt
+import re
+import argparse as ap
+from pathlib import Path
+from dotenv import load_dotenv
+
+from pydantic import BaseModel, Field
+from pydantic_ai import Agent
+from pydantic_ai.models.openai import OpenAIChatModel
+from pydantic_ai.providers.openai import OpenAIProvider
+from pydantic_ai.providers.ollama import OllamaProvider
+from check_words import load_word_list
+
+load_dotenv()
+
+_WORD_FORMS_PATH = Path(__file__).parent / "tinyfacts" / "thing-explainer" / "word-forms.json"
+_EXAMPLE_PATH = Path(__file__).parent / "manually_created" / "anne_of_green_gables.txt"
+_EXAMPLE_DESCRIPTION = "The plot of the novel 'Anne of Green Gables' by L.M. Montgomery."
+
+class InvalidWord(BaseModel):
+    word: str = Field(..., description="The invalid word found in the text.")
+    index: int = Field(..., description="The index of the invalid word in the text.")
+    context: str = Field(..., description="The context in which the invalid word was found.")
+
+class CheckWordsResult(BaseModel):
+    invalid_words: list[InvalidWord] = Field(..., description="List of invalid words found in the text.")    
+    
+class OutputText(BaseModel):
+    short_title: str = Field(..., description="A short title for the generated text.")
+    text: str = Field(..., description="The generated text using Thing Explainer words.")
+
+if __name__ == "__main__":
+    parser = ap.ArgumentParser(description="Generate text using Thing Explainer word list.")
+    parser.add_argument("--local", action="store_true", help="Use local Ollama model instead of OpenAI.")
+    args = parser.parse_args()
+    
+    _allowed_words = load_word_list(_WORD_FORMS_PATH)
+    
+    if args.local:
+        model_name = "llama3.1:8b"
+        provider = OllamaProvider(base_url="http://localhost:11434/v1")
+    else:
+        model_name = "gpt-5-nano"
+        provider = OpenAIProvider()
+        
+    model = OpenAIChatModel(model_name=model_name, provider=provider)
+    agent = Agent(model=model, output_type=OutputText)
+
+    @agent.tool_plain
+    def check_simple_words(text: str, context_length: int = 2) -> CheckWordsResult:
+        """Check if the text only uses words from the Thing Explainer 1000 word list.
+        
+        Args:
+            text (str): The text to check.
+            context_length (int): Number of words to include in the context around invalid words.
+            
+        Returns:
+            CheckWordsResult: The result containing invalid words information.
+        """
+        # Split text into words; remove all non-letter characters except apostrophes
+        words = re.findall(r"[a-z']+", text.lower())
+        invalid_words: list[InvalidWord] = []
+        for index, word in enumerate(words):
+            if word not in _allowed_words:
+                # Get context
+                start = max(0, index - context_length)
+                end = min(len(words), index + context_length + 1)
+                context = ' '.join(words[start:end])
+                invalid_words.append(InvalidWord(word=word, index=index, context=context))
+        return CheckWordsResult(invalid_words=invalid_words)
+    
+    # Ask the user a topic
+    rich.print("[bold green]Thing Explainer Generation Agent[/bold green]")
+    topic = Prompt.ask("Enter a topic to explain using Thing Explainer words")
+    rich.print(f"[bold blue]Generating explanation for topic:[/bold blue] {topic}")
+    
+    prompt = f"""
+    You are to write an explanation of the following topic using only words from the Thing Explainer 1000 word list, as well
+    as allowed inflected forms of those words. Here is a complete list of the allowed words and their forms:
+    
+    {' '.join(_allowed_words)}
+    
+    Be simple, but not minimalist - add interesting facts and details where you can. If a word you need is not available in the 
+    list, use a different way to say it using only the allowed words.
+    
+    Here is an example of a text similar to what I would like you to produce:
+    
+    Example Topic: "{_EXAMPLE_DESCRIPTION}"
+    Example Text: {_EXAMPLE_PATH.read_text()}
+    
+    The topic to write about is: "{topic}".
+    
+    Please use the provided tool to check your text for any words that are not in the allowed list, and revise your text until it passes the check.
+    Only answer with the final text that passes the check.
+    """
+    
+    response = agent.run_sync(prompt)
+    rich.print("[bold yellow]Generated Explanation:[/bold yellow]")
+    rich.print("[bold magenta]Short Title:[/bold magenta] " + response.output.short_title)
+    rich.print("[bold magenta]Text:[/bold magenta]\n" + response.output.text)
+    # Save to file
+    output_path = Path(f"openai_created/{response.output.short_title.lower().replace(' ', '_')}.txt")
+    output_path.write_text(response.output.text)
+    
+    # Print used tokens
+    rich.print(f"[bold cyan]Output saved to:[/bold cyan] {output_path}")
+    rich.print("[bold cyan]Generation complete![/bold cyan]")
+    usage_stats = response.usage()
+    rich.print(f"[bold cyan]Tokens used:[/bold cyan] {usage_stats.total_tokens}")
+    rich.print(f"[bold cyan]Tool calls:[/bold cyan] {usage_stats.tool_calls}")

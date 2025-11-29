@@ -7,6 +7,7 @@ from pathlib import Path
 from lemminflect import getAllInflections
 
 _WORD_LIST_PATH = Path(__file__).parent / "tinyfacts" / "thing-explainer" / "thing-explainer-1000.txt"
+_ACTION_NOUNS_PATH = _WORD_LIST_PATH.parent / "action-nouns.json"
 
 _SUPPORTED_INFLECTIONS = {
     'NNS',        # Noun, plural
@@ -20,6 +21,9 @@ _SUPPORTED_INFLECTIONS = {
     'RBS'     # Adverb, superlative
 }
 
+# Load action nouns
+_ACTION_NOUNS = json.loads(_ACTION_NOUNS_PATH.read_text())
+
 def find_word_forms(word: str) -> dict[str, str]:
     word_forms = {"base": word}
     inflections = getAllInflections(word)
@@ -27,6 +31,10 @@ def find_word_forms(word: str) -> dict[str, str]:
         if tag in _SUPPORTED_INFLECTIONS:
             if forms[0] != word:  # Avoid adding the base form again
                 word_forms[tag] = forms[0]  # Take the first inflection
+    # In addition, check if there's a supported action noun
+    if word in _ACTION_NOUNS and _ACTION_NOUNS[word]:
+        word_forms['ANN'] = _ACTION_NOUNS[word]            
+    
     return word_forms
 
 class WordFormsCollection:
