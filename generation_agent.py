@@ -37,17 +37,26 @@ class OutputText(BaseModel):
 
 async def main():
     parser = ap.ArgumentParser(description="Generate text using Thing Explainer word list.")
-    parser.add_argument("--local", action="store_true", help="Use local Ollama model instead of OpenAI.")
+    parser.add_argument("--ollama", "-o", action="store_true", help="Use local Ollama model instead of OpenAI.")
+    parser.add_argument("--model", "-m", type=str, default=None, help="The model name to use for generation.")
     args = parser.parse_args()
     
     _allowed_words = load_word_list(_WORD_FORMS_PATH)
     
-    if args.local:
-        model_name = "llama3.1:8b"
+    _default_models = {
+        "openai": "gpt-5.1",
+        "ollama": "llama3.1:8b"
+    }
+    model_name = args.model
+    
+    if args.ollama:
         provider = OllamaProvider(base_url="http://localhost:11434/v1")
+        if model_name is None:
+            model_name = _default_models["ollama"]
     else:
-        model_name = "gpt-5.1"
         provider = OpenAIProvider()
+        if model_name is None:
+            model_name = _default_models["openai"]
         
     model = OpenAIChatModel(model_name=model_name, provider=provider)
     agent = Agent(model=model, output_type=OutputText)
@@ -113,7 +122,17 @@ async def main():
     rich.print("[bold magenta]Short Title:[/bold magenta] " + response.output.short_title)
     rich.print("[bold magenta]Text:[/bold magenta]\n" + response.output.text)
     # Save to file
-    output_path = Path(f"openai_created/{response.output.short_title.lower().replace(' ', '_')}.txt")
+    model_path = model_name.replace(".", "_").replace("/", "_").replace(":", "_")
+    output_path = Path(f"{model_path}_created/{response.output.short_title.lower().replace(' ', '_')}.txt")
+    if not output_path.parent.exists():
+        output_path.parent.mkdir(parents=True)
+    # If path exists, add a number suffix
+    stem = output_path.stem
+    counter = 1
+    while output_path.exists():
+        output_path = output_path.with_name(f"{stem}_{counter}.txt")
+        counter += 1
+        
     output_path.write_text(response.output.text)
     
     # Print used tokens
