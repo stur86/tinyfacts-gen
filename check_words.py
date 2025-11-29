@@ -26,7 +26,7 @@ def load_word_list(word_forms_path) -> set[str]:
     return allowed_words
 
 
-def check_text(text_path, allowed_words):
+def check_text(text_path, allowed_words) -> tuple[int, dict[str, int]]:
     """Check text file for words not in the allowed list."""
     with open(text_path, 'r') as f:
         text = f.read()
@@ -41,7 +41,7 @@ def check_text(text_path, allowed_words):
         if word_lower not in allowed_words:
             invalid_words[word_lower] = invalid_words.get(word_lower, 0) + 1
     
-    return invalid_words
+    return len(words), invalid_words
 
 
 def main():
@@ -66,7 +66,9 @@ def main():
     
     # Load word list and check text
     allowed_words = load_word_list(word_forms_path)
-    invalid_words = check_text(text_file, allowed_words)
+    word_count, invalid_words = check_text(text_file, allowed_words)
+    
+    print(f"Checked {word_count} words in {text_file}.")
     
     if not invalid_words:
         print(f"✓ All words in {text_file} are in the Thing Explainer word list!")
