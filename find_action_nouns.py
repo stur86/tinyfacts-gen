@@ -19,7 +19,7 @@ if __name__ == "__main__":
     for w in words:
         vsets = wn.synsets(w, pos=wn.VERB)
         # Filter only those who coincide exactly with the word
-        vsets = [vs for vs in vsets if vs.lemmas()[0].name() == w]
+        vsets = [vs for vs in vsets if vs.lemmas()[0].name() == w] # type: ignore
         if vsets and (w not in supported_an):
             supported_an[w] = ""
     # Save the results

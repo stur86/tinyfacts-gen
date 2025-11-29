@@ -1,0 +1,15 @@
+A big word helper is a kind of computer brain that works with words.
+
+It reads a very, very big number of word lines from books, talks, stories, and many other written things. From these, it learns how people usually put words together. It does not remember one person words as that person. Instead, it looks at all the words as one huge crowd and learns usual ways in how words follow each other.
+
+When you type a question or a line, the brain looks at your words and guesses which word should come next, then the next, and so on. Each time it adds a word, it checks again and changes its guess about later words. In this way it can write a whole answer that feels like a person wrote it.
+
+Inside, the word helper has many number boxes. During training, the computer moves these numbers again and again so the guesses get better and better. A “big” word helper has a very high number of these numbers, often more than we can really imagine.
+
+The word helper does not understand the world the way humans do. It does not see, hear, or feel. It only sees ways in which words sit together. But because it has read so many written things, these ways are very strong, so its answers can seem very good.
+
+People use a big word helper to help write stories, to answer questions, to explain ideas in clear words, to change a group of words into another kind, and much more. It can save time and make some hard kinds of work easier.
+
+But there are problems too. Sometimes the word helper sounds sure while being wrong. It can put together facts in a bad way, or make new “facts” that are not real at all. It can also repeat bad ideas that it saw while training. Because of this, people need to read its answers with care and not trust them without thinking.
+
+A big word helper is not living. It does not have a heart or wants. It is a thing built by humans, using numbers and a lot of computer power, to work with words in a very strong way.
