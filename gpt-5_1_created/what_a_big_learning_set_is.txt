@@ -1,0 +1,15 @@
+When people build thinking computers, they need to show them many, many pieces of something they care about. A “big learning set” is the big group of those pieces.
+
+Think of a big learning set like a huge table. Each line in the table is one thing you want the computer to learn about. This one line is one piece. All the lines together are the set.
+
+Each line has several parts. A part is one kind of fact about the thing. For a picture of a cat, one part could say “this is a cat.” Another part could hold numbers that tell how the picture looks. For a house, parts could say how big it is, how old it is, and how much money it takes to buy it.
+
+In this kind of computer learning, the computer looks at the set again and again. It tries to find ways that fit the pieces. For this, it might learn, “houses that are bigger usually need more money to buy.” The set is like the school book for the computer.
+
+Often, people cut one big set into parts. One part is for training. The computer sees these pieces and learns from them. Another part is for checking. The computer does not see these pieces while it is learning. After it has learned, people use the check part to see how good it really is.
+
+Sometimes there is also a third part, in the middle, to help pick which way of building the learning computer is best. The computer learns on the training part, is checked on the middle part many times while people change little things, and is checked only once at the end on the check part.
+
+Good sets are very important. If the set has bad wrong things in it, or only shows one kind of thing, then the computer will learn the wrong ways. If the pieces are old, the world may change and the ways will stop working well. Because of this, people must build and clean sets with care.
+
+So, a big learning set in this kind of computer learning is: a large, carefully built group of pieces, with facts about each piece, that a computer uses to learn ways the world works.
