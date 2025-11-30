@@ -16,3 +16,6 @@ wheels/
 **/*.jsonl
 **/*.json
 query_logs/
+
+# With exceptions
+!tinyfacts/thing-explainer/action-nouns.json

@@ -1,55 +1,54 @@
-import sys
-import json
-from openai import OpenAI
+import asyncio
+from rich.console import Console
+from rich.panel import Panel
 from pathlib import Path
 from datetime import datetime
-from typer import Typer
-from rich.console import Console
-from rich.prompt import Confirm
-from tinyfacts.prompt import get_words
-from tinyfacts.query import Query
-from tinyfacts.batch import make_batch_jsonl, submit_batch_job
+from typing import Annotated, Any
+from typer import Typer, Option
 from dotenv import load_dotenv
+from pydantic_ai import PartDeltaEvent
+from tinyfacts.check_words import main as check_main
+from tinyfacts.agent import ThingExplainerAgent
 
 load_dotenv()  # Load environment variables from .env file if it exists
 app = Typer()
 
 @app.command()
-def submit_batch(model: str = "gpt-5-nano", task: str = "explain",):
-    console = Console()
-    console.print(f"[bold green]Starting TinyFacts with model: {model}[/bold green]")
-    
-    words = get_words()    
-    query = Query(model=model)
-    
-    method = f"ask_{task}"
-    if not hasattr(query, method):
-        console.print(f"[bold red]Error:[/bold red] Method '{method}' does not exist in Query class.")
-        sys.exit(1)
-    queries = [getattr(query, method)(word) for word in words]
-    batch_dest = Path(f"batch_{task}_{model}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.jsonl")
-    make_batch_jsonl(queries, batch_dest)
-    
-    # Ask for confirmation from the user before submitting
-    ans = Confirm.ask(f"Batch job with {len(queries)} queries created at {batch_dest} for model {model}. Do you want to submit this batch job?", default=False)
-    if ans:
-        batch_info = submit_batch_job(batch_dest)
-        batch_dest.with_suffix(".out.jsonl").write_text(batch_info.model_dump_json(indent=2))
+def check(file: Path) -> int:
+    """Check if a text file only uses words from the Thing Explainer 1000 word list."""
+    return check_main(file)
 
 @app.command()
-def submit_single(question: str, model: str = "gpt-5-nano", allow_reasoning: bool = False):
+def agent(ollama: Annotated[bool, Option("--ollama", "-o", help="Use local Ollama model instead of OpenAI.")] = False, 
+                model: Annotated[str | None, Option("--model", "-m", help="The model name to use for generation.")] = None):
+    """Generate text using Thing Explainer word list."""
+    agent = ThingExplainerAgent(use_ollama=ollama, model_name=model)
     console = Console()
-    console.print(f"[bold green]Submitting single query to model: {model}[/bold green]")
-    query = Query(model=model, avoid_reasoning=not allow_reasoning)
-    query_args = query(question)
-    query_dest = Path(f"query_{model}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json")
-    query_dest.write_text(json.dumps(query_args))
-
-    client = OpenAI()
-    response = client.chat.completions.create(**query_args)
-    with open(query_dest.with_suffix(".out.json"), "w") as f:
-        f.write(response.model_dump_json(indent=2))
-
+    
+    def event_logger(event: Any) -> None:
+        if isinstance(event, PartDeltaEvent):
+            return # Too noisy, skip these
+        console.print(f"\t[grey]{datetime.now()} - {type(event).__name__}[/grey]")
+    
+    # Ask the user for a topic, or whether to quit (loop until they do)
+    try:
+        while True:
+            topic = console.input("\nEnter a topic to explain (or 'Ctrl+C' to exit): ")
+            console.print(f"\n[bold]Generating explanation for:[/bold] {topic}\n")
+            explanation, usage = asyncio.run(agent.generate_explanation(topic, event_callback=event_logger))
+            console.print("\n[bold green]Generated Explanation:[/bold green]\n")
+            console.print(Panel(explanation.text, title=explanation.short_title))
+            console.print(f"\n[bold blue]Usage:[/bold blue]\tTokens: {usage.total_tokens}\n\tTool calls: {usage.tool_calls}\n")
+            # Query whether to save
+            output_folder = agent.model_name.replace(".", "_").replace("/", "_").replace(":", "_") + "_created"
+            output_path = Path(__file__).parent / output_folder / f"{explanation.short_title.lower().replace(' ', '_')}.txt"
+            save_response = console.input(f"\nSave explanation to [blue]{output_path}[/blue]? (y/n): ")
+            if save_response.lower() == 'y':
+                output_path.parent.mkdir(parents=True, exist_ok=True)
+                output_path.write_text(explanation.text)
+                console.print(f"[green]Saved explanation to {output_path}[/green]")
+    except KeyboardInterrupt:
+        console.print("\n[bold red]Exiting.[/bold red]")
 
 if __name__ == "__main__":
     app()

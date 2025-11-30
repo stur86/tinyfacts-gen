@@ -9,8 +9,8 @@ dependencies = [
     "lemminflect>=0.2.3",
     "nltk>=3.9.2",
     "openai>=1.99.6",
-    "pydantic-ai[ollama,openai]==1.25.1",
+    "pydantic-ai==1.25.1",
     "python-dotenv>=1.1.1",
     "textual>=6.7.0",
-    "typer>=0.16.0",
+    "typer>=0.20.0",
 ]
