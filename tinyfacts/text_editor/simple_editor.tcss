@@ -1,0 +1,66 @@
+Screen {
+    background: $surface;
+}
+
+#editor {
+    border: solid $primary;
+}
+
+ConfirmSave {
+    align: center middle;
+}
+
+ConfirmSave Screen {
+    background: $surface 50%;
+}
+
+#confirm_save {
+    width: 50;
+    height: 11;
+    border: heavy $warning;
+    background: $panel;
+    layout: vertical;
+}
+
+#confirm_save Label {
+    width: 100%;
+    text-align: center;
+    height: auto;
+}
+
+#confirm_save Horizontal {
+    width: 100%;
+    height: auto;
+    align-horizontal: center;
+}
+
+#confirm_save Button {
+    margin: 0 1;
+}
+
+LoadFile {
+    align: center middle;
+}
+
+LoadFile Screen {
+    background: $surface 50%;
+}
+
+#load_file {
+    width: 80;
+    height: 20;
+    border: heavy $accent;
+    background: $panel;
+    layout: vertical;
+}
+
+#load_file Label {
+    width: 100%;
+    text-align: center;
+    height: auto;
+}
+
+#file_tree {
+    width: 1fr;
+    height: 1fr;
+}

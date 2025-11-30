@@ -48,6 +48,7 @@ class WordFormsExtractor:
     def __call__(self, word: str) -> None:
         if not word.strip():
             return
+        word = word.strip().lower()
         if word in self._all_forms:
             return
         word_forms = find_word_forms(word)

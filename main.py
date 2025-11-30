@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 from pydantic_ai import PartDeltaEvent
 from tinyfacts.check_words import main as check_main
 from tinyfacts.agent import ThingExplainerAgent
-from tinyfacts.text_editor import run_editor
+from tinyfacts.text_editor import SimpleTextEditor
 
 load_dotenv()  # Load environment variables from .env file if it exists
 app = Typer()
@@ -90,8 +90,8 @@ def editor(
 ):
     """Launch the text editor to create and edit documents using the Thing Explainer word list."""
     output_dir = output_dir.resolve()
-
-    run_editor(output_dir)
+    editor = SimpleTextEditor(output_dir)
+    editor.run()
 
 
 if __name__ == "__main__":

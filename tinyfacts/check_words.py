@@ -8,9 +8,25 @@ import rich
 from pathlib import Path
 from .word_forms import WordFormsDictionary
 
+_WORDS_RE = re.compile(r"[a-z']+", re.IGNORECASE)
+
 def split_words(text: str) -> list[str]:
     """Split text into words, considering only letters and apostrophes."""
-    return re.findall(r"[a-z']+", text.lower())
+    return _WORDS_RE.findall(text.lower())
+
+def find_word_matches(text: str) -> list[tuple[str, int, int]]:
+    """Find words in the text and return their positions.
+    
+    Returns a list of tuples: (word, start_index, end_index)
+    """
+    matches = []
+    for match in _WORDS_RE.finditer(text.lower()):
+        word = match.group()
+        start = match.start()
+        end = match.end()
+        matches.append((word, start, end))
+
+    return matches
 
 def check_words(words: list[str]) -> dict[str, int]:
     """Check the list of words against the Thing Explainer word forms.
