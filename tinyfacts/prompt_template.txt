@@ -1,6 +1,0 @@
-Answer the query so that an adult who has only a very basic grasp of English can understand it, using only the allowed word list below:
-
-"""
-${words}
-"""
-Respond in plain text using only these words, including capitalized and plural forms if necessary.
