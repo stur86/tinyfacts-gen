@@ -4,36 +4,49 @@ from pathlib import Path
 from rich.style import Style
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Header, Input, TextArea, Label
-from textual.containers import Vertical
+from textual.containers import Vertical, Horizontal
 from textual.document._document import Document
 from textual.document._wrapped_document import WrappedDocument
 from textual.document._document_navigator import DocumentNavigator
 from textual.binding import Binding
-from textual.screen import Screen
+from textual.screen import ModalScreen
 from textual.widgets import Button
 
 _WORDS_PATH = Path(__file__).parent / "tinyfacts" / "thing-explainer" / "word-forms.json"
 _OUTPUT_PATH = Path(__file__).parent / "manually_created"
 
+class ConfirmSave(ModalScreen[bool]):
 
-class ConfirmOverwriteScreen(Screen):
-    """Screen for confirming file overwrite."""
-    
-    def __init__(self, filename: str):
+    BINDINGS = [
+        Binding("escape", "cancel", "Cancel"),
+        Binding("ctrl+s", "confirm", "Confirm Save"),
+    ]
+
+    def __init__(self, filename: str) -> None:
         super().__init__()
         self.filename = filename
-    
-    def compose(self) -> ComposeResult:
-        from textual.widgets import Button
-        from textual.containers import Horizontal
         
-        yield Label(f"File '{self.filename}' already exists. Overwrite?")
-        with Horizontal():
-            yield Button("Yes", id="confirm")
-            yield Button("No", id="cancel")
-    
+    def compose(self) -> ComposeResult:
+        yield Vertical(Label(f"The file '{self.filename}' already exists. Overwrite?"),
+            Horizontal(
+                Button("Yes", id="yes", variant="success"),
+                Button("No", id="no", variant="error")
+            ), id="confirm_save"
+        )
+        
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        self.dismiss(event.button.id == "confirm")
+        if event.button.id == "yes":
+            self.dismiss(True)
+        else:
+            self.dismiss(False)
+    
+    def action_cancel(self) -> None:
+        """Cancel the save operation."""
+        self.dismiss(False)
+    
+    def action_confirm(self) -> None:
+        """Confirm the save operation."""
+        self.dismiss(True)
 
 
 class SimpleTextArea(TextArea):
@@ -88,6 +101,7 @@ class SimpleTextEditor(App):
     
     BINDINGS = [
         Binding("ctrl+s", "save", "Save"),
+        Binding("ctrl+q", "quit", "Quit"),
     ]
     
     CSS = """
@@ -97,6 +111,38 @@ class SimpleTextEditor(App):
     
     #editor {
         border: solid $primary;
+    }
+    
+    ConfirmSave {
+        align: center middle;
+    }
+    
+    ConfirmSave Screen {
+        background: $surface 50%;
+    }
+    
+    #confirm_save {
+        width: 50;
+        height: 11;
+        border: heavy $warning;
+        background: $panel;
+        layout: vertical;
+    }
+    
+    #confirm_save Label {
+        width: 100%;
+        text-align: center;
+        height: auto;
+    }
+    
+    #confirm_save Horizontal {
+        width: 100%;
+        height: auto;
+        align-horizontal: center;
+    }
+    
+    #confirm_save Button {
+        margin: 0 1;
     }
     """
     
@@ -156,19 +202,26 @@ class SimpleTextEditor(App):
         # Create output path
         output_file = _OUTPUT_PATH / f"{title}.txt"
         
-        # Check if file exists and ask for confirmation
-        if output_file.exists():
-            confirmed = await self.app.push_screen_wait(ConfirmOverwriteScreen(output_file.name))
-            if not confirmed:
+        def save_file_confirmed(overwrite: bool | None) -> None:
+            if not overwrite:
                 self.notify("Save cancelled.", severity="warning")
                 return
+            # Save the file
+            try:
+                output_file.write_text(self._text_area.text)
+                self.notify(f"Saved to {output_file}", severity="information")
+            except Exception as e:
+                self.notify(f"Error saving file: {e}", severity="error")
         
-        # Save the file
-        try:
-            output_file.write_text(self._text_area.text)
-            self.notify(f"Saved to {output_file}", severity="information")
-        except Exception as e:
-            self.notify(f"Error saving file: {e}", severity="error")
+        if output_file.exists():
+            # Ask for confirmation to overwrite
+            confirm_screen = ConfirmSave(output_file.name)
+            self.push_screen(confirm_screen, callback=save_file_confirmed)
+                
+    
+    async def action_quit(self) -> None:
+        """Quit the application."""
+        self.exit()
 
 
 if __name__ == "__main__":
