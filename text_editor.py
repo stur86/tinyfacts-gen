@@ -3,7 +3,7 @@ import re
 from pathlib import Path
 from rich.style import Style
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Header, Input, TextArea, Label
+from textual.widgets import Footer, Header, Input, TextArea, Label, DirectoryTree
 from textual.containers import Vertical, Horizontal
 from textual.document._document import Document
 from textual.document._wrapped_document import WrappedDocument
@@ -47,6 +47,37 @@ class ConfirmSave(ModalScreen[bool]):
     def action_confirm(self) -> None:
         """Confirm the save operation."""
         self.dismiss(True)
+
+
+class LoadFile(ModalScreen[str | None]):
+    """Modal screen for loading files using a DirectoryTree."""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.selected_file: str | None = None
+
+    def compose(self) -> ComposeResult:
+        yield Vertical(
+            Label("Select a file to load:"),
+            DirectoryTree(_OUTPUT_PATH, id="file_tree"),
+            id="load_file"
+        )
+
+    def on_directory_tree_file_selected(
+        self, event: DirectoryTree.FileSelected
+    ) -> None:
+        """Handle file selection."""
+        self.dismiss(str(event.path))
+
+    def on_directory_tree_directory_selected(
+        self, event: DirectoryTree.DirectorySelected
+    ) -> None:
+        """Handle directory selection - do nothing."""
+        pass
+
+    def action_cancel(self) -> None:
+        """Cancel the load operation."""
+        self.dismiss(None)
 
 
 class SimpleTextArea(TextArea):
@@ -101,6 +132,7 @@ class SimpleTextEditor(App):
     
     BINDINGS = [
         Binding("ctrl+s", "save", "Save"),
+        Binding("ctrl+l", "load", "Load"),
         Binding("ctrl+q", "quit", "Quit"),
     ]
     
@@ -143,6 +175,33 @@ class SimpleTextEditor(App):
     
     #confirm_save Button {
         margin: 0 1;
+    }
+    
+    LoadFile {
+        align: center middle;
+    }
+    
+    LoadFile Screen {
+        background: $surface 50%;
+    }
+    
+    #load_file {
+        width: 80;
+        height: 20;
+        border: heavy $accent;
+        background: $panel;
+        layout: vertical;
+    }
+    
+    #load_file Label {
+        width: 100%;
+        text-align: center;
+        height: auto;
+    }
+    
+    #file_tree {
+        width: 1fr;
+        height: 1fr;
     }
     """
     
@@ -218,6 +277,30 @@ class SimpleTextEditor(App):
             confirm_screen = ConfirmSave(output_file.name)
             self.push_screen(confirm_screen, callback=save_file_confirmed)
                 
+    
+    def action_load(self) -> None:
+        """Load a file using the file browser."""
+        load_screen = LoadFile()
+        self.push_screen(load_screen, callback=self._on_file_selected)
+    
+    def _on_file_selected(self, file_path: str | None) -> None:
+        """Handle file selection from the load dialog."""
+        if file_path is None:
+            self.notify("Load cancelled.", severity="warning")
+            return
+        
+        try:
+            file_path_obj = Path(file_path)
+            if file_path_obj.is_file():
+                content = file_path_obj.read_text()
+                title_input = self.query_one("#title", Input)
+                title_input.value = file_path_obj.stem
+                self._text_area.text = content
+                self.notify(f"Loaded {file_path_obj.name}", severity="information")
+            else:
+                self.notify(f"Not a file: {file_path}", severity="error")
+        except Exception as e:
+            self.notify(f"Error loading file: {e}", severity="error")
     
     async def action_quit(self) -> None:
         """Quit the application."""
