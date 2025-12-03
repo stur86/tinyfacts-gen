@@ -10,6 +10,7 @@ from pydantic_ai import PartDeltaEvent
 from tinyfacts.check_words import main as check_main
 from tinyfacts.agent import ThingExplainerAgent
 from tinyfacts.text_editor import SimpleTextEditor
+from tinyfacts.stats import FolderGenStats
 
 load_dotenv()  # Load environment variables from .env file if it exists
 app = Typer()
@@ -92,6 +93,25 @@ def editor(
     output_dir = output_dir.resolve()
     editor = SimpleTextEditor(output_dir)
     editor.run()
+
+@app.command()
+def stats(
+    folder: Annotated[
+        Path,
+        Option(
+            "--folder",
+            "-f",
+            help="Folder containing text files to analyze.",
+        ),
+    ] = Path.cwd(),
+):
+    """Generate statistics about text files in a folder."""
+    stats = FolderGenStats(folder)
+    console = Console()
+    console.print(f"\n[bold]Generation Statistics for folder:[/bold] {folder}\n")
+    console.print(f"Total valid files: [green]{stats.file_count}[/green]")
+    console.print(f"Total words across valid files: [green]{stats.word_count}[/green]")
+    console.print(f"Unique words across valid files: [green]{stats.unique_word_count}[/green]\n")
 
 
 if __name__ == "__main__":
