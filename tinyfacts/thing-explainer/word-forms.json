@@ -1,0 +1,5328 @@
+{
+    "be": {
+        "base": "be",
+        "VBD": "was",
+        "VBG": "being",
+        "VBN": "been",
+        "VBZ": "is"
+    },
+    "a": {
+        "base": "a"
+    },
+    "able": {
+        "base": "able",
+        "JJR": "abler",
+        "JJS": "ablest"
+    },
+    "about": {
+        "base": "about"
+    },
+    "above": {
+        "base": "above"
+    },
+    "accept": {
+        "base": "accept",
+        "VBD": "accepted",
+        "VBG": "accepting",
+        "VBZ": "accepts"
+    },
+    "across": {
+        "base": "across"
+    },
+    "act": {
+        "base": "act",
+        "VBD": "acted",
+        "VBG": "acting",
+        "VBZ": "acts",
+        "ANN": "actor"
+    },
+    "actually": {
+        "base": "actually"
+    },
+    "add": {
+        "base": "add",
+        "VBD": "added",
+        "VBG": "adding",
+        "VBZ": "adds",
+        "ANN": "adder"
+    },
+    "admit": {
+        "base": "admit",
+        "VBD": "admitted",
+        "VBG": "admitting",
+        "VBZ": "admits"
+    },
+    "afraid": {
+        "base": "afraid"
+    },
+    "after": {
+        "base": "after"
+    },
+    "afternoon": {
+        "base": "afternoon",
+        "NNS": "afternoons"
+    },
+    "again": {
+        "base": "again"
+    },
+    "against": {
+        "base": "against"
+    },
+    "age": {
+        "base": "age",
+        "NNS": "ages",
+        "VBD": "aged",
+        "VBN": "aged",
+        "VBG": "aging",
+        "VBZ": "ages"
+    },
+    "ago": {
+        "base": "ago"
+    },
+    "agree": {
+        "base": "agree",
+        "VBD": "agreed",
+        "VBG": "agreeing",
+        "VBZ": "agrees"
+    },
+    "ah": {
+        "base": "ah"
+    },
+    "ahead": {
+        "base": "ahead"
+    },
+    "air": {
+        "base": "air",
+        "NNS": "airs",
+        "VBD": "aired",
+        "VBG": "airing",
+        "VBZ": "airs"
+    },
+    "all": {
+        "base": "all"
+    },
+    "allow": {
+        "base": "allow",
+        "VBD": "allowed",
+        "VBG": "allowing",
+        "VBZ": "allows"
+    },
+    "almost": {
+        "base": "almost"
+    },
+    "alone": {
+        "base": "alone"
+    },
+    "along": {
+        "base": "along"
+    },
+    "already": {
+        "base": "already"
+    },
+    "alright": {
+        "base": "alright"
+    },
+    "also": {
+        "base": "also"
+    },
+    "although": {
+        "base": "although"
+    },
+    "always": {
+        "base": "always"
+    },
+    "am": {
+        "base": "am"
+    },
+    "amaze": {
+        "base": "amaze",
+        "VBD": "amazed",
+        "VBG": "amazing",
+        "VBZ": "amazes"
+    },
+    "an": {
+        "base": "an"
+    },
+    "and": {
+        "base": "and"
+    },
+    "anger": {
+        "base": "anger",
+        "VBD": "angered",
+        "VBG": "angering",
+        "VBZ": "angers"
+    },
+    "angry": {
+        "base": "angry",
+        "JJR": "angrier",
+        "JJS": "angriest"
+    },
+    "animal": {
+        "base": "animal",
+        "NNS": "animals"
+    },
+    "annoy": {
+        "base": "annoy",
+        "VBD": "annoyed",
+        "VBG": "annoying",
+        "VBZ": "annoys"
+    },
+    "another": {
+        "base": "another"
+    },
+    "answer": {
+        "base": "answer",
+        "NNS": "answers",
+        "VBD": "answered",
+        "VBG": "answering",
+        "VBZ": "answers",
+        "ANN": "answerer"
+    },
+    "any": {
+        "base": "any"
+    },
+    "anymore": {
+        "base": "anymore"
+    },
+    "anyone": {
+        "base": "anyone"
+    },
+    "anything": {
+        "base": "anything"
+    },
+    "anyway": {
+        "base": "anyway"
+    },
+    "apartment": {
+        "base": "apartment",
+        "NNS": "apartments"
+    },
+    "apparently": {
+        "base": "apparently"
+    },
+    "appear": {
+        "base": "appear",
+        "VBD": "appeared",
+        "VBG": "appearing",
+        "VBZ": "appears"
+    },
+    "approach": {
+        "base": "approach",
+        "NNS": "approaches",
+        "VBD": "approached",
+        "VBG": "approaching",
+        "VBZ": "approaches"
+    },
+    "are": {
+        "base": "are"
+    },
+    "area": {
+        "base": "area",
+        "NNS": "areas"
+    },
+    "aren't": {
+        "base": "aren't"
+    },
+    "arm": {
+        "base": "arm",
+        "NNS": "arms",
+        "VBD": "armed",
+        "VBG": "arming",
+        "VBZ": "arms"
+    },
+    "around": {
+        "base": "around"
+    },
+    "arrive": {
+        "base": "arrive",
+        "VBD": "arrived",
+        "VBG": "arriving",
+        "VBZ": "arrives"
+    },
+    "as": {
+        "base": "as"
+    },
+    "ask": {
+        "base": "ask",
+        "VBD": "asked",
+        "VBG": "asking",
+        "VBZ": "asks",
+        "ANN": "asker"
+    },
+    "asleep": {
+        "base": "asleep"
+    },
+    "ass": {
+        "base": "ass",
+        "NNS": "asses"
+    },
+    "at": {
+        "base": "at"
+    },
+    "attack": {
+        "base": "attack",
+        "NNS": "attacks",
+        "VBD": "attacked",
+        "VBG": "attacking",
+        "VBZ": "attacks",
+        "ANN": "attacker"
+    },
+    "attempt": {
+        "base": "attempt",
+        "NNS": "attempts",
+        "VBD": "attempted",
+        "VBG": "attempting",
+        "VBZ": "attempts"
+    },
+    "attention": {
+        "base": "attention",
+        "NNS": "attentions"
+    },
+    "aunt": {
+        "base": "aunt",
+        "NNS": "aunts"
+    },
+    "avoid": {
+        "base": "avoid",
+        "VBD": "avoided",
+        "VBG": "avoiding",
+        "VBZ": "avoids",
+        "ANN": "avoider"
+    },
+    "away": {
+        "base": "away"
+    },
+    "baby": {
+        "base": "baby",
+        "NNS": "babies",
+        "VBD": "babied",
+        "VBG": "babying",
+        "VBZ": "babies"
+    },
+    "back": {
+        "base": "back",
+        "NNS": "backs",
+        "VBD": "backed",
+        "VBG": "backing",
+        "VBZ": "backs"
+    },
+    "bad": {
+        "base": "bad",
+        "JJR": "worse",
+        "JJS": "worst",
+        "RBR": "worse",
+        "RBS": "worst"
+    },
+    "bag": {
+        "base": "bag",
+        "NNS": "bags",
+        "VBD": "bagged",
+        "VBG": "bagging",
+        "VBZ": "bags"
+    },
+    "ball": {
+        "base": "ball",
+        "NNS": "balls",
+        "VBD": "balled",
+        "VBG": "balling",
+        "VBZ": "balls"
+    },
+    "band": {
+        "base": "band",
+        "NNS": "bands",
+        "VBD": "banded",
+        "VBG": "banding",
+        "VBZ": "bands"
+    },
+    "bar": {
+        "base": "bar",
+        "VBD": "barred",
+        "VBG": "barring",
+        "VBZ": "bars"
+    },
+    "barely": {
+        "base": "barely"
+    },
+    "bathroom": {
+        "base": "bathroom",
+        "NNS": "bathrooms"
+    },
+    "beat": {
+        "base": "beat",
+        "NNS": "beats",
+        "VBN": "beaten",
+        "VBG": "beating",
+        "VBZ": "beats"
+    },
+    "beautiful": {
+        "base": "beautiful"
+    },
+    "became": {
+        "base": "became"
+    },
+    "because": {
+        "base": "because"
+    },
+    "become": {
+        "base": "become",
+        "VBD": "became",
+        "VBG": "becoming",
+        "VBZ": "becomes"
+    },
+    "bed": {
+        "base": "bed",
+        "NNS": "beds",
+        "VBD": "bedded",
+        "VBG": "bedding",
+        "VBZ": "beds"
+    },
+    "bedroom": {
+        "base": "bedroom",
+        "NNS": "bedrooms"
+    },
+    "before": {
+        "base": "before"
+    },
+    "began": {
+        "base": "began"
+    },
+    "begin": {
+        "base": "begin",
+        "VBD": "began",
+        "VBN": "begun",
+        "VBG": "beginning",
+        "VBZ": "begins"
+    },
+    "behind": {
+        "base": "behind",
+        "NNS": "behinds"
+    },
+    "believe": {
+        "base": "believe",
+        "VBD": "believed",
+        "VBG": "believing",
+        "VBZ": "believes"
+    },
+    "bell": {
+        "base": "bell",
+        "NNS": "bells",
+        "VBD": "belled",
+        "VBG": "belling",
+        "VBZ": "bells"
+    },
+    "beside": {
+        "base": "beside"
+    },
+    "besides": {
+        "base": "besides"
+    },
+    "best": {
+        "base": "best",
+        "VBD": "bested",
+        "VBG": "besting",
+        "VBZ": "bests"
+    },
+    "better": {
+        "base": "better",
+        "NNS": "betters",
+        "VBD": "bettered",
+        "VBG": "bettering",
+        "VBZ": "betters"
+    },
+    "between": {
+        "base": "between"
+    },
+    "big": {
+        "base": "big",
+        "JJR": "bigger",
+        "JJS": "biggest"
+    },
+    "bit": {
+        "base": "bit",
+        "NNS": "bits"
+    },
+    "bite": {
+        "base": "bite",
+        "NNS": "bites",
+        "VBD": "bit",
+        "VBN": "bitten",
+        "VBG": "biting",
+        "VBZ": "bites"
+    },
+    "black": {
+        "base": "black",
+        "JJR": "blacker",
+        "JJS": "blackest",
+        "NNS": "blacks",
+        "VBD": "blacked",
+        "VBG": "blacking",
+        "VBZ": "blacks"
+    },
+    "blink": {
+        "base": "blink",
+        "NNS": "blinks",
+        "VBD": "blinked",
+        "VBG": "blinking",
+        "VBZ": "blinks"
+    },
+    "block": {
+        "base": "block",
+        "NNS": "blocks",
+        "VBD": "blocked",
+        "VBG": "blocking",
+        "VBZ": "blocks",
+        "ANN": "blocker"
+    },
+    "blonde": {
+        "base": "blonde",
+        "JJR": "blonder",
+        "JJS": "blondest",
+        "NNS": "blondes"
+    },
+    "blood": {
+        "base": "blood",
+        "NNS": "bloods",
+        "VBD": "blooded",
+        "VBG": "blooding",
+        "VBZ": "bloods"
+    },
+    "blue": {
+        "base": "blue",
+        "JJR": "blueer",
+        "JJS": "blueest",
+        "NNS": "blues",
+        "VBD": "blued",
+        "VBN": "blued",
+        "VBG": "blueing",
+        "VBZ": "blues"
+    },
+    "blush": {
+        "base": "blush",
+        "VBD": "blushed",
+        "VBG": "blushing",
+        "VBZ": "blushes"
+    },
+    "body": {
+        "base": "body",
+        "NNS": "bodies"
+    },
+    "book": {
+        "base": "book",
+        "NNS": "books",
+        "VBD": "booked",
+        "VBG": "booking",
+        "VBZ": "books"
+    },
+    "bore": {
+        "base": "bore",
+        "NNS": "bores",
+        "VBD": "bored",
+        "VBG": "boring",
+        "VBZ": "bores"
+    },
+    "both": {
+        "base": "both"
+    },
+    "bother": {
+        "base": "bother",
+        "NNS": "bothers",
+        "VBD": "bothered",
+        "VBG": "bothering",
+        "VBZ": "bothers"
+    },
+    "bottle": {
+        "base": "bottle",
+        "NNS": "bottles",
+        "VBD": "bottled",
+        "VBG": "bottling",
+        "VBZ": "bottles"
+    },
+    "bottom": {
+        "base": "bottom",
+        "NNS": "bottoms",
+        "VBD": "bottomed",
+        "VBG": "bottoming",
+        "VBZ": "bottoms"
+    },
+    "box": {
+        "base": "box",
+        "NNS": "boxes",
+        "VBD": "boxed",
+        "VBG": "boxing",
+        "VBZ": "boxes"
+    },
+    "boy": {
+        "base": "boy",
+        "NNS": "boys"
+    },
+    "boyfriend": {
+        "base": "boyfriend",
+        "NNS": "boyfriends"
+    },
+    "brain": {
+        "base": "brain",
+        "NNS": "brains",
+        "VBD": "brained",
+        "VBG": "braining",
+        "VBZ": "brains"
+    },
+    "break": {
+        "base": "break",
+        "NNS": "breaks",
+        "VBD": "broke",
+        "VBN": "broken",
+        "VBG": "breaking",
+        "VBZ": "breaks",
+        "ANN": "breaker"
+    },
+    "breakfast": {
+        "base": "breakfast",
+        "NNS": "breakfasts",
+        "VBD": "breakfasted",
+        "VBG": "breakfasting",
+        "VBZ": "breakfasts"
+    },
+    "breath": {
+        "base": "breath",
+        "NNS": "breaths"
+    },
+    "breathe": {
+        "base": "breathe",
+        "VBD": "breathed",
+        "VBG": "breathing",
+        "VBZ": "breathes"
+    },
+    "bright": {
+        "base": "bright",
+        "JJR": "brighter",
+        "JJS": "brightest"
+    },
+    "bring": {
+        "base": "bring",
+        "VBD": "brought",
+        "VBN": "brought",
+        "VBG": "bringing",
+        "VBZ": "brings",
+        "ANN": "bringer"
+    },
+    "brother": {
+        "base": "brother",
+        "NNS": "brothers"
+    },
+    "brown": {
+        "base": "brown",
+        "JJR": "browner",
+        "JJS": "brownest",
+        "NNS": "browns",
+        "VBD": "browned",
+        "VBG": "browning",
+        "VBZ": "browns"
+    },
+    "brush": {
+        "base": "brush",
+        "NNS": "brushes",
+        "VBD": "brushed",
+        "VBG": "brushing",
+        "VBZ": "brushes"
+    },
+    "build": {
+        "base": "build",
+        "NNS": "builds",
+        "VBD": "built",
+        "VBN": "built",
+        "VBG": "building",
+        "VBZ": "builds",
+        "ANN": "builder"
+    },
+    "burn": {
+        "base": "burn",
+        "NNS": "burns",
+        "VBD": "burned",
+        "VBN": "burned",
+        "VBG": "burning",
+        "VBZ": "burns",
+        "ANN": "burner"
+    },
+    "burst": {
+        "base": "burst",
+        "NNS": "bursts",
+        "VBG": "bursting",
+        "VBZ": "bursts"
+    },
+    "bus": {
+        "base": "bus",
+        "NNS": "buses",
+        "VBD": "bused",
+        "VBN": "bussed",
+        "VBG": "busing",
+        "VBZ": "buses"
+    },
+    "business": {
+        "base": "business",
+        "NNS": "businesses"
+    },
+    "busy": {
+        "base": "busy",
+        "JJR": "busier",
+        "JJS": "busiest",
+        "VBD": "busied",
+        "VBG": "busying",
+        "VBZ": "busies"
+    },
+    "but": {
+        "base": "but"
+    },
+    "buy": {
+        "base": "buy",
+        "NNS": "buys",
+        "VBD": "bought",
+        "VBN": "bought",
+        "VBG": "buying",
+        "VBZ": "buys",
+        "ANN": "buyer"
+    },
+    "by": {
+        "base": "by"
+    },
+    "call": {
+        "base": "call",
+        "NNS": "calls",
+        "VBD": "called",
+        "VBG": "calling",
+        "VBZ": "calls",
+        "ANN": "caller"
+    },
+    "calm": {
+        "base": "calm",
+        "JJR": "calmer",
+        "JJS": "calmest",
+        "VBD": "calmed",
+        "VBG": "calming",
+        "VBZ": "calms"
+    },
+    "came": {
+        "base": "came"
+    },
+    "can": {
+        "base": "can",
+        "VBD": "could"
+    },
+    "can't": {
+        "base": "can't"
+    },
+    "car": {
+        "base": "car",
+        "NNS": "cars"
+    },
+    "card": {
+        "base": "card",
+        "NNS": "cards",
+        "VBD": "carded",
+        "VBG": "carding",
+        "VBZ": "cards"
+    },
+    "care": {
+        "base": "care",
+        "NNS": "cares",
+        "VBD": "cared",
+        "VBG": "caring",
+        "VBZ": "cares",
+        "ANN": "carer"
+    },
+    "carefully": {
+        "base": "carefully"
+    },
+    "carry": {
+        "base": "carry",
+        "VBD": "carried",
+        "VBG": "carrying",
+        "VBZ": "carries",
+        "ANN": "carrier"
+    },
+    "case": {
+        "base": "case",
+        "NNS": "cases",
+        "VBD": "cased",
+        "VBG": "casing",
+        "VBZ": "cases"
+    },
+    "cat": {
+        "base": "cat",
+        "NNS": "cats",
+        "VBD": "catted",
+        "VBG": "catting",
+        "VBZ": "cats"
+    },
+    "catch": {
+        "base": "catch",
+        "NNS": "catches",
+        "VBD": "caught",
+        "VBN": "caught",
+        "VBG": "catching",
+        "VBZ": "catches",
+        "ANN": "catcher"
+    },
+    "cause": {
+        "base": "cause",
+        "NNS": "causes",
+        "VBD": "caused",
+        "VBG": "causing",
+        "VBZ": "causes"
+    },
+    "cell": {
+        "base": "cell",
+        "NNS": "cells"
+    },
+    "chair": {
+        "base": "chair",
+        "NNS": "chairs",
+        "VBD": "chaired",
+        "VBG": "chairing",
+        "VBZ": "chairs"
+    },
+    "chance": {
+        "base": "chance",
+        "NNS": "chances",
+        "VBD": "chanced",
+        "VBN": "chanced",
+        "VBG": "chancing",
+        "VBZ": "chances"
+    },
+    "change": {
+        "base": "change",
+        "NNS": "changes",
+        "VBD": "changed",
+        "VBG": "changing",
+        "VBZ": "changes",
+        "ANN": "changer"
+    },
+    "chase": {
+        "base": "chase",
+        "NNS": "chases",
+        "VBD": "chased",
+        "VBG": "chasing",
+        "VBZ": "chases",
+        "ANN": "chaser"
+    },
+    "check": {
+        "base": "check",
+        "NNS": "checks",
+        "VBD": "checked",
+        "VBG": "checking",
+        "VBZ": "checks",
+        "ANN": "checker"
+    },
+    "cheek": {
+        "base": "cheek",
+        "NNS": "cheeks",
+        "VBD": "cheeked",
+        "VBG": "cheeking",
+        "VBZ": "cheeks"
+    },
+    "chest": {
+        "base": "chest",
+        "NNS": "chests"
+    },
+    "child": {
+        "base": "child",
+        "NNS": "children"
+    },
+    "chuckle": {
+        "base": "chuckle",
+        "NNS": "chuckles",
+        "VBD": "chuckled",
+        "VBG": "chuckling",
+        "VBZ": "chuckles"
+    },
+    "city": {
+        "base": "city",
+        "NNS": "cities"
+    },
+    "class": {
+        "base": "class",
+        "NNS": "classes",
+        "VBD": "classed",
+        "VBG": "classing",
+        "VBZ": "classes"
+    },
+    "clean": {
+        "base": "clean",
+        "JJR": "cleaner",
+        "JJS": "cleanest",
+        "RBR": "cleaner",
+        "RBS": "cleanest",
+        "VBD": "cleaned",
+        "VBG": "cleaning",
+        "VBZ": "cleans",
+        "ANN": "cleaner"
+    },
+    "clear": {
+        "base": "clear",
+        "JJR": "clearer",
+        "JJS": "clearest",
+        "RBR": "clearer",
+        "RBS": "clearest",
+        "VBD": "cleared",
+        "VBG": "clearing",
+        "VBZ": "clears"
+    },
+    "climb": {
+        "base": "climb",
+        "NNS": "climbs",
+        "VBD": "climbed",
+        "VBG": "climbing",
+        "VBZ": "climbs",
+        "ANN": "climber"
+    },
+    "close": {
+        "base": "close",
+        "JJR": "closer",
+        "JJS": "closest",
+        "RBR": "closer",
+        "RBS": "closest",
+        "NNS": "closes",
+        "VBD": "closed",
+        "VBG": "closing",
+        "VBZ": "closes"
+    },
+    "clothes": {
+        "base": "clothes"
+    },
+    "coffee": {
+        "base": "coffee",
+        "NNS": "coffees"
+    },
+    "cold": {
+        "base": "cold",
+        "JJR": "colder",
+        "JJS": "coldest",
+        "NNS": "colds"
+    },
+    "college": {
+        "base": "college",
+        "NNS": "colleges"
+    },
+    "color": {
+        "base": "color",
+        "NNS": "colors",
+        "VBD": "colored",
+        "VBG": "coloring",
+        "VBZ": "colors"
+    },
+    "come": {
+        "base": "come",
+        "VBD": "came",
+        "VBG": "coming",
+        "VBZ": "comes"
+    },
+    "comment": {
+        "base": "comment",
+        "NNS": "comments",
+        "VBD": "commented",
+        "VBG": "commenting",
+        "VBZ": "comments",
+        "ANN": "commenter"
+    },
+    "complete": {
+        "base": "complete",
+        "VBD": "completed",
+        "VBG": "completing",
+        "VBZ": "completes"
+    },
+    "completely": {
+        "base": "completely"
+    },
+    "computer": {
+        "base": "computer",
+        "NNS": "computers"
+    },
+    "concern": {
+        "base": "concern",
+        "NNS": "concerns",
+        "VBD": "concerned",
+        "VBG": "concerning",
+        "VBZ": "concerns"
+    },
+    "confuse": {
+        "base": "confuse",
+        "VBD": "confused",
+        "VBG": "confusing",
+        "VBZ": "confuses"
+    },
+    "consider": {
+        "base": "consider",
+        "VBD": "considered",
+        "VBG": "considering",
+        "VBZ": "considers"
+    },
+    "continue": {
+        "base": "continue",
+        "VBD": "continued",
+        "VBG": "continuing",
+        "VBZ": "continues"
+    },
+    "control": {
+        "base": "control",
+        "NNS": "controls",
+        "VBD": "controlled",
+        "VBG": "controlling",
+        "VBZ": "controls",
+        "ANN": "controller"
+    },
+    "conversation": {
+        "base": "conversation",
+        "NNS": "conversations"
+    },
+    "cool": {
+        "base": "cool",
+        "JJR": "cooler",
+        "JJS": "coolest",
+        "VBD": "cooled",
+        "VBG": "cooling",
+        "VBZ": "cools"
+    },
+    "corner": {
+        "base": "corner",
+        "NNS": "corners",
+        "VBD": "cornered",
+        "VBG": "cornering",
+        "VBZ": "corners"
+    },
+    "couch": {
+        "base": "couch",
+        "NNS": "couches",
+        "VBD": "couched",
+        "VBG": "couching",
+        "VBZ": "couches"
+    },
+    "couldn't": {
+        "base": "couldn't"
+    },
+    "counter": {
+        "base": "counter",
+        "NNS": "counters",
+        "VBD": "countered",
+        "VBG": "countering",
+        "VBZ": "counters"
+    },
+    "couple": {
+        "base": "couple",
+        "NNS": "couples",
+        "VBD": "coupled",
+        "VBG": "coupling",
+        "VBZ": "couples"
+    },
+    "course": {
+        "base": "course",
+        "NNS": "courses",
+        "VBD": "coursed",
+        "VBG": "coursing",
+        "VBZ": "courses"
+    },
+    "cover": {
+        "base": "cover",
+        "NNS": "covers",
+        "VBD": "covered",
+        "VBG": "covering",
+        "VBZ": "covers"
+    },
+    "crack": {
+        "base": "crack",
+        "NNS": "cracks",
+        "VBD": "cracked",
+        "VBG": "cracking",
+        "VBZ": "cracks"
+    },
+    "crazy": {
+        "base": "crazy",
+        "JJR": "crazier",
+        "JJS": "craziest"
+    },
+    "cross": {
+        "base": "cross",
+        "JJR": "crosser",
+        "JJS": "crossest",
+        "NNS": "crosses",
+        "VBD": "crossed",
+        "VBG": "crossing",
+        "VBZ": "crosses"
+    },
+    "crowd": {
+        "base": "crowd",
+        "NNS": "crowds",
+        "VBD": "crowded",
+        "VBG": "crowding",
+        "VBZ": "crowds"
+    },
+    "cry": {
+        "base": "cry",
+        "NNS": "cries",
+        "VBD": "cried",
+        "VBG": "crying",
+        "VBZ": "cries"
+    },
+    "cup": {
+        "base": "cup",
+        "NNS": "cups",
+        "VBD": "cupped",
+        "VBG": "cupping",
+        "VBZ": "cups"
+    },
+    "cut": {
+        "base": "cut",
+        "NNS": "cuts",
+        "VBG": "cutting",
+        "VBZ": "cuts",
+        "ANN": "cutter"
+    },
+    "cute": {
+        "base": "cute",
+        "JJR": "cuter",
+        "JJS": "cutest"
+    },
+    "dad": {
+        "base": "dad",
+        "NNS": "dads"
+    },
+    "damn": {
+        "base": "damn",
+        "NNS": "damns",
+        "VBD": "damned",
+        "VBG": "damning",
+        "VBZ": "damns"
+    },
+    "dance": {
+        "base": "dance",
+        "NNS": "dances",
+        "VBD": "danced",
+        "VBG": "dancing",
+        "VBZ": "dances",
+        "ANN": "dancer"
+    },
+    "dark": {
+        "base": "dark",
+        "JJR": "darker",
+        "JJS": "darkest"
+    },
+    "date": {
+        "base": "date",
+        "NNS": "dates",
+        "VBD": "dated",
+        "VBG": "dating",
+        "VBZ": "dates"
+    },
+    "daughter": {
+        "base": "daughter",
+        "NNS": "daughters"
+    },
+    "day": {
+        "base": "day",
+        "NNS": "days"
+    },
+    "dead": {
+        "base": "dead",
+        "JJR": "deader",
+        "JJS": "deadest"
+    },
+    "deal": {
+        "base": "deal",
+        "NNS": "deals",
+        "VBD": "dealt",
+        "VBN": "dealt",
+        "VBG": "dealing",
+        "VBZ": "deals",
+        "ANN": "dealer"
+    },
+    "dear": {
+        "base": "dear",
+        "JJR": "dearer",
+        "JJS": "dearest",
+        "NNS": "dears"
+    },
+    "death": {
+        "base": "death",
+        "NNS": "deaths"
+    },
+    "decide": {
+        "base": "decide",
+        "VBD": "decided",
+        "VBG": "deciding",
+        "VBZ": "decides",
+        "ANN": "decider"
+    },
+    "deep": {
+        "base": "deep",
+        "JJR": "deeper",
+        "JJS": "deepest",
+        "RBR": "deeper",
+        "RBS": "deepest"
+    },
+    "definitely": {
+        "base": "definitely"
+    },
+    "desk": {
+        "base": "desk",
+        "NNS": "desks"
+    },
+    "did": {
+        "base": "did"
+    },
+    "didn't": {
+        "base": "didn't"
+    },
+    "die": {
+        "base": "die",
+        "NNS": "dies",
+        "VBD": "died",
+        "VBG": "dying",
+        "VBZ": "dies"
+    },
+    "different": {
+        "base": "different"
+    },
+    "dinner": {
+        "base": "dinner",
+        "NNS": "dinners"
+    },
+    "direction": {
+        "base": "direction",
+        "NNS": "directions"
+    },
+    "disappear": {
+        "base": "disappear",
+        "VBD": "disappeared",
+        "VBG": "disappearing",
+        "VBZ": "disappears"
+    },
+    "do": {
+        "base": "do",
+        "VBD": "did",
+        "VBN": "done",
+        "VBG": "doing",
+        "VBZ": "does",
+        "ANN": "doer"
+    },
+    "doctor": {
+        "base": "doctor",
+        "NNS": "doctors",
+        "VBD": "doctored",
+        "VBG": "doctoring",
+        "VBZ": "doctors"
+    },
+    "doesn't": {
+        "base": "doesn't"
+    },
+    "dog": {
+        "base": "dog",
+        "NNS": "dogs",
+        "VBD": "dogged",
+        "VBG": "dogging",
+        "VBZ": "dogs"
+    },
+    "don't": {
+        "base": "don't"
+    },
+    "door": {
+        "base": "door",
+        "NNS": "doors"
+    },
+    "doubt": {
+        "base": "doubt",
+        "NNS": "doubts",
+        "VBD": "doubted",
+        "VBG": "doubting",
+        "VBZ": "doubts"
+    },
+    "down": {
+        "base": "down",
+        "NNS": "downs",
+        "VBD": "downed",
+        "VBG": "downing",
+        "VBZ": "downs"
+    },
+    "drag": {
+        "base": "drag",
+        "NNS": "drags",
+        "VBD": "dragged",
+        "VBG": "dragging",
+        "VBZ": "drags",
+        "ANN": "dragger"
+    },
+    "draw": {
+        "base": "draw",
+        "NNS": "draws",
+        "VBD": "drew",
+        "VBN": "drawn",
+        "VBG": "drawing",
+        "VBZ": "draws"
+    },
+    "dream": {
+        "base": "dream",
+        "NNS": "dreams",
+        "VBD": "dreamed",
+        "VBN": "dreamed",
+        "VBG": "dreaming",
+        "VBZ": "dreams",
+        "ANN": "dreamer"
+    },
+    "dress": {
+        "base": "dress",
+        "NNS": "dresses",
+        "VBD": "dressed",
+        "VBG": "dressing",
+        "VBZ": "dresses"
+    },
+    "drink": {
+        "base": "drink",
+        "NNS": "drinks",
+        "VBD": "drank",
+        "VBN": "drunk",
+        "VBG": "drinking",
+        "VBZ": "drinks",
+        "ANN": "drinker"
+    },
+    "drive": {
+        "base": "drive",
+        "NNS": "drives",
+        "VBD": "drove",
+        "VBN": "driven",
+        "VBG": "driving",
+        "VBZ": "drives",
+        "ANN": "driver"
+    },
+    "drop": {
+        "base": "drop",
+        "NNS": "drops",
+        "VBD": "dropped",
+        "VBG": "dropping",
+        "VBZ": "drops"
+    },
+    "dry": {
+        "base": "dry",
+        "JJR": "drier",
+        "JJS": "driest",
+        "VBD": "dried",
+        "VBG": "drying",
+        "VBZ": "dries"
+    },
+    "during": {
+        "base": "during"
+    },
+    "each": {
+        "base": "each"
+    },
+    "ear": {
+        "base": "ear",
+        "NNS": "ears",
+        "VBD": "eared",
+        "VBG": "earing",
+        "VBZ": "ears"
+    },
+    "early": {
+        "base": "early",
+        "JJR": "earlier",
+        "JJS": "earliest",
+        "RBR": "earlier",
+        "RBS": "earliest"
+    },
+    "easily": {
+        "base": "easily"
+    },
+    "easy": {
+        "base": "easy",
+        "JJR": "easier",
+        "JJS": "easiest",
+        "RBR": "easier",
+        "RBS": "easiest"
+    },
+    "eat": {
+        "base": "eat",
+        "VBD": "ate",
+        "VBN": "eaten",
+        "VBG": "eating",
+        "VBZ": "eats"
+    },
+    "edge": {
+        "base": "edge",
+        "NNS": "edges",
+        "VBD": "edged",
+        "VBG": "edging",
+        "VBZ": "edges"
+    },
+    "either": {
+        "base": "either"
+    },
+    "else": {
+        "base": "else"
+    },
+    "empty": {
+        "base": "empty",
+        "JJR": "emptier",
+        "JJS": "emptiest",
+        "VBD": "emptied",
+        "VBG": "emptying",
+        "VBZ": "empties"
+    },
+    "end": {
+        "base": "end",
+        "NNS": "ends",
+        "VBD": "ended",
+        "VBG": "ending",
+        "VBZ": "ends"
+    },
+    "enjoy": {
+        "base": "enjoy",
+        "VBD": "enjoyed",
+        "VBG": "enjoying",
+        "VBZ": "enjoys",
+        "ANN": "enjoyer"
+    },
+    "enough": {
+        "base": "enough"
+    },
+    "enter": {
+        "base": "enter",
+        "VBD": "entered",
+        "VBG": "entering",
+        "VBZ": "enters"
+    },
+    "entire": {
+        "base": "entire"
+    },
+    "escape": {
+        "base": "escape",
+        "NNS": "escapes",
+        "VBD": "escaped",
+        "VBG": "escaping",
+        "VBZ": "escapes"
+    },
+    "especially": {
+        "base": "especially"
+    },
+    "even": {
+        "base": "even",
+        "VBD": "evened",
+        "VBG": "evening",
+        "VBZ": "evens"
+    },
+    "eventually": {
+        "base": "eventually"
+    },
+    "ever": {
+        "base": "ever"
+    },
+    "every": {
+        "base": "every"
+    },
+    "everyone": {
+        "base": "everyone"
+    },
+    "everything": {
+        "base": "everything"
+    },
+    "exactly": {
+        "base": "exactly"
+    },
+    "except": {
+        "base": "except",
+        "VBD": "excepted",
+        "VBG": "excepting",
+        "VBZ": "excepts"
+    },
+    "excite": {
+        "base": "excite",
+        "VBD": "excited",
+        "VBG": "exciting",
+        "VBZ": "excites"
+    },
+    "exclaim": {
+        "base": "exclaim",
+        "VBD": "exclaimed",
+        "VBG": "exclaiming",
+        "VBZ": "exclaims"
+    },
+    "excuse": {
+        "base": "excuse",
+        "NNS": "excuses",
+        "VBD": "excused",
+        "VBG": "excusing",
+        "VBZ": "excuses"
+    },
+    "expect": {
+        "base": "expect",
+        "VBD": "expected",
+        "VBG": "expecting",
+        "VBZ": "expects"
+    },
+    "explain": {
+        "base": "explain",
+        "VBD": "explained",
+        "VBG": "explaining",
+        "VBZ": "explains",
+        "ANN": "explain"
+    },
+    "expression": {
+        "base": "expression",
+        "NNS": "expressions"
+    },
+    "eye": {
+        "base": "eye",
+        "NNS": "eyes",
+        "VBD": "eyed",
+        "VBN": "eyed",
+        "VBG": "eyeing",
+        "VBZ": "eyes"
+    },
+    "eyebrow": {
+        "base": "eyebrow",
+        "NNS": "eyebrows"
+    },
+    "face": {
+        "base": "face",
+        "NNS": "faces",
+        "VBD": "faced",
+        "VBG": "facing",
+        "VBZ": "faces"
+    },
+    "fact": {
+        "base": "fact",
+        "NNS": "facts"
+    },
+    "fall": {
+        "base": "fall",
+        "NNS": "falls",
+        "VBD": "fell",
+        "VBN": "fallen",
+        "VBG": "falling",
+        "VBZ": "falls"
+    },
+    "family": {
+        "base": "family",
+        "NNS": "families"
+    },
+    "far": {
+        "base": "far",
+        "JJR": "farther",
+        "JJS": "farthest",
+        "RBR": "further",
+        "RBS": "farthest"
+    },
+    "fast": {
+        "base": "fast",
+        "JJR": "faster",
+        "JJS": "fastest",
+        "RBR": "faster",
+        "RBS": "fastest",
+        "NNS": "fasts",
+        "VBD": "fasted",
+        "VBG": "fasting",
+        "VBZ": "fasts"
+    },
+    "father": {
+        "base": "father",
+        "NNS": "fathers",
+        "VBD": "fathered",
+        "VBG": "fathering",
+        "VBZ": "fathers"
+    },
+    "fault": {
+        "base": "fault",
+        "NNS": "faults",
+        "VBD": "faulted",
+        "VBG": "faulting",
+        "VBZ": "faults"
+    },
+    "favorite": {
+        "base": "favorite",
+        "NNS": "favorites"
+    },
+    "fear": {
+        "base": "fear",
+        "NNS": "fears",
+        "VBD": "feared",
+        "VBG": "fearing",
+        "VBZ": "fears"
+    },
+    "feel": {
+        "base": "feel",
+        "VBD": "felt",
+        "VBN": "felt",
+        "VBG": "feeling",
+        "VBZ": "feels"
+    },
+    "feet": {
+        "base": "feet"
+    },
+    "few": {
+        "base": "few",
+        "JJR": "fewer",
+        "JJS": "fewest"
+    },
+    "field": {
+        "base": "field",
+        "NNS": "fields",
+        "VBD": "fielded",
+        "VBG": "fielding",
+        "VBZ": "fields"
+    },
+    "fight": {
+        "base": "fight",
+        "NNS": "fights",
+        "VBD": "fought",
+        "VBN": "fought",
+        "VBG": "fighting",
+        "VBZ": "fights",
+        "ANN": "fighter"
+    },
+    "figure": {
+        "base": "figure",
+        "NNS": "figures",
+        "VBD": "figured",
+        "VBG": "figuring",
+        "VBZ": "figures"
+    },
+    "fill": {
+        "base": "fill",
+        "VBD": "filled",
+        "VBG": "filling",
+        "VBZ": "fills"
+    },
+    "finally": {
+        "base": "finally"
+    },
+    "find": {
+        "base": "find",
+        "NNS": "finds",
+        "VBD": "found",
+        "VBN": "found",
+        "VBG": "finding",
+        "VBZ": "finds",
+        "ANN": "finder"
+    },
+    "fine": {
+        "base": "fine",
+        "JJR": "finer",
+        "JJS": "finest",
+        "NNS": "fines",
+        "VBD": "fined",
+        "VBG": "fining",
+        "VBZ": "fines"
+    },
+    "finger": {
+        "base": "finger",
+        "NNS": "fingers",
+        "VBD": "fingered",
+        "VBG": "fingering",
+        "VBZ": "fingers"
+    },
+    "finish": {
+        "base": "finish",
+        "NNS": "finishes",
+        "VBD": "finished",
+        "VBG": "finishing",
+        "VBZ": "finishes",
+        "ANN": "finisher"
+    },
+    "fire": {
+        "base": "fire",
+        "NNS": "fires",
+        "VBD": "fired",
+        "VBG": "firing",
+        "VBZ": "fires"
+    },
+    "first": {
+        "base": "first",
+        "NNS": "firsts"
+    },
+    "fit": {
+        "base": "fit",
+        "JJR": "fitter",
+        "JJS": "fittest",
+        "NNS": "fits",
+        "VBN": "fitted",
+        "VBG": "fitting",
+        "VBZ": "fits"
+    },
+    "five": {
+        "base": "five"
+    },
+    "fix": {
+        "base": "fix",
+        "NNS": "fixes",
+        "VBD": "fixed",
+        "VBG": "fixing",
+        "VBZ": "fixes",
+        "ANN": "fixer"
+    },
+    "flash": {
+        "base": "flash",
+        "NNS": "flashes",
+        "VBD": "flashed",
+        "VBG": "flashing",
+        "VBZ": "flashes"
+    },
+    "flip": {
+        "base": "flip",
+        "JJR": "flipper",
+        "JJS": "flippest",
+        "NNS": "flips",
+        "VBD": "flipped",
+        "VBG": "flipping",
+        "VBZ": "flips",
+        "ANN": "flipper"
+    },
+    "floor": {
+        "base": "floor",
+        "NNS": "floors",
+        "VBD": "floored",
+        "VBG": "flooring",
+        "VBZ": "floors"
+    },
+    "fly": {
+        "base": "fly",
+        "NNS": "flies",
+        "VBD": "flew",
+        "VBN": "flown",
+        "VBG": "flying",
+        "VBZ": "flies",
+        "ANN": "flier"
+    },
+    "focus": {
+        "base": "focus",
+        "NNS": "focuses",
+        "VBD": "focused",
+        "VBN": "focused",
+        "VBG": "focusing",
+        "VBZ": "focuses"
+    },
+    "follow": {
+        "base": "follow",
+        "VBD": "followed",
+        "VBG": "following",
+        "VBZ": "follows"
+    },
+    "food": {
+        "base": "food",
+        "NNS": "foods"
+    },
+    "foot": {
+        "base": "foot",
+        "NNS": "feet",
+        "VBD": "footed",
+        "VBN": "footed",
+        "VBG": "footing",
+        "VBZ": "foots"
+    },
+    "for": {
+        "base": "for"
+    },
+    "force": {
+        "base": "force",
+        "NNS": "forces",
+        "VBD": "forced",
+        "VBG": "forcing",
+        "VBZ": "forces"
+    },
+    "forget": {
+        "base": "forget",
+        "VBD": "forgot",
+        "VBN": "forgotten",
+        "VBG": "forgetting",
+        "VBZ": "forgets"
+    },
+    "form": {
+        "base": "form",
+        "NNS": "forms",
+        "VBD": "formed",
+        "VBG": "forming",
+        "VBZ": "forms"
+    },
+    "forward": {
+        "base": "forward",
+        "NNS": "forwards",
+        "VBD": "forwarded",
+        "VBG": "forwarding",
+        "VBZ": "forwards"
+    },
+    "four": {
+        "base": "four"
+    },
+    "free": {
+        "base": "free",
+        "JJR": "freeer",
+        "JJS": "freeest",
+        "RBR": "freeer",
+        "RBS": "freeest",
+        "VBD": "freed",
+        "VBN": "freed",
+        "VBG": "freeing",
+        "VBZ": "frees"
+    },
+    "friend": {
+        "base": "friend",
+        "NNS": "friends"
+    },
+    "from": {
+        "base": "from"
+    },
+    "front": {
+        "base": "front",
+        "NNS": "fronts",
+        "VBD": "fronted",
+        "VBG": "fronting",
+        "VBZ": "fronts"
+    },
+    "frown": {
+        "base": "frown",
+        "NNS": "frowns",
+        "VBD": "frowned",
+        "VBG": "frowning",
+        "VBZ": "frowns"
+    },
+    "fuck": {
+        "base": "fuck"
+    },
+    "full": {
+        "base": "full",
+        "JJR": "fuller",
+        "JJS": "fullest",
+        "RBR": "fuller",
+        "RBS": "fullest",
+        "VBD": "fulled",
+        "VBG": "fulling",
+        "VBZ": "fulls"
+    },
+    "fun": {
+        "base": "fun"
+    },
+    "funny": {
+        "base": "funny",
+        "JJR": "funnier",
+        "JJS": "funniest"
+    },
+    "game": {
+        "base": "game",
+        "JJR": "gamer",
+        "JJS": "gamest",
+        "NNS": "games",
+        "VBD": "gamed",
+        "VBG": "gaming",
+        "VBZ": "games"
+    },
+    "gasp": {
+        "base": "gasp",
+        "NNS": "gasps",
+        "VBD": "gasped",
+        "VBG": "gasping",
+        "VBZ": "gasps"
+    },
+    "gave": {
+        "base": "gave"
+    },
+    "gaze": {
+        "base": "gaze",
+        "NNS": "gazes",
+        "VBD": "gazed",
+        "VBG": "gazing",
+        "VBZ": "gazes"
+    },
+    "gently": {
+        "base": "gently"
+    },
+    "get": {
+        "base": "get",
+        "VBD": "got",
+        "VBN": "gotten",
+        "VBG": "getting",
+        "VBZ": "gets",
+        "ANN": "getter"
+    },
+    "giggle": {
+        "base": "giggle",
+        "NNS": "giggles",
+        "VBD": "giggled",
+        "VBG": "giggling",
+        "VBZ": "giggles"
+    },
+    "girl": {
+        "base": "girl",
+        "NNS": "girls"
+    },
+    "girlfriend": {
+        "base": "girlfriend",
+        "NNS": "girlfriends"
+    },
+    "give": {
+        "base": "give",
+        "VBD": "gave",
+        "VBN": "given",
+        "VBG": "giving",
+        "VBZ": "gives",
+        "ANN": "giver"
+    },
+    "glad": {
+        "base": "glad",
+        "JJR": "gladder",
+        "JJS": "gladdest"
+    },
+    "glance": {
+        "base": "glance",
+        "NNS": "glances",
+        "VBD": "glanced",
+        "VBG": "glancing",
+        "VBZ": "glances"
+    },
+    "glare": {
+        "base": "glare",
+        "VBD": "glared",
+        "VBG": "glaring",
+        "VBZ": "glares"
+    },
+    "glass": {
+        "base": "glass",
+        "NNS": "glasses",
+        "VBD": "glassed",
+        "VBG": "glassing",
+        "VBZ": "glasses"
+    },
+    "go": {
+        "base": "go",
+        "VBD": "went",
+        "VBN": "gone",
+        "VBG": "going",
+        "VBZ": "goes",
+        "ANN": "goer"
+    },
+    "god": {
+        "base": "god",
+        "NNS": "gods"
+    },
+    "gonna": {
+        "base": "gonna"
+    },
+    "good": {
+        "base": "good",
+        "JJR": "better",
+        "JJS": "best",
+        "NNS": "goods"
+    },
+    "grab": {
+        "base": "grab",
+        "NNS": "grabs",
+        "VBD": "grabbed",
+        "VBG": "grabbing",
+        "VBZ": "grabs",
+        "ANN": "grabber"
+    },
+    "great": {
+        "base": "great",
+        "JJR": "greater",
+        "JJS": "greatest",
+        "NNS": "greats"
+    },
+    "green": {
+        "base": "green",
+        "JJR": "greener",
+        "JJS": "greenest",
+        "NNS": "greens",
+        "VBD": "greened",
+        "VBG": "greening",
+        "VBZ": "greens"
+    },
+    "greet": {
+        "base": "greet",
+        "VBD": "greeted",
+        "VBG": "greeting",
+        "VBZ": "greets"
+    },
+    "grey": {
+        "base": "grey",
+        "JJR": "greyer",
+        "JJS": "greyest",
+        "NNS": "greys",
+        "VBD": "greyed",
+        "VBG": "greying",
+        "VBZ": "greys"
+    },
+    "grin": {
+        "base": "grin",
+        "NNS": "grins",
+        "VBD": "grinned",
+        "VBG": "grinning",
+        "VBZ": "grins"
+    },
+    "grip": {
+        "base": "grip",
+        "NNS": "grips",
+        "VBD": "gripped",
+        "VBG": "gripping",
+        "VBZ": "grips"
+    },
+    "groan": {
+        "base": "groan",
+        "NNS": "groans",
+        "VBD": "groaned",
+        "VBG": "groaning",
+        "VBZ": "groans"
+    },
+    "ground": {
+        "base": "ground",
+        "NNS": "grounds",
+        "VBD": "grounded",
+        "VBG": "grounding",
+        "VBZ": "grounds"
+    },
+    "group": {
+        "base": "group",
+        "NNS": "groups",
+        "VBD": "grouped",
+        "VBG": "grouping",
+        "VBZ": "groups"
+    },
+    "grow": {
+        "base": "grow",
+        "VBD": "grew",
+        "VBN": "grown",
+        "VBG": "growing",
+        "VBZ": "grows"
+    },
+    "guard": {
+        "base": "guard",
+        "NNS": "guards",
+        "VBD": "guarded",
+        "VBG": "guarding",
+        "VBZ": "guards"
+    },
+    "guess": {
+        "base": "guess",
+        "NNS": "guesses",
+        "VBD": "guessed",
+        "VBG": "guessing",
+        "VBZ": "guesses",
+        "ANN": "guesser"
+    },
+    "gun": {
+        "base": "gun",
+        "NNS": "guns",
+        "VBD": "gunned",
+        "VBG": "gunning",
+        "VBZ": "guns"
+    },
+    "guy": {
+        "base": "guy",
+        "NNS": "guys",
+        "VBD": "guyed",
+        "VBG": "guying",
+        "VBZ": "guys"
+    },
+    "had": {
+        "base": "had"
+    },
+    "hadn't": {
+        "base": "hadn't"
+    },
+    "hair": {
+        "base": "hair",
+        "NNS": "hairs"
+    },
+    "half": {
+        "base": "half",
+        "NNS": "halves"
+    },
+    "hall": {
+        "base": "hall",
+        "NNS": "halls"
+    },
+    "hallway": {
+        "base": "hallway",
+        "NNS": "hallways"
+    },
+    "hand": {
+        "base": "hand",
+        "NNS": "hands",
+        "VBD": "handed",
+        "VBG": "handing",
+        "VBZ": "hands"
+    },
+    "handle": {
+        "base": "handle",
+        "NNS": "handles",
+        "VBD": "handled",
+        "VBG": "handling",
+        "VBZ": "handles",
+        "ANN": "handler"
+    },
+    "hang": {
+        "base": "hang",
+        "VBD": "hung",
+        "VBN": "hung",
+        "VBG": "hanging",
+        "VBZ": "hangs"
+    },
+    "happen": {
+        "base": "happen",
+        "VBD": "happened",
+        "VBG": "happening",
+        "VBZ": "happens"
+    },
+    "happy": {
+        "base": "happy",
+        "JJR": "happier",
+        "JJS": "happiest"
+    },
+    "hard": {
+        "base": "hard",
+        "JJR": "harder",
+        "JJS": "hardest",
+        "RBR": "harder",
+        "RBS": "hardest"
+    },
+    "has": {
+        "base": "has"
+    },
+    "hate": {
+        "base": "hate",
+        "VBD": "hated",
+        "VBG": "hating",
+        "VBZ": "hates"
+    },
+    "have": {
+        "base": "have",
+        "VBD": "had",
+        "VBN": "had",
+        "VBG": "having",
+        "VBZ": "has",
+        "ANN": "haver"
+    },
+    "haven't": {
+        "base": "haven't"
+    },
+    "he": {
+        "base": "he"
+    },
+    "he'd": {
+        "base": "he'd"
+    },
+    "he's": {
+        "base": "he's"
+    },
+    "head": {
+        "base": "head",
+        "NNS": "heads",
+        "VBD": "headed",
+        "VBG": "heading",
+        "VBZ": "heads"
+    },
+    "hear": {
+        "base": "hear",
+        "VBD": "heard",
+        "VBN": "heard",
+        "VBG": "hearing",
+        "VBZ": "hears"
+    },
+    "heart": {
+        "base": "heart",
+        "NNS": "hearts"
+    },
+    "heavy": {
+        "base": "heavy",
+        "JJR": "heavier",
+        "JJS": "heaviest",
+        "RBR": "heavier",
+        "RBS": "heaviest",
+        "NNS": "heavies"
+    },
+    "held": {
+        "base": "held"
+    },
+    "hell": {
+        "base": "hell",
+        "NNS": "hells"
+    },
+    "hello": {
+        "base": "hello",
+        "NNS": "hellos"
+    },
+    "help": {
+        "base": "help",
+        "NNS": "helps",
+        "VBD": "helped",
+        "VBG": "helping",
+        "VBZ": "helps",
+        "ANN": "helper"
+    },
+    "her": {
+        "base": "her"
+    },
+    "here": {
+        "base": "here"
+    },
+    "herself": {
+        "base": "herself"
+    },
+    "hey": {
+        "base": "hey"
+    },
+    "hi": {
+        "base": "hi"
+    },
+    "hide": {
+        "base": "hide",
+        "NNS": "hides",
+        "VBD": "hid",
+        "VBN": "hidden",
+        "VBG": "hiding",
+        "VBZ": "hides"
+    },
+    "high": {
+        "base": "high",
+        "JJR": "higher",
+        "JJS": "highest",
+        "RBR": "higher",
+        "RBS": "highest",
+        "NNS": "highs"
+    },
+    "him": {
+        "base": "him"
+    },
+    "himself": {
+        "base": "himself"
+    },
+    "his": {
+        "base": "his"
+    },
+    "hit": {
+        "base": "hit",
+        "NNS": "hits",
+        "VBG": "hitting",
+        "VBZ": "hits",
+        "ANN": "hitter"
+    },
+    "hold": {
+        "base": "hold",
+        "NNS": "holds",
+        "VBD": "held",
+        "VBN": "held",
+        "VBG": "holding",
+        "VBZ": "holds",
+        "ANN": "holder"
+    },
+    "home": {
+        "base": "home",
+        "NNS": "homes",
+        "VBD": "homed",
+        "VBG": "homing",
+        "VBZ": "homes"
+    },
+    "hope": {
+        "base": "hope",
+        "NNS": "hopes",
+        "VBD": "hoped",
+        "VBG": "hoping",
+        "VBZ": "hopes"
+    },
+    "horse": {
+        "base": "horse",
+        "NNS": "horses",
+        "VBD": "horsed",
+        "VBG": "horsing",
+        "VBZ": "horses"
+    },
+    "hospital": {
+        "base": "hospital",
+        "NNS": "hospitals"
+    },
+    "hot": {
+        "base": "hot",
+        "JJR": "hotter",
+        "JJS": "hottest",
+        "VBD": "hotted",
+        "VBG": "hotting",
+        "VBZ": "hots"
+    },
+    "hour": {
+        "base": "hour",
+        "NNS": "hours"
+    },
+    "house": {
+        "base": "house",
+        "NNS": "houses",
+        "VBD": "housed",
+        "VBG": "housing",
+        "VBZ": "houses"
+    },
+    "how": {
+        "base": "how",
+        "NNS": "hows"
+    },
+    "however": {
+        "base": "however"
+    },
+    "hug": {
+        "base": "hug",
+        "NNS": "hugs",
+        "VBD": "hugged",
+        "VBG": "hugging",
+        "VBZ": "hugs"
+    },
+    "huge": {
+        "base": "huge",
+        "JJR": "huger",
+        "JJS": "hugest"
+    },
+    "huh": {
+        "base": "huh"
+    },
+    "human": {
+        "base": "human",
+        "NNS": "humans"
+    },
+    "hundred": {
+        "base": "hundred",
+        "NNS": "hundreds"
+    },
+    "hurry": {
+        "base": "hurry",
+        "VBD": "hurried",
+        "VBG": "hurrying",
+        "VBZ": "hurries"
+    },
+    "hurt": {
+        "base": "hurt",
+        "VBG": "hurting",
+        "VBZ": "hurts"
+    },
+    "i": {
+        "base": "i"
+    },
+    "i'd": {
+        "base": "i'd"
+    },
+    "i'll": {
+        "base": "i'll"
+    },
+    "i'm": {
+        "base": "i'm"
+    },
+    "i've": {
+        "base": "i've"
+    },
+    "ice": {
+        "base": "ice",
+        "NNS": "ices",
+        "VBD": "iced",
+        "VBG": "icing",
+        "VBZ": "ices"
+    },
+    "idea": {
+        "base": "idea",
+        "NNS": "ideas"
+    },
+    "if": {
+        "base": "if"
+    },
+    "ignore": {
+        "base": "ignore",
+        "VBD": "ignored",
+        "VBG": "ignoring",
+        "VBZ": "ignores"
+    },
+    "imagine": {
+        "base": "imagine",
+        "VBD": "imagined",
+        "VBG": "imagining",
+        "VBZ": "imagines"
+    },
+    "immediately": {
+        "base": "immediately"
+    },
+    "important": {
+        "base": "important"
+    },
+    "in": {
+        "base": "in"
+    },
+    "inside": {
+        "base": "inside",
+        "NNS": "insides"
+    },
+    "instead": {
+        "base": "instead"
+    },
+    "interest": {
+        "base": "interest",
+        "NNS": "interests",
+        "VBD": "interested",
+        "VBG": "interesting",
+        "VBZ": "interests"
+    },
+    "interrupt": {
+        "base": "interrupt",
+        "VBD": "interrupted",
+        "VBG": "interrupting",
+        "VBZ": "interrupts"
+    },
+    "into": {
+        "base": "into"
+    },
+    "isn't": {
+        "base": "isn't"
+    },
+    "it": {
+        "base": "it"
+    },
+    "it's": {
+        "base": "it's"
+    },
+    "its": {
+        "base": "its"
+    },
+    "jacket": {
+        "base": "jacket",
+        "NNS": "jackets",
+        "VBD": "jacketed",
+        "VBG": "jacketing",
+        "VBZ": "jackets"
+    },
+    "jeans": {
+        "base": "jeans"
+    },
+    "jerk": {
+        "base": "jerk",
+        "NNS": "jerks",
+        "VBD": "jerked",
+        "VBG": "jerking",
+        "VBZ": "jerks"
+    },
+    "job": {
+        "base": "job",
+        "NNS": "jobs",
+        "VBD": "jobbed",
+        "VBG": "jobbing",
+        "VBZ": "jobs"
+    },
+    "join": {
+        "base": "join",
+        "NNS": "joins",
+        "VBD": "joined",
+        "VBG": "joining",
+        "VBZ": "joins",
+        "ANN": "joiner"
+    },
+    "joke": {
+        "base": "joke",
+        "NNS": "jokes",
+        "VBD": "joked",
+        "VBG": "joking",
+        "VBZ": "jokes"
+    },
+    "jump": {
+        "base": "jump",
+        "NNS": "jumps",
+        "VBD": "jumped",
+        "VBG": "jumping",
+        "VBZ": "jumps",
+        "ANN": "jumper"
+    },
+    "just": {
+        "base": "just"
+    },
+    "keep": {
+        "base": "keep",
+        "NNS": "keeps",
+        "VBD": "kept",
+        "VBN": "kept",
+        "VBG": "keeping",
+        "VBZ": "keeps",
+        "ANN": "keeper"
+    },
+    "key": {
+        "base": "key",
+        "NNS": "keys",
+        "VBD": "keyed",
+        "VBG": "keying",
+        "VBZ": "keys"
+    },
+    "kick": {
+        "base": "kick",
+        "NNS": "kicks",
+        "VBD": "kicked",
+        "VBG": "kicking",
+        "VBZ": "kicks",
+        "ANN": "kicker"
+    },
+    "kid": {
+        "base": "kid",
+        "NNS": "kids",
+        "VBD": "kidded",
+        "VBG": "kidding",
+        "VBZ": "kids"
+    },
+    "kill": {
+        "base": "kill",
+        "NNS": "kills",
+        "VBD": "killed",
+        "VBG": "killing",
+        "VBZ": "kills",
+        "ANN": "killer"
+    },
+    "kind": {
+        "base": "kind",
+        "JJR": "kinder",
+        "JJS": "kindest",
+        "NNS": "kinds"
+    },
+    "kiss": {
+        "base": "kiss",
+        "NNS": "kisses",
+        "VBD": "kissed",
+        "VBG": "kissing",
+        "VBZ": "kisses",
+        "ANN": "kisser"
+    },
+    "kitchen": {
+        "base": "kitchen",
+        "NNS": "kitchens"
+    },
+    "knee": {
+        "base": "knee",
+        "NNS": "knees",
+        "VBD": "kneed",
+        "VBG": "kneeing",
+        "VBZ": "knees"
+    },
+    "knew": {
+        "base": "knew"
+    },
+    "knock": {
+        "base": "knock",
+        "NNS": "knocks",
+        "VBD": "knocked",
+        "VBG": "knocking",
+        "VBZ": "knocks"
+    },
+    "know": {
+        "base": "know",
+        "VBD": "knew",
+        "VBN": "known",
+        "VBG": "knowing",
+        "VBZ": "knows"
+    },
+    "lady": {
+        "base": "lady",
+        "NNS": "ladies"
+    },
+    "land": {
+        "base": "land",
+        "NNS": "lands",
+        "VBD": "landed",
+        "VBG": "landing",
+        "VBZ": "lands",
+        "ANN": "lander"
+    },
+    "large": {
+        "base": "large",
+        "JJR": "larger",
+        "JJS": "largest"
+    },
+    "last": {
+        "base": "last",
+        "NNS": "lasts",
+        "VBD": "lasted",
+        "VBG": "lasting",
+        "VBZ": "lasts"
+    },
+    "late": {
+        "base": "late",
+        "JJR": "later",
+        "JJS": "latest"
+    },
+    "laugh": {
+        "base": "laugh",
+        "NNS": "laughs",
+        "VBD": "laughed",
+        "VBG": "laughing",
+        "VBZ": "laughs"
+    },
+    "lay": {
+        "base": "lay",
+        "NNS": "lays",
+        "VBD": "laid",
+        "VBN": "laid",
+        "VBG": "laying",
+        "VBZ": "lays"
+    },
+    "lead": {
+        "base": "lead",
+        "NNS": "leads",
+        "VBD": "led",
+        "VBN": "led",
+        "VBG": "leading",
+        "VBZ": "leads",
+        "ANN": "leader"
+    },
+    "lean": {
+        "base": "lean",
+        "JJR": "leaner",
+        "JJS": "leanest",
+        "NNS": "leans",
+        "VBD": "leaned",
+        "VBN": "leant",
+        "VBG": "leaning",
+        "VBZ": "leans"
+    },
+    "learn": {
+        "base": "learn",
+        "VBD": "learned",
+        "VBN": "learned",
+        "VBG": "learning",
+        "VBZ": "learns",
+        "ANN": "learner"
+    },
+    "least": {
+        "base": "least"
+    },
+    "leave": {
+        "base": "leave",
+        "NNS": "leaves",
+        "VBD": "left",
+        "VBN": "left",
+        "VBG": "leaving",
+        "VBZ": "leaves"
+    },
+    "leg": {
+        "base": "leg",
+        "NNS": "legs"
+    },
+    "less": {
+        "base": "less",
+        "JJS": "least",
+        "RBS": "least"
+    },
+    "let": {
+        "base": "let",
+        "VBG": "letting",
+        "VBZ": "lets"
+    },
+    "letter": {
+        "base": "letter",
+        "NNS": "letters",
+        "VBD": "lettered",
+        "VBG": "lettering",
+        "VBZ": "letters"
+    },
+    "lie": {
+        "base": "lie",
+        "NNS": "lies",
+        "VBD": "lay",
+        "VBN": "lied",
+        "VBG": "lying",
+        "VBZ": "lies",
+        "ANN": "liar"
+    },
+    "life": {
+        "base": "life",
+        "NNS": "lives"
+    },
+    "lift": {
+        "base": "lift",
+        "NNS": "lifts",
+        "VBD": "lifted",
+        "VBG": "lifting",
+        "VBZ": "lifts"
+    },
+    "light": {
+        "base": "light",
+        "JJR": "lighter",
+        "JJS": "lightest",
+        "RBR": "lighter",
+        "RBS": "lightest",
+        "NNS": "lights",
+        "VBD": "lit",
+        "VBN": "lighted",
+        "VBG": "lighting",
+        "VBZ": "lights"
+    },
+    "like": {
+        "base": "like",
+        "VBD": "liked",
+        "VBG": "liking",
+        "VBZ": "likes"
+    },
+    "line": {
+        "base": "line",
+        "NNS": "lines",
+        "VBD": "lined",
+        "VBG": "lining",
+        "VBZ": "lines"
+    },
+    "lip": {
+        "base": "lip",
+        "NNS": "lips",
+        "VBD": "lipped",
+        "VBG": "lipping",
+        "VBZ": "lips"
+    },
+    "listen": {
+        "base": "listen",
+        "VBD": "listened",
+        "VBG": "listening",
+        "VBZ": "listens",
+        "ANN": "listener"
+    },
+    "little": {
+        "base": "little",
+        "JJR": "littler",
+        "JJS": "littlest"
+    },
+    "live": {
+        "base": "live",
+        "VBD": "lived",
+        "VBG": "living",
+        "VBZ": "lives"
+    },
+    "lock": {
+        "base": "lock",
+        "NNS": "locks",
+        "VBD": "locked",
+        "VBG": "locking",
+        "VBZ": "locks"
+    },
+    "locker": {
+        "base": "locker",
+        "NNS": "lockers"
+    },
+    "long": {
+        "base": "long",
+        "JJR": "longer",
+        "JJS": "longest",
+        "RBR": "longer",
+        "RBS": "longest",
+        "VBD": "longed",
+        "VBG": "longing",
+        "VBZ": "longs"
+    },
+    "look": {
+        "base": "look",
+        "NNS": "looks",
+        "VBD": "looked",
+        "VBG": "looking",
+        "VBZ": "looks"
+    },
+    "lose": {
+        "base": "lose",
+        "VBD": "lost",
+        "VBN": "lost",
+        "VBG": "losing",
+        "VBZ": "loses",
+        "ANN": "loser"
+    },
+    "lot": {
+        "base": "lot",
+        "NNS": "lots"
+    },
+    "loud": {
+        "base": "loud",
+        "JJR": "louder",
+        "JJS": "loudest",
+        "RBR": "louder",
+        "RBS": "loudest"
+    },
+    "love": {
+        "base": "love",
+        "NNS": "loves",
+        "VBD": "loved",
+        "VBG": "loving",
+        "VBZ": "loves"
+    },
+    "low": {
+        "base": "low",
+        "JJR": "lower",
+        "JJS": "lowest",
+        "RBR": "lower",
+        "RBS": "lowest",
+        "NNS": "lows",
+        "VBD": "lowed",
+        "VBG": "lowing",
+        "VBZ": "lows"
+    },
+    "lunch": {
+        "base": "lunch",
+        "NNS": "lunches",
+        "VBD": "lunched",
+        "VBG": "lunching",
+        "VBZ": "lunches"
+    },
+    "mad": {
+        "base": "mad",
+        "JJR": "madder",
+        "JJS": "maddest"
+    },
+    "made": {
+        "base": "made"
+    },
+    "make": {
+        "base": "make",
+        "NNS": "makes",
+        "VBD": "made",
+        "VBN": "made",
+        "VBG": "making",
+        "VBZ": "makes",
+        "ANN": "maker"
+    },
+    "man": {
+        "base": "man",
+        "NNS": "men",
+        "VBD": "manned",
+        "VBG": "manning",
+        "VBZ": "mans"
+    },
+    "manage": {
+        "base": "manage",
+        "VBD": "managed",
+        "VBG": "managing",
+        "VBZ": "manages",
+        "ANN": "manager"
+    },
+    "many": {
+        "base": "many"
+    },
+    "mark": {
+        "base": "mark",
+        "NNS": "marks",
+        "VBD": "marked",
+        "VBG": "marking",
+        "VBZ": "marks"
+    },
+    "marry": {
+        "base": "marry",
+        "VBD": "married",
+        "VBG": "marrying",
+        "VBZ": "marries"
+    },
+    "match": {
+        "base": "match",
+        "NNS": "matches",
+        "VBD": "matched",
+        "VBG": "matching",
+        "VBZ": "matches"
+    },
+    "matter": {
+        "base": "matter",
+        "NNS": "matters",
+        "VBD": "mattered",
+        "VBG": "mattering",
+        "VBZ": "matters"
+    },
+    "may": {
+        "base": "may",
+        "VBD": "might"
+    },
+    "maybe": {
+        "base": "maybe"
+    },
+    "me": {
+        "base": "me"
+    },
+    "mean": {
+        "base": "mean",
+        "JJR": "meaner",
+        "JJS": "meanest",
+        "NNS": "means",
+        "VBD": "meant",
+        "VBN": "meant",
+        "VBG": "meaning",
+        "VBZ": "means"
+    },
+    "meet": {
+        "base": "meet",
+        "NNS": "meets",
+        "VBD": "met",
+        "VBN": "met",
+        "VBG": "meeting",
+        "VBZ": "meets"
+    },
+    "memory": {
+        "base": "memory",
+        "NNS": "memories"
+    },
+    "mention": {
+        "base": "mention",
+        "NNS": "mentions",
+        "VBD": "mentioned",
+        "VBG": "mentioning",
+        "VBZ": "mentions"
+    },
+    "middle": {
+        "base": "middle",
+        "NNS": "middles",
+        "VBD": "middled",
+        "VBG": "middling",
+        "VBZ": "middles"
+    },
+    "mind": {
+        "base": "mind",
+        "NNS": "minds",
+        "VBD": "minded",
+        "VBG": "minding",
+        "VBZ": "minds"
+    },
+    "mine": {
+        "base": "mine",
+        "NNS": "mines",
+        "VBD": "mined",
+        "VBG": "mining",
+        "VBZ": "mines"
+    },
+    "minute": {
+        "base": "minute",
+        "JJR": "minuter",
+        "JJS": "minutest",
+        "NNS": "minutes",
+        "VBD": "minuted",
+        "VBG": "minuting",
+        "VBZ": "minutes"
+    },
+    "mirror": {
+        "base": "mirror",
+        "NNS": "mirrors",
+        "VBD": "mirrored",
+        "VBG": "mirroring",
+        "VBZ": "mirrors"
+    },
+    "miss": {
+        "base": "miss",
+        "NNS": "misses",
+        "VBD": "missed",
+        "VBG": "missing",
+        "VBZ": "misses"
+    },
+    "mom": {
+        "base": "mom",
+        "NNS": "moms"
+    },
+    "moment": {
+        "base": "moment",
+        "NNS": "moments"
+    },
+    "money": {
+        "base": "money",
+        "NNS": "moneys"
+    },
+    "month": {
+        "base": "month",
+        "NNS": "months"
+    },
+    "mood": {
+        "base": "mood",
+        "NNS": "moods"
+    },
+    "more": {
+        "base": "more"
+    },
+    "morning": {
+        "base": "morning",
+        "NNS": "mornings"
+    },
+    "most": {
+        "base": "most"
+    },
+    "mother": {
+        "base": "mother",
+        "NNS": "mothers",
+        "VBD": "mothered",
+        "VBG": "mothering",
+        "VBZ": "mothers"
+    },
+    "mouth": {
+        "base": "mouth",
+        "NNS": "mouths",
+        "VBD": "mouthed",
+        "VBG": "mouthing",
+        "VBZ": "mouths"
+    },
+    "move": {
+        "base": "move",
+        "NNS": "moves",
+        "VBD": "moved",
+        "VBG": "moving",
+        "VBZ": "moves",
+        "ANN": "mover"
+    },
+    "movie": {
+        "base": "movie",
+        "NNS": "movies"
+    },
+    "mr.": {
+        "base": "mr."
+    },
+    "mrs.": {
+        "base": "mrs."
+    },
+    "much": {
+        "base": "much",
+        "JJR": "more",
+        "JJS": "most",
+        "RBR": "more",
+        "RBS": "most"
+    },
+    "mum": {
+        "base": "mum",
+        "NNS": "mums"
+    },
+    "mumble": {
+        "base": "mumble",
+        "VBD": "mumbled",
+        "VBG": "mumbling",
+        "VBZ": "mumbles"
+    },
+    "music": {
+        "base": "music"
+    },
+    "must": {
+        "base": "must"
+    },
+    "mutter": {
+        "base": "mutter",
+        "NNS": "mutters",
+        "VBD": "muttered",
+        "VBG": "muttering",
+        "VBZ": "mutters"
+    },
+    "my": {
+        "base": "my"
+    },
+    "myself": {
+        "base": "myself"
+    },
+    "name": {
+        "base": "name",
+        "NNS": "names",
+        "VBD": "named",
+        "VBG": "naming",
+        "VBZ": "names"
+    },
+    "near": {
+        "base": "near",
+        "JJR": "nearer",
+        "JJS": "nearest",
+        "RBR": "nearer",
+        "RBS": "nearest",
+        "VBD": "neared",
+        "VBG": "nearing",
+        "VBZ": "nears"
+    },
+    "nearly": {
+        "base": "nearly"
+    },
+    "neck": {
+        "base": "neck",
+        "NNS": "necks",
+        "VBD": "necked",
+        "VBG": "necking",
+        "VBZ": "necks"
+    },
+    "need": {
+        "base": "need",
+        "NNS": "needs",
+        "VBD": "needed",
+        "VBG": "needing",
+        "VBZ": "needs"
+    },
+    "nervous": {
+        "base": "nervous"
+    },
+    "never": {
+        "base": "never"
+    },
+    "new": {
+        "base": "new",
+        "JJR": "newer",
+        "JJS": "newest"
+    },
+    "next": {
+        "base": "next"
+    },
+    "nice": {
+        "base": "nice",
+        "JJR": "nicer",
+        "JJS": "nicest"
+    },
+    "night": {
+        "base": "night",
+        "NNS": "nights"
+    },
+    "no": {
+        "base": "no"
+    },
+    "nod": {
+        "base": "nod",
+        "VBD": "nodded",
+        "VBG": "nodding",
+        "VBZ": "nods"
+    },
+    "noise": {
+        "base": "noise",
+        "NNS": "noises",
+        "VBD": "noised",
+        "VBG": "noising",
+        "VBZ": "noises"
+    },
+    "none": {
+        "base": "none"
+    },
+    "normal": {
+        "base": "normal",
+        "NNS": "normals"
+    },
+    "nose": {
+        "base": "nose",
+        "NNS": "noses",
+        "VBD": "nosed",
+        "VBG": "nosing",
+        "VBZ": "noses"
+    },
+    "not": {
+        "base": "not"
+    },
+    "note": {
+        "base": "note",
+        "NNS": "notes",
+        "VBD": "noted",
+        "VBG": "noting",
+        "VBZ": "notes"
+    },
+    "nothing": {
+        "base": "nothing",
+        "NNS": "nothings"
+    },
+    "notice": {
+        "base": "notice",
+        "NNS": "notices",
+        "VBD": "noticed",
+        "VBG": "noticing",
+        "VBZ": "notices"
+    },
+    "now": {
+        "base": "now"
+    },
+    "number": {
+        "base": "number",
+        "NNS": "numbers",
+        "VBD": "numbered",
+        "VBG": "numbering",
+        "VBZ": "numbers"
+    },
+    "obviously": {
+        "base": "obviously"
+    },
+    "of": {
+        "base": "of"
+    },
+    "off": {
+        "base": "off"
+    },
+    "offer": {
+        "base": "offer",
+        "NNS": "offers",
+        "VBD": "offered",
+        "VBG": "offering",
+        "VBZ": "offers"
+    },
+    "office": {
+        "base": "office",
+        "NNS": "offices"
+    },
+    "often": {
+        "base": "often",
+        "JJR": "oftener",
+        "JJS": "oftenest"
+    },
+    "oh": {
+        "base": "oh"
+    },
+    "okay": {
+        "base": "okay",
+        "NNS": "o.k.'s",
+        "VBD": "okayed",
+        "VBN": "o.k.'d",
+        "VBG": "okaying",
+        "VBZ": "o.k.'s"
+    },
+    "old": {
+        "base": "old",
+        "JJR": "older",
+        "JJS": "oldest",
+        "NNS": "olds"
+    },
+    "on": {
+        "base": "on"
+    },
+    "once": {
+        "base": "once"
+    },
+    "one": {
+        "base": "one",
+        "NNS": "ones"
+    },
+    "only": {
+        "base": "only"
+    },
+    "onto": {
+        "base": "onto"
+    },
+    "open": {
+        "base": "open",
+        "VBD": "opened",
+        "VBG": "opening",
+        "VBZ": "opens"
+    },
+    "or": {
+        "base": "or"
+    },
+    "order": {
+        "base": "order",
+        "NNS": "orders",
+        "VBD": "ordered",
+        "VBG": "ordering",
+        "VBZ": "orders"
+    },
+    "other": {
+        "base": "other",
+        "NNS": "others"
+    },
+    "our": {
+        "base": "our"
+    },
+    "out": {
+        "base": "out",
+        "NNS": "outs"
+    },
+    "outside": {
+        "base": "outside",
+        "NNS": "outsides"
+    },
+    "over": {
+        "base": "over",
+        "VBD": "overed",
+        "VBG": "overing",
+        "VBZ": "overs"
+    },
+    "own": {
+        "base": "own",
+        "VBD": "owned",
+        "VBG": "owning",
+        "VBZ": "owns",
+        "ANN": "owner"
+    },
+    "pack": {
+        "base": "pack",
+        "NNS": "packs",
+        "VBD": "packed",
+        "VBG": "packing",
+        "VBZ": "packs"
+    },
+    "pain": {
+        "base": "pain",
+        "NNS": "pains",
+        "VBD": "pained",
+        "VBG": "paining",
+        "VBZ": "pains"
+    },
+    "paint": {
+        "base": "paint",
+        "NNS": "paints",
+        "VBD": "painted",
+        "VBG": "painting",
+        "VBZ": "paints"
+    },
+    "pair": {
+        "base": "pair",
+        "NNS": "pairs",
+        "VBD": "paired",
+        "VBG": "pairing",
+        "VBZ": "pairs"
+    },
+    "pants": {
+        "base": "pants"
+    },
+    "paper": {
+        "base": "paper",
+        "NNS": "papers",
+        "VBD": "papered",
+        "VBG": "papering",
+        "VBZ": "papers"
+    },
+    "parents": {
+        "base": "parents"
+    },
+    "park": {
+        "base": "park",
+        "NNS": "parks",
+        "VBD": "parked",
+        "VBG": "parking",
+        "VBZ": "parks"
+    },
+    "part": {
+        "base": "part",
+        "NNS": "parts",
+        "VBD": "parted",
+        "VBG": "parting",
+        "VBZ": "parts"
+    },
+    "party": {
+        "base": "party",
+        "NNS": "parties",
+        "VBD": "partied",
+        "VBG": "partying",
+        "VBZ": "parties"
+    },
+    "pass": {
+        "base": "pass",
+        "NNS": "passes",
+        "VBD": "passed",
+        "VBG": "passing",
+        "VBZ": "passes"
+    },
+    "past": {
+        "base": "past",
+        "NNS": "pasts"
+    },
+    "pause": {
+        "base": "pause",
+        "NNS": "pauses",
+        "VBD": "paused",
+        "VBG": "pausing",
+        "VBZ": "pauses"
+    },
+    "pay": {
+        "base": "pay",
+        "VBD": "paid",
+        "VBN": "paid",
+        "VBG": "paying",
+        "VBZ": "pays"
+    },
+    "people": {
+        "base": "people",
+        "VBD": "peopled",
+        "VBG": "peopling",
+        "VBZ": "peoples"
+    },
+    "perfect": {
+        "base": "perfect",
+        "NNS": "perfects",
+        "VBD": "perfected",
+        "VBG": "perfecting",
+        "VBZ": "perfects"
+    },
+    "perhaps": {
+        "base": "perhaps"
+    },
+    "person": {
+        "base": "person",
+        "NNS": "persons"
+    },
+    "phone": {
+        "base": "phone",
+        "NNS": "phones",
+        "VBD": "phoned",
+        "VBG": "phoning",
+        "VBZ": "phones"
+    },
+    "pick": {
+        "base": "pick",
+        "NNS": "picks",
+        "VBD": "picked",
+        "VBG": "picking",
+        "VBZ": "picks"
+    },
+    "picture": {
+        "base": "picture",
+        "NNS": "pictures",
+        "VBD": "pictured",
+        "VBG": "picturing",
+        "VBZ": "pictures"
+    },
+    "piece": {
+        "base": "piece",
+        "NNS": "pieces",
+        "VBD": "pieced",
+        "VBG": "piecing",
+        "VBZ": "pieces"
+    },
+    "pink": {
+        "base": "pink",
+        "JJR": "pinker",
+        "JJS": "pinkest",
+        "NNS": "pinks",
+        "VBD": "pinked",
+        "VBG": "pinking",
+        "VBZ": "pinks"
+    },
+    "piss": {
+        "base": "piss",
+        "VBD": "pissed",
+        "VBG": "pissing",
+        "VBZ": "pisses"
+    },
+    "place": {
+        "base": "place",
+        "NNS": "places",
+        "VBD": "placed",
+        "VBG": "placing",
+        "VBZ": "places"
+    },
+    "plan": {
+        "base": "plan",
+        "NNS": "plans",
+        "VBD": "planned",
+        "VBG": "planning",
+        "VBZ": "plans"
+    },
+    "play": {
+        "base": "play",
+        "NNS": "plays",
+        "VBD": "played",
+        "VBG": "playing",
+        "VBZ": "plays",
+        "ANN": "player"
+    },
+    "please": {
+        "base": "please",
+        "VBD": "pleased",
+        "VBG": "pleasing",
+        "VBZ": "pleases",
+        "ANN": "pleaser"
+    },
+    "pocket": {
+        "base": "pocket",
+        "NNS": "pockets",
+        "VBD": "pocketed",
+        "VBG": "pocketing",
+        "VBZ": "pockets"
+    },
+    "point": {
+        "base": "point",
+        "NNS": "points",
+        "VBD": "pointed",
+        "VBG": "pointing",
+        "VBZ": "points"
+    },
+    "police": {
+        "base": "police",
+        "VBD": "policed",
+        "VBG": "policing",
+        "VBZ": "polices"
+    },
+    "pop": {
+        "base": "pop",
+        "NNS": "pops",
+        "VBD": "popped",
+        "VBG": "popping",
+        "VBZ": "pops"
+    },
+    "position": {
+        "base": "position",
+        "NNS": "positions",
+        "VBD": "positioned",
+        "VBG": "positioning",
+        "VBZ": "positions"
+    },
+    "possible": {
+        "base": "possible",
+        "NNS": "possibles"
+    },
+    "power": {
+        "base": "power",
+        "NNS": "powers",
+        "VBD": "powered",
+        "VBG": "powering",
+        "VBZ": "powers"
+    },
+    "practically": {
+        "base": "practically"
+    },
+    "present": {
+        "base": "present",
+        "NNS": "presents",
+        "VBD": "presented",
+        "VBG": "presenting",
+        "VBZ": "presents",
+        "ANN": "presenter"
+    },
+    "press": {
+        "base": "press",
+        "NNS": "presses",
+        "VBD": "pressed",
+        "VBG": "pressing",
+        "VBZ": "presses"
+    },
+    "pretend": {
+        "base": "pretend",
+        "VBD": "pretended",
+        "VBG": "pretending",
+        "VBZ": "pretends"
+    },
+    "pretty": {
+        "base": "pretty",
+        "JJR": "prettier",
+        "JJS": "prettiest"
+    },
+    "probably": {
+        "base": "probably"
+    },
+    "problem": {
+        "base": "problem",
+        "NNS": "problems"
+    },
+    "promise": {
+        "base": "promise",
+        "NNS": "promises",
+        "VBD": "promised",
+        "VBG": "promising",
+        "VBZ": "promises"
+    },
+    "pull": {
+        "base": "pull",
+        "NNS": "pulls",
+        "VBD": "pulled",
+        "VBG": "pulling",
+        "VBZ": "pulls"
+    },
+    "punch": {
+        "base": "punch",
+        "NNS": "punches",
+        "VBD": "punched",
+        "VBG": "punching",
+        "VBZ": "punches"
+    },
+    "push": {
+        "base": "push",
+        "NNS": "pushes",
+        "VBD": "pushed",
+        "VBG": "pushing",
+        "VBZ": "pushes",
+        "ANN": "pusher"
+    },
+    "put": {
+        "base": "put",
+        "VBG": "putting",
+        "VBZ": "puts"
+    },
+    "question": {
+        "base": "question",
+        "NNS": "questions",
+        "VBD": "questioned",
+        "VBG": "questioning",
+        "VBZ": "questions"
+    },
+    "quick": {
+        "base": "quick",
+        "JJR": "quicker",
+        "JJS": "quickest",
+        "RBR": "quicker",
+        "RBS": "quickest"
+    },
+    "quickly": {
+        "base": "quickly"
+    },
+    "quiet": {
+        "base": "quiet",
+        "JJR": "quieter",
+        "JJS": "quietest",
+        "VBD": "quieted",
+        "VBG": "quieting",
+        "VBZ": "quiets"
+    },
+    "quietly": {
+        "base": "quietly"
+    },
+    "quite": {
+        "base": "quite"
+    },
+    "race": {
+        "base": "race",
+        "NNS": "races",
+        "VBD": "raced",
+        "VBG": "racing",
+        "VBZ": "races",
+        "ANN": "racer"
+    },
+    "rain": {
+        "base": "rain",
+        "NNS": "rains",
+        "VBD": "rained",
+        "VBG": "raining",
+        "VBZ": "rains"
+    },
+    "raise": {
+        "base": "raise",
+        "NNS": "raises",
+        "VBD": "raised",
+        "VBG": "raising",
+        "VBZ": "raises",
+        "ANN": "raiser"
+    },
+    "ran": {
+        "base": "ran"
+    },
+    "rang": {
+        "base": "rang"
+    },
+    "rather": {
+        "base": "rather"
+    },
+    "reach": {
+        "base": "reach",
+        "NNS": "reaches",
+        "VBD": "reached",
+        "VBG": "reaching",
+        "VBZ": "reaches",
+        "ANN": "reacher"
+    },
+    "read": {
+        "base": "read",
+        "NNS": "reads",
+        "VBG": "reading",
+        "VBZ": "reads",
+        "ANN": "reader"
+    },
+    "ready": {
+        "base": "ready",
+        "JJR": "readier",
+        "JJS": "readiest",
+        "VBD": "readied",
+        "VBG": "readying",
+        "VBZ": "readies"
+    },
+    "real": {
+        "base": "real",
+        "JJR": "realer",
+        "JJS": "realest",
+        "NNS": "reals"
+    },
+    "realize": {
+        "base": "realize",
+        "VBD": "realized",
+        "VBG": "realizing",
+        "VBZ": "realizes"
+    },
+    "really": {
+        "base": "really"
+    },
+    "reason": {
+        "base": "reason",
+        "NNS": "reasons",
+        "VBD": "reasoned",
+        "VBG": "reasoning",
+        "VBZ": "reasons",
+        "ANN": "reasoner"
+    },
+    "recognize": {
+        "base": "recognize",
+        "VBD": "recognized",
+        "VBG": "recognizing",
+        "VBZ": "recognizes"
+    },
+    "red": {
+        "base": "red",
+        "JJR": "redder",
+        "JJS": "reddest",
+        "NNS": "reds"
+    },
+    "relationship": {
+        "base": "relationship",
+        "NNS": "relationships"
+    },
+    "relax": {
+        "base": "relax",
+        "VBD": "relaxed",
+        "VBG": "relaxing",
+        "VBZ": "relaxes"
+    },
+    "remain": {
+        "base": "remain",
+        "VBD": "remained",
+        "VBG": "remaining",
+        "VBZ": "remains"
+    },
+    "remember": {
+        "base": "remember",
+        "VBD": "remembered",
+        "VBG": "remembering",
+        "VBZ": "remembers"
+    },
+    "remind": {
+        "base": "remind",
+        "VBD": "reminded",
+        "VBG": "reminding",
+        "VBZ": "reminds"
+    },
+    "repeat": {
+        "base": "repeat",
+        "NNS": "repeats",
+        "VBD": "repeated",
+        "VBG": "repeating",
+        "VBZ": "repeats",
+        "ANN": "repeater"
+    },
+    "reply": {
+        "base": "reply",
+        "NNS": "replies",
+        "VBD": "replied",
+        "VBG": "replying",
+        "VBZ": "replies"
+    },
+    "respond": {
+        "base": "respond",
+        "VBD": "responded",
+        "VBG": "responding",
+        "VBZ": "responds",
+        "ANN": "responder"
+    },
+    "rest": {
+        "base": "rest",
+        "NNS": "rests",
+        "VBD": "rested",
+        "VBG": "resting",
+        "VBZ": "rests"
+    },
+    "return": {
+        "base": "return",
+        "NNS": "returns",
+        "VBD": "returned",
+        "VBG": "returning",
+        "VBZ": "returns"
+    },
+    "ride": {
+        "base": "ride",
+        "NNS": "rides",
+        "VBD": "rode",
+        "VBN": "ridden",
+        "VBG": "riding",
+        "VBZ": "rides",
+        "ANN": "rider"
+    },
+    "right": {
+        "base": "right",
+        "JJR": "righter",
+        "JJS": "rightest",
+        "NNS": "rights",
+        "VBD": "righted",
+        "VBG": "righting",
+        "VBZ": "rights"
+    },
+    "ring": {
+        "base": "ring",
+        "NNS": "rings",
+        "VBD": "rang",
+        "VBN": "rung",
+        "VBG": "ringing",
+        "VBZ": "rings"
+    },
+    "road": {
+        "base": "road",
+        "NNS": "roads"
+    },
+    "rock": {
+        "base": "rock",
+        "NNS": "rocks",
+        "VBD": "rocked",
+        "VBG": "rocking",
+        "VBZ": "rocks"
+    },
+    "roll": {
+        "base": "roll",
+        "NNS": "rolls",
+        "VBD": "rolled",
+        "VBG": "rolling",
+        "VBZ": "rolls"
+    },
+    "room": {
+        "base": "room",
+        "NNS": "rooms",
+        "VBD": "roomed",
+        "VBG": "rooming",
+        "VBZ": "rooms"
+    },
+    "rose": {
+        "base": "rose",
+        "NNS": "roses"
+    },
+    "round": {
+        "base": "round",
+        "JJR": "rounder",
+        "JJS": "roundest",
+        "NNS": "rounds",
+        "VBD": "rounded",
+        "VBG": "rounding",
+        "VBZ": "rounds"
+    },
+    "rub": {
+        "base": "rub",
+        "VBD": "rubbed",
+        "VBG": "rubbing",
+        "VBZ": "rubs"
+    },
+    "run": {
+        "base": "run",
+        "NNS": "runs",
+        "VBD": "ran",
+        "VBG": "running",
+        "VBZ": "runs",
+        "ANN": "runner"
+    },
+    "rush": {
+        "base": "rush",
+        "NNS": "rushes",
+        "VBD": "rushed",
+        "VBG": "rushing",
+        "VBZ": "rushes"
+    },
+    "sad": {
+        "base": "sad",
+        "JJR": "sadder",
+        "JJS": "saddest"
+    },
+    "safe": {
+        "base": "safe",
+        "JJR": "safer",
+        "JJS": "safest",
+        "NNS": "safes",
+        "VBD": "safed",
+        "VBG": "safing",
+        "VBZ": "safes"
+    },
+    "said": {
+        "base": "said"
+    },
+    "same": {
+        "base": "same"
+    },
+    "sat": {
+        "base": "sat"
+    },
+    "save": {
+        "base": "save",
+        "NNS": "saves",
+        "VBD": "saved",
+        "VBG": "saving",
+        "VBZ": "saves"
+    },
+    "saw": {
+        "base": "saw",
+        "NNS": "saws",
+        "VBD": "sawed",
+        "VBN": "sawn",
+        "VBG": "sawing",
+        "VBZ": "saws"
+    },
+    "say": {
+        "base": "say",
+        "VBD": "said",
+        "VBN": "said",
+        "VBG": "saying",
+        "VBZ": "says",
+        "ANN": "sayer"
+    },
+    "scare": {
+        "base": "scare",
+        "NNS": "scares",
+        "VBD": "scared",
+        "VBG": "scaring",
+        "VBZ": "scares"
+    },
+    "school": {
+        "base": "school",
+        "NNS": "schools",
+        "VBD": "schooled",
+        "VBG": "schooling",
+        "VBZ": "schools"
+    },
+    "scream": {
+        "base": "scream",
+        "NNS": "screams",
+        "VBD": "screamed",
+        "VBG": "screaming",
+        "VBZ": "screams"
+    },
+    "search": {
+        "base": "search",
+        "NNS": "searches",
+        "VBD": "searched",
+        "VBG": "searching",
+        "VBZ": "searches",
+        "ANN": "searcher"
+    },
+    "seat": {
+        "base": "seat",
+        "NNS": "seats",
+        "VBD": "seated",
+        "VBG": "seating",
+        "VBZ": "seats"
+    },
+    "second": {
+        "base": "second",
+        "NNS": "seconds",
+        "VBD": "seconded",
+        "VBG": "seconding",
+        "VBZ": "seconds"
+    },
+    "see": {
+        "base": "see",
+        "VBD": "saw",
+        "VBN": "seen",
+        "VBG": "seeing",
+        "VBZ": "sees"
+    },
+    "seem": {
+        "base": "seem",
+        "VBD": "seemed",
+        "VBG": "seeming",
+        "VBZ": "seems"
+    },
+    "self": {
+        "base": "self",
+        "NNS": "selves",
+        "VBD": "selfed",
+        "VBG": "selfing",
+        "VBZ": "selfs"
+    },
+    "send": {
+        "base": "send",
+        "VBD": "sent",
+        "VBN": "sent",
+        "VBG": "sending",
+        "VBZ": "sends"
+    },
+    "sense": {
+        "base": "sense",
+        "NNS": "senses",
+        "VBD": "sensed",
+        "VBG": "sensing",
+        "VBZ": "senses"
+    },
+    "serious": {
+        "base": "serious"
+    },
+    "seriously": {
+        "base": "seriously"
+    },
+    "set": {
+        "base": "set",
+        "NNS": "sets",
+        "VBG": "setting",
+        "VBZ": "sets"
+    },
+    "settle": {
+        "base": "settle",
+        "VBD": "settled",
+        "VBG": "settling",
+        "VBZ": "settles"
+    },
+    "seven": {
+        "base": "seven"
+    },
+    "several": {
+        "base": "several"
+    },
+    "shadow": {
+        "base": "shadow",
+        "NNS": "shadows",
+        "VBD": "shadowed",
+        "VBG": "shadowing",
+        "VBZ": "shadows"
+    },
+    "shake": {
+        "base": "shake",
+        "NNS": "shakes",
+        "VBD": "shook",
+        "VBN": "shaken",
+        "VBG": "shaking",
+        "VBZ": "shakes"
+    },
+    "share": {
+        "base": "share",
+        "NNS": "shares",
+        "VBD": "shared",
+        "VBG": "sharing",
+        "VBZ": "shares",
+        "ANN": "sharer"
+    },
+    "she": {
+        "base": "she"
+    },
+    "she'd": {
+        "base": "she'd"
+    },
+    "she's": {
+        "base": "she's"
+    },
+    "shift": {
+        "base": "shift",
+        "NNS": "shifts",
+        "VBD": "shifted",
+        "VBG": "shifting",
+        "VBZ": "shifts"
+    },
+    "shirt": {
+        "base": "shirt",
+        "NNS": "shirts"
+    },
+    "shit": {
+        "base": "shit",
+        "NNS": "shits",
+        "VBN": "shat",
+        "VBG": "shitting",
+        "VBZ": "shits"
+    },
+    "shock": {
+        "base": "shock",
+        "NNS": "shocks",
+        "VBD": "shocked",
+        "VBG": "shocking",
+        "VBZ": "shocks"
+    },
+    "shoe": {
+        "base": "shoe",
+        "NNS": "shoes",
+        "VBD": "shoed",
+        "VBN": "shod",
+        "VBG": "shoeing",
+        "VBZ": "shoes"
+    },
+    "shop": {
+        "base": "shop",
+        "NNS": "shops",
+        "VBD": "shopped",
+        "VBG": "shopping",
+        "VBZ": "shops",
+        "ANN": "shopper"
+    },
+    "short": {
+        "base": "short",
+        "JJR": "shorter",
+        "JJS": "shortest",
+        "NNS": "shorts",
+        "VBD": "shorted",
+        "VBG": "shorting",
+        "VBZ": "shorts"
+    },
+    "shot": {
+        "base": "shot",
+        "NNS": "shots"
+    },
+    "should": {
+        "base": "should"
+    },
+    "shoulder": {
+        "base": "shoulder",
+        "NNS": "shoulders",
+        "VBD": "shouldered",
+        "VBG": "shouldering",
+        "VBZ": "shoulders"
+    },
+    "shouldn't": {
+        "base": "shouldn't"
+    },
+    "shout": {
+        "base": "shout",
+        "NNS": "shouts",
+        "VBD": "shouted",
+        "VBG": "shouting",
+        "VBZ": "shouts"
+    },
+    "shove": {
+        "base": "shove",
+        "NNS": "shoves",
+        "VBD": "shoved",
+        "VBG": "shoving",
+        "VBZ": "shoves"
+    },
+    "show": {
+        "base": "show",
+        "NNS": "shows",
+        "VBD": "showed",
+        "VBN": "shown",
+        "VBG": "showing",
+        "VBZ": "shows"
+    },
+    "shower": {
+        "base": "shower",
+        "NNS": "showers",
+        "VBD": "showered",
+        "VBG": "showering",
+        "VBZ": "showers"
+    },
+    "shrug": {
+        "base": "shrug",
+        "NNS": "shrugs",
+        "VBD": "shrugged",
+        "VBG": "shrugging",
+        "VBZ": "shrugs"
+    },
+    "shut": {
+        "base": "shut",
+        "VBG": "shutting",
+        "VBZ": "shuts"
+    },
+    "sick": {
+        "base": "sick",
+        "JJR": "sicker",
+        "JJS": "sickest"
+    },
+    "side": {
+        "base": "side",
+        "NNS": "sides",
+        "VBD": "sided",
+        "VBG": "siding",
+        "VBZ": "sides"
+    },
+    "sigh": {
+        "base": "sigh",
+        "NNS": "sighs",
+        "VBD": "sighed",
+        "VBG": "sighing",
+        "VBZ": "sighs"
+    },
+    "sight": {
+        "base": "sight",
+        "NNS": "sights",
+        "VBD": "sighted",
+        "VBG": "sighting",
+        "VBZ": "sights"
+    },
+    "sign": {
+        "base": "sign",
+        "NNS": "signs",
+        "VBD": "signed",
+        "VBG": "signing",
+        "VBZ": "signs"
+    },
+    "silence": {
+        "base": "silence",
+        "NNS": "silences",
+        "VBD": "silenced",
+        "VBG": "silencing",
+        "VBZ": "silences",
+        "ANN": "silencer"
+    },
+    "silent": {
+        "base": "silent"
+    },
+    "simply": {
+        "base": "simply"
+    },
+    "since": {
+        "base": "since"
+    },
+    "single": {
+        "base": "single",
+        "NNS": "singles",
+        "VBD": "singled",
+        "VBG": "singling",
+        "VBZ": "singles"
+    },
+    "sir": {
+        "base": "sir",
+        "NNS": "sirs"
+    },
+    "sister": {
+        "base": "sister",
+        "NNS": "sisters"
+    },
+    "sit": {
+        "base": "sit",
+        "VBD": "sat",
+        "VBN": "sat",
+        "VBG": "sitting",
+        "VBZ": "sits"
+    },
+    "situation": {
+        "base": "situation",
+        "NNS": "situations"
+    },
+    "six": {
+        "base": "six"
+    },
+    "skin": {
+        "base": "skin",
+        "NNS": "skins",
+        "VBD": "skinned",
+        "VBG": "skinning",
+        "VBZ": "skins"
+    },
+    "sky": {
+        "base": "sky",
+        "NNS": "skies",
+        "VBD": "skied",
+        "VBG": "skying",
+        "VBZ": "skies"
+    },
+    "slam": {
+        "base": "slam",
+        "NNS": "slams",
+        "VBD": "slammed",
+        "VBG": "slamming",
+        "VBZ": "slams"
+    },
+    "sleep": {
+        "base": "sleep",
+        "VBD": "slept",
+        "VBN": "slept",
+        "VBG": "sleeping",
+        "VBZ": "sleeps"
+    },
+    "slightly": {
+        "base": "slightly"
+    },
+    "slip": {
+        "base": "slip",
+        "NNS": "slips",
+        "VBD": "slipped",
+        "VBG": "slipping",
+        "VBZ": "slips"
+    },
+    "slow": {
+        "base": "slow",
+        "JJR": "slower",
+        "JJS": "slowest",
+        "RBR": "slower",
+        "RBS": "slowest",
+        "VBD": "slowed",
+        "VBG": "slowing",
+        "VBZ": "slows"
+    },
+    "slowly": {
+        "base": "slowly"
+    },
+    "small": {
+        "base": "small",
+        "JJR": "smaller",
+        "JJS": "smallest",
+        "RBR": "smaller",
+        "RBS": "smallest"
+    },
+    "smell": {
+        "base": "smell",
+        "NNS": "smells",
+        "VBD": "smelled",
+        "VBN": "smelt",
+        "VBG": "smelling",
+        "VBZ": "smells"
+    },
+    "smile": {
+        "base": "smile",
+        "NNS": "smiles",
+        "VBD": "smiled",
+        "VBG": "smiling",
+        "VBZ": "smiles"
+    },
+    "smirk": {
+        "base": "smirk",
+        "NNS": "smirks",
+        "VBD": "smirked",
+        "VBG": "smirking",
+        "VBZ": "smirks"
+    },
+    "smoke": {
+        "base": "smoke",
+        "NNS": "smokes",
+        "VBD": "smoked",
+        "VBG": "smoking",
+        "VBZ": "smokes"
+    },
+    "snap": {
+        "base": "snap",
+        "NNS": "snaps",
+        "VBD": "snapped",
+        "VBG": "snapping",
+        "VBZ": "snaps"
+    },
+    "so": {
+        "base": "so"
+    },
+    "soft": {
+        "base": "soft",
+        "JJR": "softer",
+        "JJS": "softest"
+    },
+    "softly": {
+        "base": "softly"
+    },
+    "some": {
+        "base": "some"
+    },
+    "somehow": {
+        "base": "somehow"
+    },
+    "someone": {
+        "base": "someone"
+    },
+    "something": {
+        "base": "something"
+    },
+    "sometimes": {
+        "base": "sometimes"
+    },
+    "somewhere": {
+        "base": "somewhere"
+    },
+    "son": {
+        "base": "son",
+        "NNS": "sons"
+    },
+    "song": {
+        "base": "song",
+        "NNS": "songs"
+    },
+    "soon": {
+        "base": "soon",
+        "RBR": "sooner",
+        "RBS": "soonest"
+    },
+    "sorry": {
+        "base": "sorry",
+        "JJR": "sorrier",
+        "JJS": "sorriest"
+    },
+    "sort": {
+        "base": "sort",
+        "NNS": "sorts",
+        "VBD": "sorted",
+        "VBG": "sorting",
+        "VBZ": "sorts"
+    },
+    "sound": {
+        "base": "sound",
+        "JJR": "sounder",
+        "JJS": "soundest",
+        "RBR": "sounder",
+        "RBS": "soundest",
+        "NNS": "sounds",
+        "VBD": "sounded",
+        "VBG": "sounding",
+        "VBZ": "sounds"
+    },
+    "space": {
+        "base": "space",
+        "NNS": "spaces",
+        "VBD": "spaced",
+        "VBG": "spacing",
+        "VBZ": "spaces"
+    },
+    "speak": {
+        "base": "speak",
+        "VBD": "spoke",
+        "VBN": "spoken",
+        "VBG": "speaking",
+        "VBZ": "speaks",
+        "ANN": "speaker"
+    },
+    "spend": {
+        "base": "spend",
+        "VBD": "spent",
+        "VBN": "spent",
+        "VBG": "spending",
+        "VBZ": "spends"
+    },
+    "spot": {
+        "base": "spot",
+        "NNS": "spots",
+        "VBD": "spotted",
+        "VBG": "spotting",
+        "VBZ": "spots"
+    },
+    "stair": {
+        "base": "stair",
+        "NNS": "stairs"
+    },
+    "stand": {
+        "base": "stand",
+        "NNS": "stands",
+        "VBD": "stood",
+        "VBN": "stood",
+        "VBG": "standing",
+        "VBZ": "stands"
+    },
+    "star": {
+        "base": "star",
+        "NNS": "stars",
+        "VBD": "starred",
+        "VBG": "starring",
+        "VBZ": "stars"
+    },
+    "stare": {
+        "base": "stare",
+        "NNS": "stares",
+        "VBD": "stared",
+        "VBG": "staring",
+        "VBZ": "stares"
+    },
+    "start": {
+        "base": "start",
+        "NNS": "starts",
+        "VBD": "started",
+        "VBG": "starting",
+        "VBZ": "starts"
+    },
+    "state": {
+        "base": "state",
+        "NNS": "states",
+        "VBD": "stated",
+        "VBG": "stating",
+        "VBZ": "states"
+    },
+    "stay": {
+        "base": "stay",
+        "NNS": "stays",
+        "VBD": "stayed",
+        "VBN": "stayed",
+        "VBG": "staying",
+        "VBZ": "stays"
+    },
+    "step": {
+        "base": "step",
+        "NNS": "steps",
+        "VBD": "stepped",
+        "VBG": "stepping",
+        "VBZ": "steps"
+    },
+    "stick": {
+        "base": "stick",
+        "NNS": "sticks",
+        "VBD": "stuck",
+        "VBN": "stuck",
+        "VBG": "sticking",
+        "VBZ": "sticks"
+    },
+    "still": {
+        "base": "still",
+        "JJR": "stiller",
+        "JJS": "stillest",
+        "NNS": "stills",
+        "VBD": "stilled",
+        "VBG": "stilling",
+        "VBZ": "stills"
+    },
+    "stomach": {
+        "base": "stomach",
+        "NNS": "stomachs",
+        "VBD": "stomached",
+        "VBN": "stomached",
+        "VBG": "stomaching",
+        "VBZ": "stomachs"
+    },
+    "stop": {
+        "base": "stop",
+        "NNS": "stops",
+        "VBD": "stopped",
+        "VBG": "stopping",
+        "VBZ": "stops"
+    },
+    "store": {
+        "base": "store",
+        "NNS": "stores",
+        "VBD": "stored",
+        "VBG": "storing",
+        "VBZ": "stores"
+    },
+    "story": {
+        "base": "story",
+        "NNS": "stories"
+    },
+    "straight": {
+        "base": "straight",
+        "JJR": "straighter",
+        "JJS": "straightest",
+        "RBR": "straighter",
+        "RBS": "straightest",
+        "NNS": "straights"
+    },
+    "strange": {
+        "base": "strange",
+        "JJR": "stranger",
+        "JJS": "strangest"
+    },
+    "street": {
+        "base": "street",
+        "NNS": "streets"
+    },
+    "strong": {
+        "base": "strong",
+        "JJR": "stronger",
+        "JJS": "strongest"
+    },
+    "struggle": {
+        "base": "struggle",
+        "NNS": "struggles",
+        "VBD": "struggled",
+        "VBG": "struggling",
+        "VBZ": "struggles"
+    },
+    "student": {
+        "base": "student",
+        "NNS": "students"
+    },
+    "study": {
+        "base": "study",
+        "NNS": "studies",
+        "VBD": "studied",
+        "VBG": "studying",
+        "VBZ": "studies"
+    },
+    "stuff": {
+        "base": "stuff",
+        "VBD": "stuffed",
+        "VBG": "stuffing",
+        "VBZ": "stuffs"
+    },
+    "stupid": {
+        "base": "stupid",
+        "JJR": "stupider",
+        "JJS": "stupidest"
+    },
+    "such": {
+        "base": "such"
+    },
+    "suck": {
+        "base": "suck",
+        "VBD": "sucked",
+        "VBG": "sucking",
+        "VBZ": "sucks"
+    },
+    "sudden": {
+        "base": "sudden"
+    },
+    "suddenly": {
+        "base": "suddenly"
+    },
+    "suggest": {
+        "base": "suggest",
+        "VBD": "suggested",
+        "VBG": "suggesting",
+        "VBZ": "suggests"
+    },
+    "summer": {
+        "base": "summer",
+        "NNS": "summers",
+        "VBD": "summered",
+        "VBG": "summering",
+        "VBZ": "summers"
+    },
+    "sun": {
+        "base": "sun",
+        "NNS": "suns",
+        "VBD": "sunned",
+        "VBG": "sunning",
+        "VBZ": "suns"
+    },
+    "suppose": {
+        "base": "suppose",
+        "VBD": "supposed",
+        "VBG": "supposing",
+        "VBZ": "supposes"
+    },
+    "sure": {
+        "base": "sure",
+        "JJR": "surer",
+        "JJS": "surest"
+    },
+    "surprise": {
+        "base": "surprise",
+        "NNS": "surprises",
+        "VBD": "surprised",
+        "VBG": "surprising",
+        "VBZ": "surprises"
+    },
+    "surround": {
+        "base": "surround",
+        "VBD": "surrounded",
+        "VBG": "surrounding",
+        "VBZ": "surrounds"
+    },
+    "sweet": {
+        "base": "sweet",
+        "JJR": "sweeter",
+        "JJS": "sweetest",
+        "NNS": "sweets"
+    },
+    "table": {
+        "base": "table",
+        "NNS": "tables",
+        "VBD": "tabled",
+        "VBG": "tabling",
+        "VBZ": "tables"
+    },
+    "take": {
+        "base": "take",
+        "NNS": "takes",
+        "VBD": "took",
+        "VBN": "taken",
+        "VBG": "taking",
+        "VBZ": "takes",
+        "ANN": "taker"
+    },
+    "talk": {
+        "base": "talk",
+        "NNS": "talks",
+        "VBD": "talked",
+        "VBG": "talking",
+        "VBZ": "talks"
+    },
+    "tall": {
+        "base": "tall",
+        "JJR": "taller",
+        "JJS": "tallest"
+    },
+    "teacher": {
+        "base": "teacher",
+        "NNS": "teachers"
+    },
+    "team": {
+        "base": "team",
+        "NNS": "teams",
+        "VBD": "teamed",
+        "VBG": "teaming",
+        "VBZ": "teams"
+    },
+    "tear": {
+        "base": "tear",
+        "NNS": "tears",
+        "VBD": "tore",
+        "VBN": "torn",
+        "VBG": "tearing",
+        "VBZ": "tears"
+    },
+    "teeth": {
+        "base": "teeth"
+    },
+    "tell": {
+        "base": "tell",
+        "VBD": "told",
+        "VBN": "told",
+        "VBG": "telling",
+        "VBZ": "tells",
+        "ANN": "teller"
+    },
+    "ten": {
+        "base": "ten"
+    },
+    "than": {
+        "base": "than"
+    },
+    "thank": {
+        "base": "thank",
+        "VBD": "thanked",
+        "VBG": "thanking",
+        "VBZ": "thanks"
+    },
+    "that": {
+        "base": "that"
+    },
+    "that's": {
+        "base": "that's"
+    },
+    "the": {
+        "base": "the"
+    },
+    "their": {
+        "base": "their"
+    },
+    "them": {
+        "base": "them"
+    },
+    "themselves": {
+        "base": "themselves"
+    },
+    "then": {
+        "base": "then"
+    },
+    "there": {
+        "base": "there"
+    },
+    "there's": {
+        "base": "there's"
+    },
+    "these": {
+        "base": "these"
+    },
+    "they": {
+        "base": "they"
+    },
+    "they'd": {
+        "base": "they'd"
+    },
+    "they're": {
+        "base": "they're"
+    },
+    "thick": {
+        "base": "thick",
+        "JJR": "thicker",
+        "JJS": "thickest",
+        "RBR": "thicker",
+        "RBS": "thickest"
+    },
+    "thing": {
+        "base": "thing",
+        "NNS": "things"
+    },
+    "think": {
+        "base": "think",
+        "VBD": "thought",
+        "VBN": "thought",
+        "VBG": "thinking",
+        "VBZ": "thinks",
+        "ANN": "thinker"
+    },
+    "third": {
+        "base": "third",
+        "VBD": "thirded",
+        "VBG": "thirding",
+        "VBZ": "thirds"
+    },
+    "this": {
+        "base": "this"
+    },
+    "those": {
+        "base": "those"
+    },
+    "though": {
+        "base": "though"
+    },
+    "three": {
+        "base": "three"
+    },
+    "threw": {
+        "base": "threw"
+    },
+    "throat": {
+        "base": "throat",
+        "NNS": "throats"
+    },
+    "through": {
+        "base": "through"
+    },
+    "throw": {
+        "base": "throw",
+        "NNS": "throws",
+        "VBD": "threw",
+        "VBN": "thrown",
+        "VBG": "throwing",
+        "VBZ": "throws",
+        "ANN": "thrower"
+    },
+    "tie": {
+        "base": "tie",
+        "NNS": "ties",
+        "VBD": "tied",
+        "VBN": "tied",
+        "VBG": "tying",
+        "VBZ": "ties"
+    },
+    "tight": {
+        "base": "tight",
+        "JJR": "tighter",
+        "JJS": "tightest",
+        "RBR": "tighter",
+        "RBS": "tightest"
+    },
+    "time": {
+        "base": "time",
+        "NNS": "times",
+        "VBD": "timed",
+        "VBG": "timing",
+        "VBZ": "times"
+    },
+    "tiny": {
+        "base": "tiny",
+        "JJR": "tinier",
+        "JJS": "tiniest"
+    },
+    "tire": {
+        "base": "tire",
+        "NNS": "tires",
+        "VBD": "tired",
+        "VBG": "tiring",
+        "VBZ": "tires"
+    },
+    "to": {
+        "base": "to"
+    },
+    "today": {
+        "base": "today",
+        "NNS": "todays"
+    },
+    "together": {
+        "base": "together"
+    },
+    "tomorrow": {
+        "base": "tomorrow",
+        "NNS": "tomorrows"
+    },
+    "tone": {
+        "base": "tone",
+        "NNS": "tones",
+        "VBD": "toned",
+        "VBG": "toning",
+        "VBZ": "tones"
+    },
+    "tongue": {
+        "base": "tongue",
+        "NNS": "tongues",
+        "VBD": "tongued",
+        "VBG": "tonguing",
+        "VBZ": "tongues"
+    },
+    "tonight": {
+        "base": "tonight"
+    },
+    "too": {
+        "base": "too"
+    },
+    "top": {
+        "base": "top",
+        "VBD": "topped",
+        "VBG": "topping",
+        "VBZ": "tops"
+    },
+    "totally": {
+        "base": "totally"
+    },
+    "touch": {
+        "base": "touch",
+        "NNS": "touches",
+        "VBD": "touched",
+        "VBG": "touching",
+        "VBZ": "touches"
+    },
+    "toward": {
+        "base": "toward"
+    },
+    "town": {
+        "base": "town",
+        "NNS": "towns"
+    },
+    "track": {
+        "base": "track",
+        "NNS": "tracks",
+        "VBD": "tracked",
+        "VBG": "tracking",
+        "VBZ": "tracks",
+        "ANN": "tracker"
+    },
+    "trail": {
+        "base": "trail",
+        "NNS": "trails",
+        "VBD": "trailed",
+        "VBG": "trailing",
+        "VBZ": "trails"
+    },
+    "train": {
+        "base": "train",
+        "NNS": "trains",
+        "VBD": "trained",
+        "VBG": "training",
+        "VBZ": "trains"
+    },
+    "tree": {
+        "base": "tree",
+        "NNS": "trees",
+        "VBD": "treed",
+        "VBG": "treeing",
+        "VBZ": "trees"
+    },
+    "trip": {
+        "base": "trip",
+        "NNS": "trips",
+        "VBD": "tripped",
+        "VBG": "tripping",
+        "VBZ": "trips"
+    },
+    "trouble": {
+        "base": "trouble",
+        "NNS": "troubles",
+        "VBD": "troubled",
+        "VBG": "troubling",
+        "VBZ": "troubles"
+    },
+    "true": {
+        "base": "true",
+        "JJR": "trueer",
+        "JJS": "truest",
+        "VBD": "trued",
+        "VBG": "truing",
+        "VBZ": "trues"
+    },
+    "trust": {
+        "base": "trust",
+        "NNS": "trusts",
+        "VBD": "trusted",
+        "VBG": "trusting",
+        "VBZ": "trusts"
+    },
+    "truth": {
+        "base": "truth",
+        "NNS": "truths"
+    },
+    "try": {
+        "base": "try",
+        "NNS": "tries",
+        "VBD": "tried",
+        "VBG": "trying",
+        "VBZ": "tries"
+    },
+    "turn": {
+        "base": "turn",
+        "NNS": "turns",
+        "VBD": "turned",
+        "VBG": "turning",
+        "VBZ": "turns"
+    },
+    "tv": {
+        "base": "tv"
+    },
+    "twenty": {
+        "base": "twenty"
+    },
+    "two": {
+        "base": "two"
+    },
+    "type": {
+        "base": "type",
+        "NNS": "types",
+        "VBD": "typed",
+        "VBG": "typing",
+        "VBZ": "types"
+    },
+    "uncle": {
+        "base": "uncle",
+        "NNS": "uncles"
+    },
+    "under": {
+        "base": "under"
+    },
+    "understand": {
+        "base": "understand",
+        "VBD": "understood",
+        "VBN": "understood",
+        "VBG": "understanding",
+        "VBZ": "understands"
+    },
+    "until": {
+        "base": "until"
+    },
+    "up": {
+        "base": "up",
+        "NNS": "ups",
+        "VBD": "upped",
+        "VBN": "upped",
+        "VBG": "upping",
+        "VBZ": "ups"
+    },
+    "upon": {
+        "base": "upon"
+    },
+    "us": {
+        "base": "us"
+    },
+    "use": {
+        "base": "use",
+        "NNS": "uses",
+        "VBD": "used",
+        "VBG": "using",
+        "VBZ": "uses",
+        "ANN": "user"
+    },
+    "usual": {
+        "base": "usual"
+    },
+    "usually": {
+        "base": "usually"
+    },
+    "very": {
+        "base": "very"
+    },
+    "visit": {
+        "base": "visit",
+        "NNS": "visits",
+        "VBD": "visited",
+        "VBG": "visiting",
+        "VBZ": "visits"
+    },
+    "voice": {
+        "base": "voice",
+        "NNS": "voices",
+        "VBD": "voiced",
+        "VBG": "voicing",
+        "VBZ": "voices"
+    },
+    "wait": {
+        "base": "wait",
+        "NNS": "waits",
+        "VBD": "waited",
+        "VBG": "waiting",
+        "VBZ": "waits"
+    },
+    "wake": {
+        "base": "wake",
+        "NNS": "wakes",
+        "VBD": "woke",
+        "VBN": "waked",
+        "VBG": "waking",
+        "VBZ": "wakes"
+    },
+    "walk": {
+        "base": "walk",
+        "NNS": "walks",
+        "VBD": "walked",
+        "VBG": "walking",
+        "VBZ": "walks",
+        "ANN": "walker"
+    },
+    "wall": {
+        "base": "wall",
+        "NNS": "walls",
+        "VBD": "walled",
+        "VBG": "walling",
+        "VBZ": "walls"
+    },
+    "want": {
+        "base": "want",
+        "VBD": "wanted",
+        "VBG": "wanting",
+        "VBZ": "wants"
+    },
+    "warm": {
+        "base": "warm",
+        "JJR": "warmer",
+        "JJS": "warmest",
+        "VBD": "warmed",
+        "VBG": "warming",
+        "VBZ": "warms"
+    },
+    "warn": {
+        "base": "warn",
+        "VBD": "warned",
+        "VBG": "warning",
+        "VBZ": "warns",
+        "ANN": "warner"
+    },
+    "wasn't": {
+        "base": "wasn't"
+    },
+    "watch": {
+        "base": "watch",
+        "NNS": "watches",
+        "VBD": "watched",
+        "VBG": "watching",
+        "VBZ": "watches"
+    },
+    "water": {
+        "base": "water",
+        "NNS": "waters",
+        "VBD": "watered",
+        "VBG": "watering",
+        "VBZ": "waters"
+    },
+    "wave": {
+        "base": "wave",
+        "NNS": "waves",
+        "VBD": "waved",
+        "VBG": "waving",
+        "VBZ": "waves"
+    },
+    "way": {
+        "base": "way",
+        "NNS": "ways"
+    },
+    "we": {
+        "base": "we"
+    },
+    "we'll": {
+        "base": "we'll"
+    },
+    "we're": {
+        "base": "we're"
+    },
+    "we've": {
+        "base": "we've"
+    },
+    "wear": {
+        "base": "wear",
+        "VBD": "wore",
+        "VBN": "worn",
+        "VBG": "wearing",
+        "VBZ": "wears"
+    },
+    "week": {
+        "base": "week",
+        "NNS": "weeks"
+    },
+    "weird": {
+        "base": "weird",
+        "JJR": "weirder",
+        "JJS": "weirdest"
+    },
+    "well": {
+        "base": "well",
+        "JJR": "better",
+        "JJS": "best",
+        "RBR": "better",
+        "RBS": "best",
+        "NNS": "wells",
+        "VBD": "welled",
+        "VBG": "welling",
+        "VBZ": "wells"
+    },
+    "were": {
+        "base": "were"
+    },
+    "weren't": {
+        "base": "weren't"
+    },
+    "wet": {
+        "base": "wet",
+        "JJR": "wetter",
+        "JJS": "wettest",
+        "VBD": "wetted",
+        "VBG": "wetting",
+        "VBZ": "wets"
+    },
+    "what": {
+        "base": "what"
+    },
+    "what's": {
+        "base": "what's"
+    },
+    "whatever": {
+        "base": "whatever"
+    },
+    "when": {
+        "base": "when"
+    },
+    "where": {
+        "base": "where",
+        "NNS": "wheres"
+    },
+    "whether": {
+        "base": "whether"
+    },
+    "which": {
+        "base": "which"
+    },
+    "while": {
+        "base": "while",
+        "VBD": "whiled",
+        "VBG": "whiling",
+        "VBZ": "whiles"
+    },
+    "whisper": {
+        "base": "whisper",
+        "NNS": "whispers",
+        "VBD": "whispered",
+        "VBG": "whispering",
+        "VBZ": "whispers"
+    },
+    "white": {
+        "base": "white",
+        "JJR": "whiter",
+        "JJS": "whitest",
+        "NNS": "whites",
+        "VBD": "whited",
+        "VBG": "whiting",
+        "VBZ": "whites"
+    },
+    "who": {
+        "base": "who"
+    },
+    "whole": {
+        "base": "whole",
+        "NNS": "wholes"
+    },
+    "why": {
+        "base": "why",
+        "NNS": "whies"
+    },
+    "wide": {
+        "base": "wide",
+        "JJR": "wider",
+        "JJS": "widest",
+        "RBR": "wider",
+        "RBS": "widest",
+        "NNS": "wides"
+    },
+    "wife": {
+        "base": "wife",
+        "NNS": "wives"
+    },
+    "will": {
+        "base": "will",
+        "VBD": "would"
+    },
+    "wind": {
+        "base": "wind",
+        "NNS": "winds",
+        "VBD": "wound",
+        "VBN": "wound",
+        "VBG": "winding",
+        "VBZ": "winds"
+    },
+    "window": {
+        "base": "window",
+        "NNS": "windows",
+        "VBD": "windowed",
+        "VBG": "windowing",
+        "VBZ": "windows"
+    },
+    "wipe": {
+        "base": "wipe",
+        "NNS": "wipes",
+        "VBD": "wiped",
+        "VBG": "wiping",
+        "VBZ": "wipes"
+    },
+    "wish": {
+        "base": "wish",
+        "NNS": "wishes",
+        "VBD": "wished",
+        "VBG": "wishing",
+        "VBZ": "wishes"
+    },
+    "with": {
+        "base": "with"
+    },
+    "within": {
+        "base": "within"
+    },
+    "without": {
+        "base": "without"
+    },
+    "woman": {
+        "base": "woman",
+        "NNS": "women"
+    },
+    "won't": {
+        "base": "won't"
+    },
+    "wonder": {
+        "base": "wonder",
+        "NNS": "wonders",
+        "VBD": "wondered",
+        "VBG": "wondering",
+        "VBZ": "wonders"
+    },
+    "wood": {
+        "base": "wood",
+        "NNS": "woods",
+        "VBD": "wooded",
+        "VBG": "wooding",
+        "VBZ": "woods"
+    },
+    "word": {
+        "base": "word",
+        "NNS": "words",
+        "VBD": "worded",
+        "VBG": "wording",
+        "VBZ": "words"
+    },
+    "work": {
+        "base": "work",
+        "NNS": "works",
+        "VBD": "worked",
+        "VBG": "working",
+        "VBZ": "works",
+        "ANN": "worker"
+    },
+    "world": {
+        "base": "world",
+        "NNS": "worlds"
+    },
+    "worry": {
+        "base": "worry",
+        "NNS": "worries",
+        "VBD": "worried",
+        "VBG": "worrying",
+        "VBZ": "worries"
+    },
+    "wouldn't": {
+        "base": "wouldn't"
+    },
+    "wow": {
+        "base": "wow",
+        "VBD": "wowed",
+        "VBG": "wowing",
+        "VBZ": "wows"
+    },
+    "wrap": {
+        "base": "wrap",
+        "NNS": "wraps",
+        "VBD": "wrapped",
+        "VBG": "wrapping",
+        "VBZ": "wraps"
+    },
+    "write": {
+        "base": "write",
+        "VBD": "wrote",
+        "VBN": "written",
+        "VBG": "writing",
+        "VBZ": "writes",
+        "ANN": "writer"
+    },
+    "wrong": {
+        "base": "wrong",
+        "JJR": "worse",
+        "JJS": "worst",
+        "NNS": "wrongs",
+        "VBD": "wronged",
+        "VBG": "wronging",
+        "VBZ": "wrongs"
+    },
+    "yeah": {
+        "base": "yeah"
+    },
+    "year": {
+        "base": "year",
+        "NNS": "years"
+    },
+    "yell": {
+        "base": "yell",
+        "NNS": "yells",
+        "VBD": "yelled",
+        "VBG": "yelling",
+        "VBZ": "yells"
+    },
+    "yes": {
+        "base": "yes",
+        "NNS": "yeses"
+    },
+    "yet": {
+        "base": "yet"
+    },
+    "you": {
+        "base": "you"
+    },
+    "you'd": {
+        "base": "you'd"
+    },
+    "you'll": {
+        "base": "you'll"
+    },
+    "you're": {
+        "base": "you're"
+    },
+    "you've": {
+        "base": "you've"
+    },
+    "young": {
+        "base": "young",
+        "JJR": "younger",
+        "JJS": "youngest"
+    },
+    "your": {
+        "base": "your"
+    },
+    "yourself": {
+        "base": "yourself"
+    }
+}

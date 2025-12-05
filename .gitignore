@@ -15,6 +15,7 @@ wheels/
 # Any generated files
 **/*.jsonl
 **/*.json
+!tinyfacts/thing-explainer/word-forms.json
 query_logs/
 
 # With exceptions
