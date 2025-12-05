@@ -31,9 +31,17 @@ def agent(
         str | None,
         Option("--model", "-m", help="The model name to use for generation."),
     ] = None,
+    skip_example: Annotated[
+        bool,
+        Option(
+            "--skip-example",
+            "-s",
+            help="Skip including the example in the prompt.",
+        ),
+    ] = False,
 ):
     """Generate text using Thing Explainer word list."""
-    agent = ThingExplainerAgent(use_ollama=ollama, model_name=model)
+    agent = ThingExplainerAgent(use_ollama=ollama, model_name=model, use_example=not skip_example)
     console = Console()
 
     def event_logger(event: Any) -> None:

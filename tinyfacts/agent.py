@@ -1,4 +1,5 @@
 from pathlib import Path
+from textwrap import dedent
 from pydantic import BaseModel, Field
 from .word_forms import WordFormsDictionary
 from .check_words import split_words
@@ -22,6 +23,14 @@ class CheckWordsResult(BaseModel):
 class OutputText(BaseModel):
     short_title: str = Field(..., description="A short title for the generated text.")
     text: str = Field(..., description="The generated text using Thing Explainer words.")
+    
+_BASE_EXAMPLE_PROMPT = Template("""
+    Here is an example of a text similar to what I would like you to produce:
+    
+    Example Topic: "$example_topic"
+    Example Text: $example_text 
+
+""")
    
 _BASE_PROMPT = Template("""
     You are to write an explanation of the following topic using only words from the Thing Explainer 1000 word list, as well
@@ -32,11 +41,7 @@ _BASE_PROMPT = Template("""
     Be simple, but not minimalist - add interesting facts and details where you can. If a word you need is not available in the 
     list, use a different way to say it using only the allowed words.
     
-    Here is an example of a text similar to what I would like you to produce:
-    
-    Example Topic: "$example_topic"
-    Example Text: $example_text 
-
+    $example
     The topic to write about is: "$topic".
     
     Please use the provided tool to check your text for any words that are not in the allowed list, and revise your text until it passes the check.
@@ -56,7 +61,7 @@ class ThingExplainerAgent(Agent[None, OutputText]):
 
     
     def __init__(self, model_name: str | None = None, use_ollama: bool = False, 
-                    example_topic: str = _DEFAULT_EXAMPLE_DESCRIPTION, example_path: Path = _DEFAULT_EXAMPLE_PATH):
+                 use_example: bool = True, example_topic: str = _DEFAULT_EXAMPLE_DESCRIPTION, example_path: Path = _DEFAULT_EXAMPLE_PATH):
         if use_ollama:
             provider = OllamaProvider(base_url="http://localhost:11434/v1")
             if model_name is None:
@@ -68,6 +73,7 @@ class ThingExplainerAgent(Agent[None, OutputText]):
                 
         self._dict = WordFormsDictionary()
         self._model_name = model_name
+        self._use_example = use_example
         
         model = OpenAIChatModel(model_name=model_name, provider=provider)
         super().__init__(model=model, output_type=OutputText) # type: ignore
@@ -106,12 +112,18 @@ class ThingExplainerAgent(Agent[None, OutputText]):
         
     async def generate_explanation(self, topic: str, event_callback: Callable[[Any], None] = lambda x: None) -> tuple[OutputText, RunUsage]:
         word_list_str = ', '.join(sorted(self._dict.allowed_words))
-        prompt = _BASE_PROMPT.substitute(
+        if self._use_example:
+            example_prompt = _BASE_EXAMPLE_PROMPT.substitute(
+                example_topic=self._example_topic_description,
+                example_text=self._example_text
+            )
+        else:
+            example_prompt = ""
+        prompt = dedent(_BASE_PROMPT.substitute(
             word_list=word_list_str,
-            example_topic=self._example_topic_description,
-            example_text=self._example_text,
+            example=example_prompt,
             topic=topic
-        )
+        ))
         output = None
         usage: RunUsage
         async for event in self.run_stream_events(prompt):
