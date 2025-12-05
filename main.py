@@ -54,14 +54,17 @@ def agent(
         while True:
             topic = console.input("\nEnter a topic to explain (or 'Ctrl+C' to exit): ")
             console.print(f"\n[bold]Generating explanation for:[/bold] {topic}\n")
+            start_time = datetime.now()
             explanation, usage = asyncio.run(
                 agent.generate_explanation(topic, event_callback=event_logger)
             )
+            task_duration = datetime.now() - start_time
             console.print("\n[bold green]Generated Explanation:[/bold green]\n")
             console.print(Panel(explanation.text, title=explanation.short_title))
             console.print(
                 f"\n[bold blue]Usage:[/bold blue]\tTokens: {usage.total_tokens}\n\tTool calls: {usage.tool_calls}\n"
             )
+            console.print(f"[bold blue]Generation Time:[/bold blue] {task_duration}\n")
             # Query whether to save
             output_folder = (
                 agent.model_name.replace(".", "_").replace("/", "_").replace(":", "_")
