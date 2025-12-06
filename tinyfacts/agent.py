@@ -1,4 +1,5 @@
 from pathlib import Path
+from enum import Enum
 from textwrap import dedent
 from pydantic import BaseModel, Field
 from .word_forms import WordFormsDictionary
@@ -8,9 +9,25 @@ from typing import Callable, Any
 from pydantic_ai.usage import RunUsage
 from pydantic_ai import Agent, AgentRunResultEvent
 from pydantic_ai.models.openai import OpenAIChatModel
+from pydantic_ai.models.google import GoogleModel
 from pydantic_ai.providers.openai import OpenAIProvider
 from pydantic_ai.providers.ollama import OllamaProvider
+from pydantic_ai.providers.google import GoogleProvider
 
+class SupportedProviders(str, Enum):
+    OPENAI = "openai"
+    OLLAMA = "ollama"
+    GOOGLE = "google"
+    
+def get_provider(provider_name: SupportedProviders) -> Any:
+    if provider_name == SupportedProviders.OPENAI:
+        return OpenAIProvider()
+    elif provider_name == SupportedProviders.OLLAMA:
+        return OllamaProvider(base_url="http://localhost:11434/v1")
+    elif provider_name == SupportedProviders.GOOGLE:
+        return GoogleProvider()
+    else:
+        raise ValueError(f"Unsupported provider: {provider_name}")
 
 class InvalidWord(BaseModel):
     word: str = Field(..., description="The invalid word found in the text.")
@@ -54,28 +71,30 @@ _DEFAULT_EXAMPLE_DESCRIPTION = "The plot of the novel 'Anne of Green Gables' by 
     
 class ThingExplainerAgent(Agent[None, OutputText]):
     
-    _DEFAULT_MODELS = {
-        "openai": "gpt-5.1",
-        "ollama": "llama3.1:8b"
+    _DEFAULT_MODELS: dict[SupportedProviders, str] = {
+        SupportedProviders.OPENAI: "gpt-5.1",
+        SupportedProviders.OLLAMA: "qwen3:8b",
+        SupportedProviders.GOOGLE: "gemini-2.5-pro",
     }
 
     
-    def __init__(self, model_name: str | None = None, use_ollama: bool = False, 
+    def __init__(self, model_name: str | None = None, provider_name: SupportedProviders = SupportedProviders.OPENAI,
                  use_example: bool = True, example_topic: str = _DEFAULT_EXAMPLE_DESCRIPTION, example_path: Path = _DEFAULT_EXAMPLE_PATH):
-        if use_ollama:
-            provider = OllamaProvider(base_url="http://localhost:11434/v1")
-            if model_name is None:
-                model_name = self._DEFAULT_MODELS["ollama"]
-        else:
-            provider = OpenAIProvider()
-            if model_name is None:
-                model_name = self._DEFAULT_MODELS["openai"]
+        provider = get_provider(provider_name)
+        if model_name is None:
+            model_name = self._DEFAULT_MODELS[provider_name]
                 
         self._dict = WordFormsDictionary()
         self._model_name = model_name
         self._use_example = use_example
         
-        model = OpenAIChatModel(model_name=model_name, provider=provider)
+        if provider_name in {SupportedProviders.OPENAI, SupportedProviders.OLLAMA}:
+            model = OpenAIChatModel(model_name=model_name, provider=provider)
+        elif provider_name == SupportedProviders.GOOGLE:
+            model = GoogleModel(model_name=model_name, provider=provider)
+        else:
+            raise ValueError(f"Unsupported provider: {provider_name}")
+
         super().__init__(model=model, output_type=OutputText) # type: ignore
         
         # Define the word checker tool
@@ -140,7 +159,7 @@ async def main_async():
     from dotenv import load_dotenv
     load_dotenv()  # Load environment variables from .env file if it exists
     
-    agent = ThingExplainerAgent(use_ollama=True)
+    agent = ThingExplainerAgent(provider_name=SupportedProviders.OLLAMA, use_example=True)
     agent_response, agent_usage = await agent.generate_explanation("How a car engine works", event_callback=lambda e: print(e))
     print("\nGenerated Explanation:\n")
     print(agent_response.text)

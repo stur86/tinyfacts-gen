@@ -8,7 +8,7 @@ from typer import Typer, Option
 from dotenv import load_dotenv
 from pydantic_ai import PartDeltaEvent
 from tinyfacts.check_words import main as check_main
-from tinyfacts.agent import ThingExplainerAgent
+from tinyfacts.agent import ThingExplainerAgent, SupportedProviders
 from tinyfacts.text_editor import SimpleTextEditor
 from tinyfacts.stats import FolderGenStats
 
@@ -24,9 +24,14 @@ def check(file: Path) -> int:
 
 @app.command()
 def agent(
-    ollama: Annotated[
-        bool, Option("--ollama", "-o", help="Use local Ollama model instead of OpenAI.")
-    ] = False,
+    provider: Annotated[
+        SupportedProviders,
+        Option(
+            "--provider",
+            "-p",
+            help="The LLM provider to use (openai, ollama, google).",
+        ),
+    ] = SupportedProviders.OPENAI,
     model: Annotated[
         str | None,
         Option("--model", "-m", help="The model name to use for generation."),
@@ -41,17 +46,21 @@ def agent(
     ] = False,
 ):
     """Generate text using Thing Explainer word list."""
-    agent = ThingExplainerAgent(use_ollama=ollama, model_name=model, use_example=not skip_example)
+    agent = ThingExplainerAgent(provider_name=provider, model_name=model, use_example=not skip_example)
     console = Console()
 
     def event_logger(event: Any) -> None:
         if isinstance(event, PartDeltaEvent):
             return  # Too noisy, skip these
         console.print(f"\t[grey]{datetime.now()} - {type(event).__name__}[/grey]")
+        
 
     # Ask the user for a topic, or whether to quit (loop until they do)
     try:
         while True:
+            # Provider and model info
+            console.print(f"\n[bold blue]Using provider:[/bold blue] '{provider.value}'")
+            console.print(f"[bold blue]Using model:[/bold blue] '{agent.model_name}'\n")
             topic = console.input("\nEnter a topic to explain (or 'Ctrl+C' to exit): ")
             console.print(f"\n[bold]Generating explanation for:[/bold] {topic}\n")
             start_time = datetime.now()
