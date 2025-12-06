@@ -1,0 +1,20 @@
+A computer word-set is a way to tell a computer what to do.
+
+When you use a computer word-set, you write lines of words and number signs. These lines are called a set of steps. The computer reads the steps and follows them. In this way, you can make the computer show pictures, play music, move things on the window, or talk to other computers.
+
+A computer word-set has clear ways to use its words. These ways say which words you can use and how you can put them in order. If you do not follow these ways, the computer can not understand you and your set of steps will not work. When this happens, you have to find where you were wrong and fix it.
+
+Some computer word-sets are easy to read for people. Their words look a lot like normal words that you already know, like "show" or "if" or "repeat." Other computer word-sets are closer to the tiny number lines that computers use inside. Those can be harder for people to read, but the computer can use them very fast.
+
+There are many different computer word-sets. Some are better for games. Some are better for talking to many computers at once. Some are better for small computers inside things like cars or phones. People pick a computer word-set that fits the kind of problem they want to work on.
+
+Even though the words and ways can be different, most computer word-sets let you do the same kinds of things:
+
+- Remember numbers, words, and other pieces that you need.
+- Make "if" picks, like "if this is true, do this, else do that."
+- Do the same thing many times.
+- Break a big problem into many small parts so each part is easier to understand.
+
+To learn a computer word-set, you usually start with very small sets of steps. You might first make the computer show words on the window. Then you learn how to read what the user types. Later you learn how to work with saved word papers or pictures. Step by step, you learn more of the ways and more of the things you can tell the computer to do.
+
+In the end, a computer word-set is a kind of middle place between people and computers. People think in words and ideas. Computers work with very small steps and numbers. A computer word-set lets you turn your ideas into clear steps the computer can follow.
