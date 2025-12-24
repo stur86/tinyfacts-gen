@@ -20,3 +20,6 @@ query_logs/
 
 # With exceptions
 !tinyfacts/thing-explainer/action-nouns.json
+
+# Models
+.fine-tuned-models
