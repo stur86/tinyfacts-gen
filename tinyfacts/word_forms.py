@@ -88,7 +88,7 @@ class WordFormsDictionary:
         return self._word_map.get(word, None)
     
     def get_tokens(self, word: str) -> list[str]:
-        if word not in self._word_forms:
+        if word not in self._word_map:
             return ["<UNK>"]
         tword = self._word_map[word]
         tokens = [tword.base]
