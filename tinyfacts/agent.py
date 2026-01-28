@@ -144,7 +144,7 @@ class ThingExplainerAgent(Agent[None, OutputText]):
             topic=topic
         ))
         output = None
-        usage: RunUsage
+        usage = RunUsage()
         async for event in self.run_stream_events(prompt):
             if isinstance(event, AgentRunResultEvent):
                 output = event.result.output

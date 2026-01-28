@@ -2,13 +2,14 @@ import asyncio
 from rich.console import Console
 from rich.panel import Panel
 from pathlib import Path
-from datetime import datetime
-from typing import Annotated, Any
+from datetime import datetime, timedelta
+from dataclasses import dataclass
+from typing import Annotated, Any, Callable
 from typer import Typer, Option
 from dotenv import load_dotenv
 from pydantic_ai import PartDeltaEvent
 from tinyfacts.check_words import main as check_main
-from tinyfacts.agent import ThingExplainerAgent, SupportedProviders
+from tinyfacts.agent import ThingExplainerAgent, SupportedProviders, OutputText, RunUsage
 from tinyfacts.text_editor import SimpleTextEditor
 from tinyfacts.stats import FolderGenStats
 
@@ -21,6 +22,28 @@ def check(file: Path) -> int:
     """Check if a text file only uses words from the Thing Explainer 1000 word list."""
     return check_main(file)
 
+@dataclass
+class _ExplanationResult:
+    explanation: OutputText
+    usage: RunUsage
+    task_duration: timedelta
+
+    def output_path(self, output_folder: Path) -> Path:
+        return (
+                output_folder
+                / f"{self.explanation.short_title.lower().replace(' ', '_')}.txt"
+            )
+
+
+def _generate_agent_explanation(agent: ThingExplainerAgent, topic: str, event_logger: Callable[[Any], None]) -> _ExplanationResult:
+    start_time = datetime.now()
+    explanation, usage = asyncio.run(
+        agent.generate_explanation(topic, event_callback=event_logger)
+    )
+    task_duration = datetime.now() - start_time
+    return _ExplanationResult(
+        explanation=explanation, usage=usage, task_duration=task_duration
+    )
 
 @app.command()
 def agent(
@@ -44,30 +67,55 @@ def agent(
             help="Skip including the example in the prompt.",
         ),
     ] = False,
+    topic: Annotated[
+        str | None,
+        Option(
+            "--topic",
+            "-t",
+            help="Generate and save a single topic answer with no user prompting."
+        )
+    ] = None
 ):
     """Generate text using Thing Explainer word list."""
-    agent = ThingExplainerAgent(provider_name=provider, model_name=model, use_example=not skip_example)
+    agent = ThingExplainerAgent(
+        provider_name=provider, model_name=model, use_example=not skip_example
+    )
     console = Console()
 
     def event_logger(event: Any) -> None:
         if isinstance(event, PartDeltaEvent):
             return  # Too noisy, skip these
         console.print(f"\t[grey]{datetime.now()} - {type(event).__name__}[/grey]")
-        
+
+    output_folder = Path(__file__).parent / (
+        agent.model_name.replace(".", "_").replace("/", "_").replace(":", "_")
+        + "_created"
+    )
+    output_folder.mkdir(parents=True, exist_ok=True)
+
+    console.print(
+        f"\n[bold blue]Using provider:[/bold blue] '{provider.value}'"
+    )
+    console.print(f"[bold blue]Using model:[/bold blue] '{agent.model_name}'\n")
+
+    if topic is not None:
+        explanation_result = _generate_agent_explanation(agent, topic, event_logger)
+        output_path = explanation_result.output_path(output_folder)
+        output_path.write_text(explanation_result.explanation.text)
+        console.print(f"[green]Saved explanation to {output_path}[/green]")
+        return
+
 
     # Ask the user for a topic, or whether to quit (loop until they do)
     try:
         while True:
             # Provider and model info
-            console.print(f"\n[bold blue]Using provider:[/bold blue] '{provider.value}'")
-            console.print(f"[bold blue]Using model:[/bold blue] '{agent.model_name}'\n")
             topic = console.input("\nEnter a topic to explain (or 'Ctrl+C' to exit): ")
             console.print(f"\n[bold]Generating explanation for:[/bold] {topic}\n")
-            start_time = datetime.now()
-            explanation, usage = asyncio.run(
-                agent.generate_explanation(topic, event_callback=event_logger)
-            )
-            task_duration = datetime.now() - start_time
+            explanation_result = _generate_agent_explanation(agent, topic, event_logger)
+            explanation = explanation_result.explanation
+            usage = explanation_result.usage
+            task_duration = explanation_result.task_duration
             console.print("\n[bold green]Generated Explanation:[/bold green]\n")
             console.print(Panel(explanation.text, title=explanation.short_title))
             console.print(
@@ -75,15 +123,7 @@ def agent(
             )
             console.print(f"[bold blue]Generation Time:[/bold blue] {task_duration}\n")
             # Query whether to save
-            output_folder = (
-                agent.model_name.replace(".", "_").replace("/", "_").replace(":", "_")
-                + "_created"
-            )
-            output_path = (
-                Path(__file__).parent
-                / output_folder
-                / f"{explanation.short_title.lower().replace(' ', '_')}.txt"
-            )
+            output_path = explanation_result.output_path(output_folder)
             save_response = console.input(
                 f"\nSave explanation to [blue]{output_path}[/blue]? (y/n): "
             )
@@ -114,6 +154,7 @@ def editor(
     editor = SimpleTextEditor(output_dir)
     editor.run()
 
+
 @app.command()
 def stats(
     folder: Annotated[
@@ -131,7 +172,9 @@ def stats(
     console.print(f"\n[bold]Generation Statistics for folder:[/bold] {folder}\n")
     console.print(f"Total valid files: [green]{stats.file_count}[/green]")
     console.print(f"Total words across valid files: [green]{stats.word_count}[/green]")
-    console.print(f"Unique words across valid files: [green]{stats.unique_word_count}[/green]\n")
+    console.print(
+        f"Unique words across valid files: [green]{stats.unique_word_count}[/green]\n"
+    )
 
 
 if __name__ == "__main__":
