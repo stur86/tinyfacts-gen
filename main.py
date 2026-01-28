@@ -74,7 +74,15 @@ def agent(
             "-t",
             help="Generate and save a single topic answer with no user prompting."
         )
-    ] = None
+    ] = None,
+    output_folder_in: Annotated[
+        Path | None,
+        Option(
+            "--output-folder",
+            "-o",
+            help="Folder to save generated explanations (default: created_<model_name>).",
+        ),
+    ] = None,
 ):
     """Generate text using Thing Explainer word list."""
     agent = ThingExplainerAgent(
@@ -87,10 +95,13 @@ def agent(
             return  # Too noisy, skip these
         console.print(f"\t[grey]{datetime.now()} - {type(event).__name__}[/grey]")
 
-    output_folder = Path(__file__).parent / (
-        agent.model_name.replace(".", "_").replace("/", "_").replace(":", "_")
-        + "_created"
-    )
+    if output_folder_in is None:
+        output_folder = Path(__file__).parent / (
+            agent.model_name.replace(".", "_").replace("/", "_").replace(":", "_")
+            + "_created"
+        )
+    else:
+        output_folder = output_folder_in.resolve()
     output_folder.mkdir(parents=True, exist_ok=True)
 
     console.print(
