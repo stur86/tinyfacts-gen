@@ -83,6 +83,15 @@ def agent(
             help="Folder to save generated explanations (default: created_<model_name>).",
         ),
     ] = None,
+    output_filename: Annotated[
+        str | None,
+        Option(
+            "--output-filename",
+            "-f",
+            help="Filename to save the generated explanation (overrides default naming). Only" \
+            " used when --topic is specified.",
+        ),
+    ] = None,
 ):
     """Generate text using Thing Explainer word list."""
     agent = ThingExplainerAgent(
@@ -111,7 +120,10 @@ def agent(
 
     if topic is not None:
         explanation_result = _generate_agent_explanation(agent, topic, event_logger)
-        output_path = explanation_result.output_path(output_folder)
+        if output_filename is not None:
+            output_path = output_folder / output_filename
+        else:
+            output_path = explanation_result.output_path(output_folder)
         output_path.write_text(explanation_result.explanation.text)
         console.print(f"[green]Saved explanation to {output_path}[/green]")
         return

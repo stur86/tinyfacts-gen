@@ -1,0 +1,1 @@
+python ask_questions.py -p ollama -m gemini-3-flash-preview:cloud -o questions/ -i questions/thing_explainer_questions.txt 
