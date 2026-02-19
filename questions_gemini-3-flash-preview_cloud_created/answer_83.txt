@@ -1,0 +1,11 @@
+A bit is a very small part of how a computer works. It is the smallest piece of what a computer knows.
+
+A bit can only be one of two ways. Imagine a light in a room. The light can be on, or the light can be off. It can not be anything else. This is how a bit works.
+
+We often call these two ways "one" and "nothing".
+
+One bit does not tell you much alone. But when you put many bits together, they can show you everything. A group of bits can show a number. Another group of bits can show a letter in a word.
+
+If you have many, many bits, you can have a picture of your family or a movie. Inside the computer, these bits are made using power. Either the power is there, or it is not there.
+
+Everything you do on a computer, like looking at pictures, playing a game, or writing, is just a lot of these tiny bits moving around. It is amazing that such a thing can build the whole world you see when you use your computer.
