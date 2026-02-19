@@ -193,6 +193,7 @@ def stats(
     stats = FolderGenStats(folder)
     console = Console()
     console.print(f"\n[bold]Generation Statistics for folder:[/bold] {folder}\n")
+    console.print(f"Total invalid files (skipped): [red]{stats.invalid_file_count}[/red]")
     console.print(f"Total valid files: [green]{stats.file_count}[/green]")
     console.print(f"Total words across valid files: [green]{stats.word_count}[/green]")
     console.print(
