@@ -1,1 +1,1 @@
-python ask_questions.py -p ollama -m gemini-3-flash-preview:cloud -o questions_gemini-3-flash-preview_cloud_created/ -i questions_gemini-3-flash-preview_cloud_created/thing_explainer_questions.txt 
+python ask_questions.py -p ollama -m gemini-3-flash-preview:cloud -o questions_gemini-3-flash-preview_cloud_created/ -i questions_gemini-3-flash-preview_cloud_created/thing_explainer_questions.txt.q 
