@@ -3,7 +3,7 @@ from enum import Enum
 from textwrap import dedent
 from pydantic import BaseModel, Field
 from .word_forms import WordFormsDictionary
-from .check_words import split_words
+from .check_words import check_words_with_context, InvalidWord, CheckWordsResult
 from string import Template
 from typing import Callable, Any
 from pydantic_ai.usage import RunUsage
@@ -29,14 +29,6 @@ def get_provider(provider_name: SupportedProviders) -> Any:
     else:
         raise ValueError(f"Unsupported provider: {provider_name}")
 
-class InvalidWord(BaseModel):
-    word: str = Field(..., description="The invalid word found in the text.")
-    index: int = Field(..., description="The index of the invalid word in the text.")
-    context: str = Field(..., description="The context in which the invalid word was found.")
-
-class CheckWordsResult(BaseModel):
-    invalid_words: list[InvalidWord] = Field(..., description="List of invalid words found in the text.")    
-    
 class OutputText(BaseModel):
     short_title: str = Field(..., description="A short title for the generated text.")
     text: str = Field(..., description="The generated text using Thing Explainer words.")
@@ -100,25 +92,15 @@ class ThingExplainerAgent(Agent[None, OutputText]):
         # Define the word checker tool
         def check_simple_words(text: str, context_length: int = 2) -> CheckWordsResult:
             """Check if the text only uses words from the Thing Explainer 1000 word list.
-            
+
             Args:
                 text (str): The text to check.
                 context_length (int): Number of words to include in the context around invalid words.
-            
+
             Returns:
                 CheckWordsResult: The result containing invalid words information.
             """
-            # Split text into words; remove all non-letter characters except apostrophes
-            words = split_words(text)
-            invalid_words: list[InvalidWord] = []
-            for index, word in enumerate(words):
-                if word not in self._dict.allowed_words:
-                    # Get context
-                    start = max(0, index - context_length)
-                    end = min(len(words), index + context_length + 1)
-                    context = ' '.join(words[start:end])
-                    invalid_words.append(InvalidWord(word=word, index=index, context=context))
-            return CheckWordsResult(invalid_words=invalid_words)
+            return check_words_with_context(text, context_length)
         
         self.tool_plain(check_simple_words)
         

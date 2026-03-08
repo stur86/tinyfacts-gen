@@ -1,5 +1,5 @@
 from pathlib import Path
-from tinyfacts.check_words import split_words, check_words
+from tinyfacts.check_words import split_words, check_words_with_context
 
 class FolderGenStats:
 
@@ -24,9 +24,9 @@ class FolderGenStats:
         for fold in gen_folders:
             text_files = list(fold.glob("*.txt"))
             for text_file in text_files:
-                words = split_words(text_file.read_text())
-                invalid_words = check_words(words)
-                if invalid_words:
+                text = text_file.read_text()
+                words = split_words(text)
+                if check_words_with_context(text).invalid_words:
                     self.invalid_file_count += 1
                     continue  # Skip files with invalid words
                 self.file_count += 1

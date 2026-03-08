@@ -18,9 +18,15 @@ app = Typer()
 
 
 @app.command()
-def check(file: Path) -> int:
+def check(
+    file: Path,
+    full: Annotated[
+        bool,
+        Option("--full", "-f", help="Show every invalid occurrence with surrounding context."),
+    ] = False,
+) -> int:
     """Check if a text file only uses words from the Thing Explainer 1000 word list."""
-    return check_main(file)
+    return check_main(file, full=full)
 
 @dataclass
 class _ExplanationResult:
