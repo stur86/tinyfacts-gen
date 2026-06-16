@@ -9,6 +9,7 @@ from typer import Typer, Option
 from dotenv import load_dotenv
 from pydantic_ai import PartDeltaEvent
 from tinyfacts.check_words import main as check_main
+from tinyfacts.word_forms import WordFormsDictionary
 from tinyfacts.agent import ThingExplainerAgent, SupportedProviders, OutputText, RunUsage
 from tinyfacts.text_editor import SimpleTextEditor
 from tinyfacts.stats import FolderGenStats
@@ -27,6 +28,15 @@ def check(
 ) -> int:
     """Check if a text file only uses words from the Thing Explainer 1000 word list."""
     return check_main(file, full=full)
+
+@app.command()
+def check_words(words: list[str]) -> None:
+    """Check whether given words are in the Thing Explainer 1000 word list."""
+    d = WordFormsDictionary()
+    for word in words:
+        mark = "✓" if word in d.allowed_words else "✗"
+        print(f"{mark} {word}")
+
 
 @dataclass
 class _ExplanationResult:
@@ -205,6 +215,11 @@ def stats(
     console.print(
         f"Unique words across valid files: [green]{stats.unique_word_count}[/green]\n"
     )
+
+    if stats.invalid_file_count > 0:
+        console.print("[bold red]Invalid files:[/bold red]")
+        for invalid_file in stats.invalid_files:
+            console.print(f"\t[red]{invalid_file}[/red]")
 
 
 if __name__ == "__main__":

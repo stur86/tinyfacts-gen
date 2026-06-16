@@ -102,9 +102,9 @@ if __name__ == "__main__":
     # Start with 'be' as a special case
     words_collection = WordFormsExtractor()
     words_collection('be')
-    
+
     for word in raw_words:
         words_collection(word)
-        
+
     with _WORD_LIST_PATH.with_name("word-forms.json").open('w') as f:
         json.dump(words_collection.words, f, indent=4)

@@ -13,14 +13,9 @@ Thing Explainer explanations may only use the ~1000 most common English words (p
 
 1. **Look up the word list** before writing — many obvious words are missing:
    ```bash
-   uv run python -c "
-   from tinyfacts.word_forms import WordFormsDictionary
-   d = WordFormsDictionary()
-   # Check specific words:
-   words = ['cloud', 'river', 'war', 'knife']
-   for w in words: print(w, '✓' if w in d.allowed_words else '✗')
-   "
+   uv run python main.py check-words cloud river war knife
    ```
+   Pass any number of words; each prints `✓` or `✗`.
 
 2. **Write** the explanation, using substitutions from the table below.
 
