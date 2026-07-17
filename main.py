@@ -5,12 +5,13 @@ from pathlib import Path
 from datetime import datetime, timedelta
 from dataclasses import dataclass
 from typing import Annotated, Any, Callable
-from typer import Typer, Option
+from typer import Typer, Option, Exit
 from dotenv import load_dotenv
 from pydantic_ai import PartDeltaEvent
 from tinyfacts.check_words import main as check_main
 from tinyfacts.word_forms import WordFormsDictionary
 from tinyfacts.agent import ThingExplainerAgent, SupportedProviders, OutputText, RunUsage
+from tinyfacts.custom_providers import CustomProviderError
 from tinyfacts.text_editor import SimpleTextEditor
 from tinyfacts.stats import FolderGenStats
 
@@ -64,13 +65,13 @@ def _generate_agent_explanation(agent: ThingExplainerAgent, topic: str, event_lo
 @app.command()
 def agent(
     provider: Annotated[
-        SupportedProviders,
+        str,
         Option(
             "--provider",
             "-p",
-            help="The LLM provider to use (openai, ollama, google).",
+            help="The LLM provider to use (openai, ollama, google, or a name defined in custom_providers.yaml).",
         ),
-    ] = SupportedProviders.OPENAI,
+    ] = SupportedProviders.OPENAI.value,
     model: Annotated[
         str | None,
         Option("--model", "-m", help="The model name to use for generation."),
@@ -110,10 +111,14 @@ def agent(
     ] = None,
 ):
     """Generate text using Thing Explainer word list."""
-    agent = ThingExplainerAgent(
-        provider_name=provider, model_name=model, use_example=not skip_example
-    )
     console = Console()
+    try:
+        agent = ThingExplainerAgent(
+            provider_name=provider, model_name=model, use_example=not skip_example
+        )
+    except CustomProviderError as exc:
+        console.print(f"[bold red]{exc}[/bold red]")
+        raise Exit(code=1)
 
     def event_logger(event: Any) -> None:
         if isinstance(event, PartDeltaEvent):
@@ -130,7 +135,7 @@ def agent(
     output_folder.mkdir(parents=True, exist_ok=True)
 
     console.print(
-        f"\n[bold blue]Using provider:[/bold blue] '{provider.value}'"
+        f"\n[bold blue]Using provider:[/bold blue] '{provider}'"
     )
     console.print(f"[bold blue]Using model:[/bold blue] '{agent.model_name}'\n")
 

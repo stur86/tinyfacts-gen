@@ -1,0 +1,19 @@
+# Copy to custom_providers.yaml (gitignored) to define your own OpenAI-compatible
+# servers. Use the top-level key as the name passed to `--provider`.
+providers:
+  # A remote server whose key lives in an environment variable (or .env).
+  myserver:
+    base_url: https://llm.internal/v1
+    api_key_env: MYSERVER_API_KEY
+    default_model: llama-3.3-70b
+
+  # A server with the key written inline.
+  other:
+    base_url: https://api.example.com/v1
+    api_key: sk-abc123
+    default_model: mixtral
+
+  # A local server needing no authentication. With no default_model, --model is
+  # required when using this provider.
+  local:
+    base_url: http://localhost:8000/v1

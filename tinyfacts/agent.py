@@ -1,9 +1,11 @@
 from pathlib import Path
 from enum import Enum
+from dataclasses import dataclass
 from textwrap import dedent
 from pydantic import BaseModel, Field
 from .word_forms import WordFormsDictionary
 from .check_words import check_words_with_context, InvalidWord, CheckWordsResult
+from .custom_providers import CustomProviders, CustomProviderError
 from string import Template
 from typing import Callable, Any
 from pydantic_ai.usage import RunUsage
@@ -18,16 +20,60 @@ class SupportedProviders(str, Enum):
     OPENAI = "openai"
     OLLAMA = "ollama"
     GOOGLE = "google"
-    
-def get_provider(provider_name: SupportedProviders) -> Any:
-    if provider_name == SupportedProviders.OPENAI:
-        return OpenAIProvider()
-    elif provider_name == SupportedProviders.OLLAMA:
-        return OllamaProvider(base_url="http://localhost:11434/v1")
-    elif provider_name == SupportedProviders.GOOGLE:
-        return GoogleProvider()
+
+
+_BUILTIN_DEFAULT_MODELS: dict[SupportedProviders, str] = {
+    SupportedProviders.OPENAI: "gpt-5.1",
+    SupportedProviders.OLLAMA: "qwen3:8b",
+    SupportedProviders.GOOGLE: "gemini-2.5-pro",
+}
+
+
+@dataclass
+class ResolvedProvider:
+    """A provider instance plus what is needed to build a model from it."""
+
+    provider: Any
+    model_type: type[OpenAIChatModel] | type[GoogleModel]
+    default_model: str | None
+
+
+def get_provider(provider_name: str) -> Any:
+    """Return the provider instance for a built-in or custom provider name."""
+    return resolve_provider(provider_name).provider
+
+
+def resolve_provider(provider_name: str) -> ResolvedProvider:
+    """Resolve a provider name to a provider instance.
+
+    Names outside `SupportedProviders` are looked up in the custom providers file
+    and treated as OpenAI-compatible servers.
+    """
+    try:
+        builtin = SupportedProviders(provider_name)
+    except ValueError:
+        return _resolve_custom_provider(provider_name)
+
+    default_model = _BUILTIN_DEFAULT_MODELS[builtin]
+    if builtin == SupportedProviders.OPENAI:
+        return ResolvedProvider(OpenAIProvider(), OpenAIChatModel, default_model)
+    elif builtin == SupportedProviders.OLLAMA:
+        return ResolvedProvider(
+            OllamaProvider(base_url="http://localhost:11434/v1"), OpenAIChatModel, default_model
+        )
+    elif builtin == SupportedProviders.GOOGLE:
+        return ResolvedProvider(GoogleProvider(), GoogleModel, default_model)
     else:
         raise ValueError(f"Unsupported provider: {provider_name}")
+
+
+def _resolve_custom_provider(provider_name: str) -> ResolvedProvider:
+    config = CustomProviders.load().get(provider_name)
+    provider = OpenAIProvider(
+        base_url=config.base_url,
+        api_key=config.resolve_api_key(provider_name),
+    )
+    return ResolvedProvider(provider, OpenAIChatModel, config.default_model)
 
 class OutputText(BaseModel):
     short_title: str = Field(..., description="A short title for the generated text.")
@@ -63,29 +109,24 @@ _DEFAULT_EXAMPLE_DESCRIPTION = "The plot of the novel 'Anne of Green Gables' by 
     
 class ThingExplainerAgent(Agent[None, OutputText]):
     
-    _DEFAULT_MODELS: dict[SupportedProviders, str] = {
-        SupportedProviders.OPENAI: "gpt-5.1",
-        SupportedProviders.OLLAMA: "qwen3:8b",
-        SupportedProviders.GOOGLE: "gemini-2.5-pro",
-    }
+    _DEFAULT_MODELS = _BUILTIN_DEFAULT_MODELS
 
-    
-    def __init__(self, model_name: str | None = None, provider_name: SupportedProviders = SupportedProviders.OPENAI,
+    def __init__(self, model_name: str | None = None, provider_name: str = SupportedProviders.OPENAI,
                  use_example: bool = True, example_topic: str = _DEFAULT_EXAMPLE_DESCRIPTION, example_path: Path = _DEFAULT_EXAMPLE_PATH):
-        provider = get_provider(provider_name)
+        resolved = resolve_provider(provider_name)
         if model_name is None:
-            model_name = self._DEFAULT_MODELS[provider_name]
-                
+            model_name = resolved.default_model
+        if model_name is None:
+            raise CustomProviderError(
+                f"Provider '{provider_name}' does not set 'default_model', "
+                f"so a model must be given with --model."
+            )
+
         self._dict = WordFormsDictionary()
         self._model_name = model_name
         self._use_example = use_example
-        
-        if provider_name in {SupportedProviders.OPENAI, SupportedProviders.OLLAMA}:
-            model = OpenAIChatModel(model_name=model_name, provider=provider)
-        elif provider_name == SupportedProviders.GOOGLE:
-            model = GoogleModel(model_name=model_name, provider=provider)
-        else:
-            raise ValueError(f"Unsupported provider: {provider_name}")
+
+        model = resolved.model_type(model_name=model_name, provider=resolved.provider)
 
         super().__init__(model=model, output_type=OutputText) # type: ignore
         

@@ -12,3 +12,19 @@ Run `main.py` with one of the following arguments:
 * `stats`: produce statistics on the total number of generated files and words in the repository.
 
 With any of these options, use `--help` for more information.
+
+### Custom providers
+
+Besides the built-in `openai`, `ollama` and `google` providers, `agent --provider <name>` accepts
+the name of any OpenAI-compatible server defined in `custom_providers.yaml`. That file is
+gitignored; copy `custom_providers.example.yaml` to get started:
+
+```yaml
+providers:
+  myserver:
+    base_url: https://llm.internal/v1
+    api_key_env: MYSERVER_API_KEY  # or `api_key: sk-...`, or omit both for servers with no auth
+    default_model: llama-3.3-70b   # optional; if unset, --model is required
+```
+
+Then run e.g. `python main.py agent --provider myserver`.
