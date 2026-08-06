@@ -20,7 +20,8 @@ Thing Explainer explanations may only use the ~1000 most common English words (p
    ```
 
 2. **Write** the explanation. When you need a word you suspect is missing, look it up
-   rather than inventing a workaround — the database already has ~320 of them:
+   rather than inventing a workaround — the database already has ~400 of them, many
+   harvested from the texts already in this repository:
    ```bash
    uv run python main.py suggest gravity moon rivers
    uv run python main.py suggest --search "water"   # browse by meaning
