@@ -14,24 +14,26 @@ Preserve the author's meaning and voice as much as possible. Change only what th
 ## Workflow
 
 ```
-check (summary) → check --full → fix word by word → recheck → repeat
+check --suggest (summary) → check --full --suggest → fix word by word → recheck → repeat
 ```
 
-### 1. Get the summary of violations
+### 1. Get the summary of violations, with replacements
 
 ```bash
-uv run python main.py check $args
+uv run python main.py check --suggest $args
 ```
 
-This lists every unique forbidden word with a usage count. Read the full list before touching anything — a single word may appear dozens of times and one good substitution fixes all of them at once.
+This lists every unique forbidden word with a usage count, then a **Ways to say these** block giving a known, already-validated replacement for each word the circumlocutions database knows. Read the whole list before touching anything — a single word may appear dozens of times and one good substitution fixes all of them at once.
+
+Anything not in that block has no stored answer and needs you to invent one (strategies B–E below).
 
 ### 2. Get context for each violation
 
 ```bash
-uv run python main.py check --full $args
+uv run python main.py check --full --suggest $args
 ```
 
-This shows every occurrence with its surrounding words. Use it to understand what each forbidden word actually means *in that sentence* — the right substitution often depends on context.
+This shows every occurrence with its surrounding words. Use it to understand what each forbidden word actually means *in that sentence* — a stored suggestion is a default, not an order, and the right substitution sometimes depends on context.
 
 ### 3. Fix, then recheck
 
@@ -45,41 +47,18 @@ Edit the file, then run step 1 again. Repeat until you see:
 
 ## Substitution Strategies (in order of preference)
 
-### A. Swap a single word
+### A. Take the stored suggestion
 
-Many forbidden words have a direct one-or-two-word replacement using allowed words. Check the table in the `writing-thing-explainer` skill first. Common patterns:
+`check --suggest` has already done this step for every word the database knows. Use what it gives you unless the sentence makes it read badly.
 
-| Forbidden | Try |
-|---|---|
-| `itself` | restructure (see strategy C) |
-| `eight` / `nine` / `eleven` … | "around seven to ten" or nearby round number |
-| `gravity` | "the pull toward the ground" |
-| `electricity` | "the power that moves through wires" |
-| `affect` | "change" |
-| `exist` | "be here" / "be found" |
-| `secret` | "without anyone knowing" |
-| `special` | "one" / "a certain kind of" |
-| `metal` | "hard stuff from the ground" |
-| `heat` (noun) | "how hot it is" |
-| `size` | "how big it is" |
-| `center` | "middle" |
-| `nearby` | "close to it" |
-| `awake` | "not sleeping" |
-| `forever` | "for as long as it lives" / "for all time" |
-| `plant` / `seed` | "growing thing" / "small hard part" |
-| `bird` / `fish` | "flying animal" / "animal that lives in water" |
-| `ocean` / `sea` | "the great wide water" |
-| `river` / `lake` | "moving water" / "wide still water" |
-| `mountain` | "very tall ground" |
-| `forest` | "a place with many trees" |
-| `war` | "great fight" |
-| `king` / `queen` | "the one who rules" |
-| `enemy` | "those they fight against" |
-| `tool` / `machine` | "thing used to do work" |
-| `mix` | "join together" |
-| `rise` | "go up" |
-| `wise` | "careful" / "knowing" |
-| `practice` (noun) | "working through" |
+To look a word up on its own, or to browse by meaning:
+
+```bash
+uv run python main.py suggest gravity moon rivers
+uv run python main.py suggest --search "water"
+```
+
+Inflected forms and possessives resolve to their base word, so `rivers` and `river's` both find the `river` entry — inflect the replacement yourself to fit the sentence.
 
 ### B. Try a different word form
 
@@ -110,6 +89,12 @@ For technical or abstract words with no near-synonym in the list, describe *what
 - `protein` → "tiny building parts that the body makes and uses"
 
 Ask: *If I had to explain this to a child who has never heard the word, what would I say?* Write that.
+
+When you land on a phrase that works, put it in the database so the next edit gets it for free. The alternative is checked against the word list on the way in, so a bad entry is refused rather than stored:
+
+```bash
+uv run python main.py suggest-add tail "the long part at the back of an animal"
+```
 
 ### E. Circumlocute proper nouns
 
