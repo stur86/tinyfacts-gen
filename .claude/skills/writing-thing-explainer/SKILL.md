@@ -39,12 +39,27 @@ Thing Explainer explanations may only use the ~1000 most common English words (p
    # ✓ All words in ... are in the Thing Explainer word list!
    ```
 
-5. **Give back what you worked out.** When you invent a good phrase for a word the
-   database does not know, add it. The alternative is validated on the way in, so a bad
-   entry is refused:
+5. **Record what you worked out.** Do this before you finish, not as an afterthought.
+   Every time you invented a phrase for a word `suggest` had no entry for, and the phrase
+   is one another writer would want, add it:
    ```bash
    uv run python main.py suggest-add tail "the long part at the back of an animal"
    ```
+   The alternative is validated on the way in, so a bad entry is refused rather than
+   stored. Worth saving:
+
+   - the word really is missing from the list (`check-words` says `✗`), and
+   - the phrase stands on its own, away from the text you wrote it for, and
+   - it names the thing rather than describing its role in one sentence.
+
+   `"lava" → "hot wet rock"` is worth saving. `"the round thing he was carrying"` is not
+   — it only means anything inside its own paragraph. Skip proper nouns entirely; a
+   circumlocution for a character or a place belongs in the text, not the database.
+
+   Keys must be single words, in their base form: `dart`, not `darts`; `melt`, not
+   `melting`. Inflected forms resolve to the base at lookup time, so the base covers them
+   all. If a word already has an entry you think is worse than yours, say so rather than
+   overwriting it silently.
 
 ## Common Missing Words and Substitutions
 

@@ -49,6 +49,17 @@ class InvalidEntry(BaseModel):
     )
 
 
+class SaveResult(BaseModel):
+    """What came of trying to put a new entry in the database."""
+
+    saved: bool = Field(..., description="Whether the entry was written to the database.")
+    word: str = Field(..., description="The word the entry is for.")
+    alternative: str = Field(..., description="The alternative expression that was offered.")
+    message: str = Field(
+        ..., description="What happened, including why the entry was refused if it was."
+    )
+
+
 class CheckWordsWithSuggestionsResult(CheckWordsResult):
     """A word check result carrying a way to say each invalid word that is known."""
 
@@ -193,11 +204,22 @@ class CircumlocutionsDictionary:
                 problems.append(problem)
         return problems
 
-    def add(self, word: str, alternative: str, save: bool = True) -> Suggestion:
+    def add(
+        self, word: str, alternative: str, save: bool = True, overwrite: bool = True
+    ) -> Suggestion:
         """Add an entry, refusing anything that would not hold up.
 
+        Args:
+            word: The word that is not in the word list.
+            alternative: A way to say it using only allowed words.
+            save: Whether to write the database back out.
+            overwrite: Whether to replace an entry that is already there. Turn this off
+                when the entry comes from somewhere less careful than a person, so a
+                stored answer cannot be quietly written over.
+
         Raises:
-            CircumlocutionError: if the entry is not valid.
+            CircumlocutionError: if the entry is not valid, or if `overwrite` is off and
+                the word already has an entry.
         """
         word = word.strip().lower()
         alternative = " ".join(alternative.split())
@@ -205,10 +227,37 @@ class CircumlocutionsDictionary:
         if problem is not None:
             detail = f" ({', '.join(problem.invalid_words)})" if problem.invalid_words else ""
             raise CircumlocutionError(f"Cannot add '{word}': {problem.reason}{detail}.")
+        if not overwrite and word in self._entries:
+            raise CircumlocutionError(
+                f"Cannot add '{word}': there is already an entry for it "
+                f"('{self._entries[word]}')."
+            )
         self._entries[word] = alternative
         if save:
             self.save()
         return Suggestion(word=word, entry=word, alternative=alternative)
+
+    def try_add(self, word: str, alternative: str) -> SaveResult:
+        """Add an entry without raising, reporting back what happened.
+
+        Made for callers that should be told why an entry was refused rather than be
+        stopped by it.
+        """
+        try:
+            added = self.add(word, alternative, overwrite=False)
+        except CircumlocutionError as exc:
+            return SaveResult(
+                saved=False,
+                word=word.strip().lower(),
+                alternative=" ".join(alternative.split()),
+                message=str(exc),
+            )
+        return SaveResult(
+            saved=True,
+            word=added.word,
+            alternative=added.alternative,
+            message=f"Saved '{added.alternative}' as a way of saying '{added.word}'.",
+        )
 
     def save(self) -> None:
         """Write the database back out, sorted by word."""

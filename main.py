@@ -249,6 +249,15 @@ def agent(
             "check results. Turn off to keep the prompt and the tool set smaller.",
         ),
     ] = True,
+    save_suggestions: Annotated[
+        bool,
+        Option(
+            "--save-suggestions/--no-save-suggestions",
+            help="Let the agent add new word and alternative pairs to the circumlocutions "
+            "database as it works. Off by default, since it writes to a file that is "
+            "otherwise curated by hand.",
+        ),
+    ] = False,
     topic: Annotated[
         str | None,
         Option(
@@ -283,6 +292,7 @@ def agent(
             model_name=model,
             use_example=not skip_example,
             use_circumlocutions=suggestions,
+            save_circumlocutions=save_suggestions,
         )
     except CustomProviderError as exc:
         console.print(f"[bold red]{exc}[/bold red]")

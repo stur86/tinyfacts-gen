@@ -49,6 +49,12 @@ inside the word check results, and a `suggest_other_words` tool is available for
 words up before writing. This costs prompt space and model attention, so it can be turned
 off with `--no-suggestions`.
 
+`--save-suggestions` additionally gives the agent a `save_new_word` tool, so a good phrase
+it works out for a missing word is kept for next time. It is **off by default**, since it
+writes to a file that is otherwise curated by hand. Entries still go through the same
+validation, and unlike `suggest-add` the agent cannot overwrite an entry that already
+exists — it is told one is there instead.
+
 ### Custom providers
 
 Besides the built-in `openai`, `ollama` and `google` providers, `agent --provider <name>` accepts

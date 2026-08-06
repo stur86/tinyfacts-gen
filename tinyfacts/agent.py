@@ -8,6 +8,7 @@ from .check_words import check_words_with_context, InvalidWord, CheckWordsResult
 from .circumlocutions import (
     CheckWordsWithSuggestionsResult,
     CircumlocutionsDictionary,
+    SaveResult,
     Suggestion,
     check_words_with_suggestions,
 )
@@ -106,7 +107,7 @@ _BASE_PROMPT = Template("""
     The topic to write about is: "$topic".
 
     Please use the provided tool to check your text for any words that are not in the allowed list, and revise your text until it passes the check.
-    $circumlocutions
+    $circumlocutions$save_circumlocutions
     Only answer with the final text that passes the check.
     """)
 
@@ -114,6 +115,14 @@ _CIRCUMLOCUTIONS_PROMPT = """
     The checking tool also returns known ways to say some of the words you are not allowed to use.
     Where one is given, prefer it over a way of your own. You can also call the suggestion tool at any
     time to ask how to say a word before you use it.
+"""
+
+_SAVE_CIRCUMLOCUTIONS_PROMPT = """
+    When you work out a good way of saying a word that no suggestion was given for, save it with the
+    saving tool so that it is there the next time. Save only what someone else would want to reuse: a
+    word that really is missing from the list, and a way of saying it that is clear on its own, away
+    from this text. Do not save a wording that only makes sense here, and do not save one for the sake
+    of it.
 """
  
 
@@ -126,7 +135,7 @@ class ThingExplainerAgent(Agent[None, OutputText]):
 
     def __init__(self, model_name: str | None = None, provider_name: str = SupportedProviders.OPENAI,
                  use_example: bool = True, example_topic: str = _DEFAULT_EXAMPLE_DESCRIPTION, example_path: Path = _DEFAULT_EXAMPLE_PATH,
-                 use_circumlocutions: bool = True):
+                 use_circumlocutions: bool = True, save_circumlocutions: bool = False):
         resolved = resolve_provider(provider_name)
         if model_name is None:
             model_name = resolved.default_model
@@ -140,14 +149,20 @@ class ThingExplainerAgent(Agent[None, OutputText]):
         self._model_name = model_name
         self._use_example = use_example
         self._use_circumlocutions = use_circumlocutions
-        self._circumlocutions = CircumlocutionsDictionary() if use_circumlocutions else None
+        self._save_circumlocutions = save_circumlocutions
+        # Either feature needs the database, so load it if one of them is on.
+        self._circumlocutions = (
+            CircumlocutionsDictionary()
+            if use_circumlocutions or save_circumlocutions
+            else None
+        )
 
         model = resolved.model_type(model_name=model_name, provider=resolved.provider)
 
         super().__init__(model=model, output_type=OutputText) # type: ignore
 
         # Define the word checker tool
-        if self._circumlocutions is None:
+        if not use_circumlocutions:
             def check_simple_words(text: str, context_length: int = 2) -> CheckWordsResult:
                 """Check if the text only uses words from the Thing Explainer 1000 word list.
 
@@ -191,6 +206,28 @@ class ThingExplainerAgent(Agent[None, OutputText]):
 
         self.tool_plain(check_simple_words)
 
+        if save_circumlocutions:
+            saving_circumlocutions = self._circumlocutions
+            assert saving_circumlocutions is not None
+
+            def save_new_word(word: str, alternative: str) -> SaveResult:
+                """Record a way of saying a word that is not in the Thing Explainer word list.
+
+                Use this for a way of saying something that is worth keeping for other texts,
+                not for wording that only fits the text being written now. The alternative is
+                checked before it is kept, and a word that already has an entry is left alone.
+
+                Args:
+                    word (str): The single word that is not in the word list.
+                    alternative (str): A way to say it using only allowed words.
+
+                Returns:
+                    SaveResult: Whether it was kept, and if not, what was wrong with it.
+                """
+                return saving_circumlocutions.try_add(word, alternative)
+
+            self.tool_plain(save_new_word)
+
         self._example_topic_description = example_topic
         self._example_text = example_path.read_text()
     
@@ -211,7 +248,8 @@ class ThingExplainerAgent(Agent[None, OutputText]):
             word_list=word_list_str,
             example=example_prompt,
             topic=topic,
-            circumlocutions=_CIRCUMLOCUTIONS_PROMPT if self._use_circumlocutions else ""
+            circumlocutions=_CIRCUMLOCUTIONS_PROMPT if self._use_circumlocutions else "",
+            save_circumlocutions=_SAVE_CIRCUMLOCUTIONS_PROMPT if self._save_circumlocutions else ""
         ))
         output = None
         usage = RunUsage()

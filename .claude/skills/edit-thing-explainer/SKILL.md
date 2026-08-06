@@ -90,11 +90,13 @@ For technical or abstract words with no near-synonym in the list, describe *what
 
 Ask: *If I had to explain this to a child who has never heard the word, what would I say?* Write that.
 
-When you land on a phrase that works, put it in the database so the next edit gets it for free. The alternative is checked against the word list on the way in, so a bad entry is refused rather than stored:
+When you land on a phrase that works, put it in the database so the next edit gets it for free — do this as you go, not once at the end when you have forgotten which ones were new. The alternative is checked against the word list on the way in, so a bad entry is refused rather than stored:
 
 ```bash
 uv run python main.py suggest-add tail "the long part at the back of an animal"
 ```
+
+Save a phrase when the word really is missing and the phrase still makes sense away from this file. Do not save wording that only works in its own paragraph, and do not save circumlocutions for proper nouns (strategy E) — those are per-text choices. Keys are single words in base form (`dart`, not `darts`), since inflected forms resolve to the base at lookup time.
 
 ### E. Circumlocute proper nouns
 
