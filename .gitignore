@@ -19,6 +19,7 @@ custom_providers.yaml
 **/*.jsonl
 **/*.json
 !tinyfacts/thing-explainer/word-forms.json
+!tinyfacts/thing-explainer/circumlocutions.json
 query_logs/
 
 # With exceptions

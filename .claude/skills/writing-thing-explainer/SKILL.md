@@ -11,17 +11,26 @@ Thing Explainer explanations may only use the ~1000 most common English words (p
 
 ## Workflow
 
-1. **Look up the word list** before writing — many obvious words are missing:
+1. **Look up the word list** before writing — many obvious words are missing. Add
+   `--suggest` and you also get a ready-made way to say the ones that fail:
    ```bash
-   uv run python main.py check-words cloud river war knife
+   uv run python main.py check-words cloud river war knife --suggest
+   # ✗ cloud → the grey stuff hanging in the sky
+   # ✗ river → moving water
    ```
-   Pass any number of words; each prints `✓` or `✗`.
 
-2. **Write** the explanation, using substitutions from the table below.
-
-3. **Check** with `--full` to see every invalid occurrence with context:
+2. **Write** the explanation. When you need a word you suspect is missing, look it up
+   rather than inventing a workaround — the database already has ~400 of them, many
+   harvested from the texts already in this repository:
    ```bash
-   uv run python main.py check --full path/to/file.txt
+   uv run python main.py suggest gravity moon rivers
+   uv run python main.py suggest --search "water"   # browse by meaning
+   ```
+
+3. **Check** with `--full` to see every invalid occurrence with context, and `--suggest`
+   to get a replacement for each one:
+   ```bash
+   uv run python main.py check --full --suggest path/to/file.txt
    ```
 
 4. **Fix and repeat** until the file passes:
@@ -30,52 +39,62 @@ Thing Explainer explanations may only use the ~1000 most common English words (p
    # ✓ All words in ... are in the Thing Explainer word list!
    ```
 
+5. **Record what you worked out.** Do this before you finish, not as an afterthought.
+   Every time you invented a phrase for a word `suggest` had no entry for, and the phrase
+   is one another writer would want, add it:
+   ```bash
+   uv run python main.py suggest-add tail "the long part at the back of an animal"
+   ```
+   The alternative is validated on the way in, so a bad entry is refused rather than
+   stored. Worth saving:
+
+   - the word really is missing from the list (`check-words` says `✗`), and
+   - the phrase stands on its own, away from the text you wrote it for, and
+   - it names the thing rather than describing its role in one sentence.
+
+   `"lava" → "hot wet rock"` is worth saving. `"the round thing he was carrying"` is not
+   — it only means anything inside its own paragraph. Skip proper nouns entirely; a
+   circumlocution for a character or a place belongs in the text, not the database.
+
+   Keys must be single words, in their base form: `dart`, not `darts`; `melt`, not
+   `melting`. Inflected forms resolve to the base at lookup time, so the base covers them
+   all. If a word already has an entry you think is worse than yours, say so rather than
+   overwriting it silently.
+
 ## Common Missing Words and Substitutions
+
+These all live in `tinyfacts/thing-explainer/circumlocutions.json` — ask the tool rather
+than working from memory, since the database is kept validated and this list is not:
+
+```bash
+uv run python main.py suggest <word> [<word> ...]
+uv run python main.py suggest --list          # all of them
+```
+
+The traps you will hit most often:
 
 | Missing word | Use instead |
 |---|---|
-| `itself` | restructure the sentence |
-| `cloud` | "the grey hanging things in the sky" |
+| `itself` | "on its own", or restructure the sentence |
+| `cloud` | "the grey stuff hanging in the sky" |
 | `sea` / `ocean` | "the great wide water" |
 | `river` / `lake` | "moving water" / "wide still water" |
-| `plant` / `seed` / `flower` | "growing thing" / "small hard part" / "bright part" |
+| `moon` | "the great light in the night sky" |
+| `plant` / `seed` | "growing thing" / "the small hard part a growing thing comes from" |
 | `mountain` / `forest` | "very tall ground" / "a place with many trees" |
-| `bird` / `fish` | "flying animal" / "animal that lives in water" |
-| `ship` / `boat` | "big thing that moves on water" |
-| `war` / `battle` | "great fight" / "fight" |
-| `king` / `queen` | "the one who rules" |
-| `soldier` | "fighting person" |
-| `enemy` | "those they fight against" |
-| `priest` | "man who works for god" |
-| `wolf` / `wild` | "large free animal" / "living without people" |
-| `hunt` | "chase animals for food" |
-| `metal` | "hard stuff from the ground" |
+| `bird` / `fish` | "flying animal" / "animal that lives in the water" |
+| `war` / `enemy` | "great fight" / "those they fight against" |
+| `law` / `rule` | "the things everyone must follow" |
+| `metal` | "hard bright stuff from the ground" |
 | `tool` / `machine` | "thing used to do work" |
-| `secret` | "without anyone knowing" |
-| `heat` (noun) | "how hot it is" / restructure |
-| `mix` / `mixing` | "join" / "joining" |
-| `rise` | "go up" |
-| `thousands` | "many hundreds" |
 | `gravity` | "the pull toward the ground" |
-| `electricity` | "the power that moves through wires" |
-| `size` / `sizes` | "how big" |
-| `center` | "middle" |
-| `directly` | remove or rephrase |
-| `affect` | "change" |
-| `nearby` | "close to it" |
-| `mainly` | "most of" |
-| `awake` | "not sleeping" |
-| `decisions` | use "decides" (verb form instead) |
-| `practice` (noun) | "working through" |
-| `eight` | "around seven to ten" or use a different number |
-| `vary` | "change" |
-| `forever` | "for as long as they live" |
-| `wise` | "kind" or "careful" |
-| `pool` | "wide still water" |
-| `garden` | "the yard" / "outside the home" |
-| `special` | "one" / "a certain" |
-| `exist` | "be here" |
-| `apart` | restructure: "break up and join" |
+| `heat` (noun) / `size` | "how hot it is" / "how big something is" |
+| `thousand` / `million` | "many hundreds" / "many hundreds of hundreds" |
+
+Whole families of ordinary words are also missing with no obvious warning: `thin`,
+`flat`, `weak`, `bend`, `flow`, `melt`, `float`, `sink`, `spread`, `shape`, `count`,
+`worth`, `hole`, `simple`, `anywhere`, `everywhere`, `nobody`, `whose`, `twice`,
+`winter`, `season`. Check before you lean on one.
 
 ## Watch Out For
 
