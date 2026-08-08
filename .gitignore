@@ -12,6 +12,9 @@ wheels/
 # Environment variables
 .env
 
+# User-defined LLM providers
+custom_providers.yaml
+
 # Any generated files
 **/*.jsonl
 **/*.json
