@@ -1,4 +1,5 @@
 import asyncio
+import json
 from rich.console import Console
 from rich.panel import Panel
 from pathlib import Path
@@ -381,7 +382,7 @@ def editor(
 def compile(
     output_file: Annotated[
         Path,
-        Argument(help="Path of the text file to write all valid file contents into."),
+        Argument(help="Path of the .jsonl file to write all valid documents into."),
     ],
     folder: Annotated[
         Path,
@@ -392,7 +393,7 @@ def compile(
         ),
     ] = Path.cwd(),
 ) -> int:
-    """Write the contents of all valid text files into one output file."""
+    """Write all valid text files into one .jsonl file, one {"text": ...} row per file."""
     console = Console()
     valid_texts: list[str] = []
     invalid_files: list[Path] = []
@@ -410,7 +411,9 @@ def compile(
         console.print("[yellow]No valid files found, nothing written.[/yellow]")
         return 1
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    output_file.write_text("\n".join(valid_texts))
+    with output_file.open("w") as f:
+        for text in valid_texts:
+            f.write(json.dumps({"text": text.strip()}) + "\n")
     console.print(
         f"[green]Compiled {len(valid_texts)} valid file(s)[/green] "
         f"({len(invalid_files)} skipped) into {output_file}."
