@@ -378,6 +378,51 @@ def editor(
 
 
 @app.command()
+def compile(
+    output_file: Annotated[
+        Path,
+        Argument(help="Path of the text file to write all valid file contents into."),
+    ],
+    folder: Annotated[
+        Path,
+        Option(
+            "--folder",
+            "-f",
+            help="Folder containing text files to analyze.",
+        ),
+    ] = Path.cwd(),
+) -> int:
+    """Write the contents of all valid text files into one output file."""
+    console = Console()
+    valid_texts: list[str] = []
+    invalid_files: list[Path] = []
+    resolved_output = output_file.resolve()
+    for gen_folder in sorted(folder.glob("*_created")):
+        for text_file in sorted(gen_folder.glob("*.txt")):
+            if text_file.resolve() == resolved_output:
+                continue  # Never include the output file itself
+            text = text_file.read_text()
+            if check_words_with_context(text).invalid_words:
+                invalid_files.append(text_file)
+                continue
+            valid_texts.append(text)
+    if not valid_texts:
+        console.print("[yellow]No valid files found, nothing written.[/yellow]")
+        return 1
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+    output_file.write_text("\n".join(valid_texts))
+    console.print(
+        f"[green]Compiled {len(valid_texts)} valid file(s)[/green] "
+        f"({len(invalid_files)} skipped) into {output_file}."
+    )
+    if invalid_files:
+        console.print("[bold red]Skipped invalid files:[/bold red]")
+        for invalid_file in invalid_files:
+            console.print(f"\t[red]{invalid_file}[/red]")
+    return 0
+
+
+@app.command()
 def stats(
     folder: Annotated[
         Path,
