@@ -12,6 +12,7 @@ Run `main.py` with one of the following arguments:
 * `check-words`: check whether specific words are in the list;
 * `suggest`: look up a compliant way to say a word that is *not* in the list;
 * `suggest-add`: add a new entry to the circumlocutions database;
+* `compile`: gather every valid text file under the `*_created` folders into one `.jsonl` file, one row per file, each with the file `id`; rows hold `text`, or `user` and `assistant` with `--instruct`, where an agent suggests the user question that each text answers. Rows are written as they are made, so `--append` can carry on a run that stopped part way;
 * `stats`: produce statistics on the total number of generated files and words in the repository.
 
 With any of these options, use `--help` for more information.

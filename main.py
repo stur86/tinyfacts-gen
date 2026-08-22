@@ -17,6 +17,7 @@ from tinyfacts.circumlocutions import (
 )
 from tinyfacts.word_forms import WordFormsDictionary
 from tinyfacts.agent import ThingExplainerAgent, SupportedProviders, OutputText, RunUsage
+from tinyfacts.question_agent import QuestionAgent
 from tinyfacts.custom_providers import CustomProviderError
 from tinyfacts.text_editor import SimpleTextEditor
 from tinyfacts.stats import FolderGenStats
@@ -392,10 +393,49 @@ def compile(
             help="Folder containing text files to analyze.",
         ),
     ] = Path.cwd(),
+    instruct: Annotated[
+        bool,
+        Option(
+            "--instruct",
+            "-i",
+            help="Write question and answer rows instead of plain text rows. An agent "
+            "suggests the user question that each text answers.",
+        ),
+    ] = False,
+    append: Annotated[
+        bool,
+        Option(
+            "--append",
+            "-a",
+            help="Keep the rows already in the output file and add only the files that "
+            "are not in it yet, matched by their id.",
+        ),
+    ] = False,
+    provider: Annotated[
+        str,
+        Option(
+            "--provider",
+            "-p",
+            help="The LLM provider used to suggest questions (only with --instruct).",
+        ),
+    ] = SupportedProviders.OPENAI.value,
+    model: Annotated[
+        str | None,
+        Option(
+            "--model",
+            "-m",
+            help="The model name used to suggest questions (only with --instruct).",
+        ),
+    ] = None,
 ) -> int:
-    """Write all valid text files into one .jsonl file, one {"text": ...} row per file."""
+    """Write all valid text files into one .jsonl file, one row per file.
+
+    Each row holds the file id, and either {"text": ...} or, with --instruct,
+    {"user": ..., "assistant": ...}. Rows are written as they are made, so a run
+    that stops early can be carried on later with --append.
+    """
     console = Console()
-    valid_texts: list[str] = []
+    documents: list[_CompileDocument] = []
     invalid_files: list[Path] = []
     resolved_output = output_file.resolve()
     for gen_folder in sorted(folder.glob("*_created")):
@@ -406,23 +446,114 @@ def compile(
             if check_words_with_context(text).invalid_words:
                 invalid_files.append(text_file)
                 continue
-            valid_texts.append(text)
-    if not valid_texts:
+            documents.append(_CompileDocument.from_file(text_file, folder, text))
+    if not documents:
         console.print("[yellow]No valid files found, nothing written.[/yellow]")
         return 1
+
+    already_done = _read_row_ids(output_file) if append else set()
+    if already_done:
+        documents = [doc for doc in documents if doc.file_id not in already_done]
+        console.print(
+            f"[blue]{len(already_done)} row(s) already in {output_file}, "
+            f"{len(documents)} file(s) left to do.[/blue]"
+        )
+        if not documents:
+            console.print("[green]Nothing left to do.[/green]")
+            return 0
+
+    question_agent = None
+    if instruct:
+        try:
+            question_agent = QuestionAgent(provider_name=provider, model_name=model)
+        except CustomProviderError as exc:
+            console.print(f"[bold red]{exc}[/bold red]")
+            raise Exit(code=1)
+        console.print(
+            f"[bold blue]Making questions with:[/bold blue] '{provider}' / "
+            f"'{question_agent.model_name}'\n"
+        )
+
     output_file.parent.mkdir(parents=True, exist_ok=True)
-    with output_file.open("w") as f:
-        for text in valid_texts:
-            f.write(json.dumps({"text": text.strip()}) + "\n")
+    written_count = 0
+    failed_count = 0
+    with output_file.open("a" if append else "w") as f:
+        for index, document in enumerate(documents, start=1):
+            if question_agent is None:
+                row = {"id": document.file_id, "text": document.text}
+            else:
+                console.print(f"\t[grey]Question {index} of {len(documents)}...[/grey]")
+                try:
+                    result = asyncio.run(
+                        question_agent.generate_question(document.text, document.title)
+                    )
+                except Exception as exc:  # One bad answer must not lose the whole run
+                    console.print(f"\t[red]{document.file_id}: {exc}[/red]")
+                    failed_count += 1
+                    continue
+                row = {
+                    "id": document.file_id,
+                    "user": result.question,
+                    "assistant": document.text,
+                }
+            f.write(json.dumps(row) + "\n")
+            f.flush()  # Keep the file usable if the run stops part way
+            written_count += 1
+
     console.print(
-        f"[green]Compiled {len(valid_texts)} valid file(s)[/green] "
+        f"[green]Compiled {written_count} valid file(s)[/green] "
         f"({len(invalid_files)} skipped) into {output_file}."
     )
+    if failed_count:
+        console.print(
+            f"[yellow]{failed_count} file(s) left out: no question could be made. "
+            f"Run again with --append to try them.[/yellow]"
+        )
     if invalid_files:
         console.print("[bold red]Skipped invalid files:[/bold red]")
         for invalid_file in invalid_files:
             console.print(f"\t[red]{invalid_file}[/red]")
     return 0
+
+
+@dataclass
+class _CompileDocument:
+    """One valid text file, ready to be written as a row."""
+
+    file_id: str
+    title: str
+    text: str
+
+    @classmethod
+    def from_file(cls, path: Path, folder: Path, text: str) -> "_CompileDocument":
+        try:
+            file_id = path.relative_to(folder).as_posix()
+        except ValueError:
+            file_id = path.name
+        return cls(
+            file_id=file_id,
+            title=path.stem.replace("_", " "),
+            text=text.strip(),
+        )
+
+
+def _read_row_ids(output_file: Path) -> set[str]:
+    """Return the file ids already written into an output file, if it exists."""
+    if not output_file.exists():
+        return set()
+    ids: set[str] = set()
+    for line in output_file.read_text().splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            row = json.loads(line)
+        except json.JSONDecodeError:
+            continue  # A half written row from a run that stopped part way
+        file_id = row.get("id") if isinstance(row, dict) else None
+        if isinstance(file_id, str):
+            ids.add(file_id)
+    return ids
 
 
 @app.command()
