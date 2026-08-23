@@ -1,0 +1,3 @@
+A small piece of computer work is called a group of these little numbers. Each one is only a few bits long. You can put many of them together to get a much bigger piece of work. This is why a picture can be many hundreds of these little pieces.
+
+You need to send this group of numbers over a line to another computer. The computer can use these numbers to do its own work. It does not need to remember every one of them. It can just look at the group and do the work.

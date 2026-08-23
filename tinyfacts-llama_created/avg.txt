@@ -1,0 +1,15 @@
+The word you are looking for is called the mean.
+
+When you put a lot of numbers together, you can find what is in the middle. If you put a lot of numbers that are very high and a lot of numbers that are very low, the middle number is the mean.
+
+Imagine you have a bag full of books. Each book is different. Some are very long, some are very small, and some are just the right way in the middle.
+
+If you counters the number of long books, the number of small books, and the number of books in the middle, the mean is the number that is in the middle of all those numbers.
+
+It does not mean that the middle number is the only one that matters. It means that the number in the middle is the one that is most often found.
+
+For this reason, the mean is an important number to know when you are working with numbers. It helps you figure out what is going on with a group of numbers.
+
+There are many ways to find the mean. One way is to add up all the numbers and then to find what number is in the middle of all those numbers. Another way is to look at the first and last numbers and the numbers in between. You can also look at the number of numbers in between. This way, you can find the mean without adding up all the numbers at once.
+
+The mean is a good number to use when you are trying to find a middle point. It is the number that is most often found in a group of numbers. It helps you understand how things are going by looking at what is in the middle.

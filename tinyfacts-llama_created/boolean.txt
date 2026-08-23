@@ -1,0 +1,11 @@
+A box that can only be in one place, but can be either true or not true at the same time.
+
+When you say something is true, you mean the box is in the place that says true. But you can also say that the box is not true. This is like saying the box is in the place that says not true. The box is in the same place.
+
+You can put many of these boxes together in different ways. If you have three boxes, and each box can be true or not true, you have four ways to make it. You can make it true in four ways and not true in four ways. Each way is like the word true.
+
+Sometimes these boxes are made of hard stuff that is black and white. You can press the black one to make it true and the white one to make it not true. You can also press the two together to make it true and the two together to make it not true.
+
+Sometimes you use these boxes to make things work. A computer box can have many of these boxes in it. When you press the box that says true, the computer does something. When you press the box that says not true, the computer does not do anything. This helps make sure the computer works the way the person who makes it wants it to work.
+
+These boxes are very important because they help us understand how to make things happen. If you know if something is true, you can know what to do next.

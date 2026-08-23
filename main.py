@@ -1,8 +1,12 @@
 import asyncio
 import json
+import re
+import openai
 from rich.console import Console
+from rich.live import Live
 from rich.panel import Panel
 from pathlib import Path
+from urllib.request import urlopen
 from datetime import datetime, timedelta
 from dataclasses import dataclass
 from typing import Annotated, Any, Callable
@@ -359,6 +363,190 @@ def agent(
         console.print("\n[bold red]Exiting.[/bold red]")
 
 
+_DEFAULT_WORD_LIST = (
+    "https://raw.githubusercontent.com/first20hours/google-10000-english/"
+    "refs/heads/master/google-10000-english-no-swears.txt"
+)
+
+
+def _read_word_list(source: str) -> list[str]:
+    """Read the word list from a file, or download it if the source is a URL."""
+    if source.startswith(("http://", "https://")):
+        with urlopen(source) as response:
+            text = response.read().decode("utf-8")
+    else:
+        text = Path(source).read_text()
+    return sorted({word.strip() for word in text.splitlines() if word.strip()})
+
+
+def _format_duration(duration: timedelta) -> str:
+    return str(timedelta(seconds=round(duration.total_seconds())))
+
+
+@dataclass
+class _GenerationProgress:
+    """How many words are done, and how long they took.
+
+    Words that were already on disk are left out of the count, so that the mean
+    time and the time left keep to the words that really call the model.
+    """
+
+    total: int
+    done: int = 0
+    failed: int = 0
+    elapsed: timedelta = timedelta()
+
+    def add(self, duration: timedelta, failed: bool = False) -> None:
+        self.done += 1
+        self.elapsed += duration
+        if failed:
+            self.failed += 1
+
+    @property
+    def mean_time(self) -> timedelta | None:
+        if self.done == 0:
+            return None
+        return self.elapsed / self.done
+
+    @property
+    def time_left(self) -> timedelta | None:
+        mean = self.mean_time
+        return None if mean is None else mean * (self.total - self.done)
+
+    def panel(self, word: str) -> Panel:
+        mean = self.mean_time
+        time_left = self.time_left
+        lines = [
+            f"[bold blue]Word:[/bold blue] {word}",
+            f"[bold blue]Done:[/bold blue] {self.done}/{self.total}",
+            "[bold blue]Mean time:[/bold blue] "
+            + ("-" if mean is None else f"{mean.total_seconds():.1f} s/word"),
+            "[bold blue]Time left:[/bold blue] "
+            + ("-" if time_left is None else _format_duration(time_left)),
+        ]
+        if self.failed:
+            lines.append(f"[bold red]Failed:[/bold red] {self.failed}")
+        return Panel("\n".join(lines), title="Generating")
+
+
+@app.command()
+def generate(
+    words: Annotated[
+        str,
+        Option(
+            "--words",
+            "-w",
+            help="Word list source: a file path, or a URL to download it from. "
+            "One word per line.",
+        ),
+    ] = _DEFAULT_WORD_LIST,
+    base_url: Annotated[
+        str,
+        Option(
+            "--base-url",
+            "-b",
+            help="Base URL of the OpenAI style API, without the port.",
+        ),
+    ] = "http://localhost",
+    port: Annotated[
+        int,
+        Option("--port", help="Port of the OpenAI style API."),
+    ] = 8137,
+    model: Annotated[
+        str,
+        Option("--model", "-m", help="Name of the model to ask."),
+    ] = "tinyfacts-llama",
+    output_folder_in: Annotated[
+        Path | None,
+        Option(
+            "--output-folder",
+            "-o",
+            help="Folder to save the texts in (default: <model_name>_created).",
+        ),
+    ] = None,
+) -> int:
+    """Explain every word of a list with a model that already knows the word list.
+
+    This talks straight to an OpenAI style API (a local server by default). It
+    makes no use of an agent, and it does not check the answers: the model is
+    expected to be fine-tuned so that it keeps to the allowed words by itself.
+    Each word gets one call and one text file, named after the word. Words that
+    already have a file are skipped, so a run that stops can be started again.
+    """
+    console = Console()
+    try:
+        word_list = _read_word_list(words)
+    except OSError as exc:
+        console.print(f"[bold red]Could not read the word list: {exc}[/bold red]")
+        raise Exit(code=1)
+
+    if output_folder_in is None:
+        output_folder = Path(__file__).parent / (
+            model.replace(".", "_").replace("/", "_").replace(":", "_") + "_created"
+        )
+    else:
+        output_folder = output_folder_in.resolve()
+    output_folder.mkdir(parents=True, exist_ok=True)
+
+    pending = [
+        word for word in word_list if not (output_folder / f"{word}.txt").exists()
+    ]
+    skipped = len(word_list) - len(pending)
+    # The server is a local one that wants no key, but the client asks for one
+    client = openai.OpenAI(
+        base_url=f"{base_url.rstrip('/')}:{port}/v1", api_key="dummy"
+    )
+
+    console.print(f"\n[bold blue]Using model:[/bold blue] '{model}'")
+    console.print(f"[bold blue]Saving into:[/bold blue] {output_folder}")
+    console.print(
+        f"[bold blue]Words:[/bold blue] {len(pending)} to do, {skipped} already there\n"
+    )
+    if not pending:
+        console.print("[green]Nothing left to do.[/green]")
+        return 0
+
+    progress = _GenerationProgress(total=len(pending))
+    errors: list[str] = []
+    try:
+        with Live(progress.panel(pending[0]), console=console) as live:
+            for word in pending:
+                live.update(progress.panel(word))
+                start_time = datetime.now()
+                try:
+                    response = client.chat.completions.create(
+                        model=model,
+                        messages=[
+                            {
+                                "role": "user",
+                                "content": f"Explain the following word: {word}",
+                            }
+                        ],
+                    )
+                    answer = response.choices[0].message.content or ""
+                except Exception as exc:  # One bad answer must not stop the run
+                    errors.append(f"{word}: {exc}")
+                    progress.add(datetime.now() - start_time, failed=True)
+                    live.update(progress.panel(word))
+                    continue
+                (output_folder / f"{word}.txt").write_text(answer)
+                progress.add(datetime.now() - start_time)
+                live.update(progress.panel(word))
+    except KeyboardInterrupt:
+        console.print("\n[bold red]Stopped.[/bold red]")
+
+    console.print(
+        f"[green]Wrote {progress.done - progress.failed} file(s)[/green] in "
+        f"{_format_duration(progress.elapsed)} ({skipped} skipped)."
+    )
+    if errors:
+        console.print(f"[bold red]{len(errors)} word(s) failed:[/bold red]")
+        for error in errors:
+            console.print(f"\t[red]{error}[/red]")
+        return 1
+    return 0
+
+
 _DEFAULT_EDITOR_OUTPUT_DIR = Path(__file__).parent / "manually_created"
 
 
@@ -411,6 +599,21 @@ def compile(
             "are not in it yet, matched by their id.",
         ),
     ] = False,
+    include: Annotated[
+        str | None,
+        Option(
+            "--include",
+            help="Regular expression. Use only the folders whose name matches it.",
+        ),
+    ] = None,
+    exclude: Annotated[
+        str | None,
+        Option(
+            "--exclude",
+            help="Regular expression. Leave out the folders whose name matches it. "
+            "It is used on the folders kept by --include, if that one is given too.",
+        ),
+    ] = None,
     provider: Annotated[
         str,
         Option(
@@ -435,10 +638,21 @@ def compile(
     that stops early can be carried on later with --append.
     """
     console = Console()
+    try:
+        include_re = re.compile(include) if include is not None else None
+        exclude_re = re.compile(exclude) if exclude is not None else None
+    except re.error as exc:
+        console.print(f"[bold red]Bad regular expression: {exc}[/bold red]")
+        raise Exit(code=1)
+
     documents: list[_CompileDocument] = []
     invalid_files: list[Path] = []
     resolved_output = output_file.resolve()
     for gen_folder in sorted(folder.glob("*_created")):
+        if include_re is not None and not include_re.search(gen_folder.name):
+            continue
+        if exclude_re is not None and exclude_re.search(gen_folder.name):
+            continue
         for text_file in sorted(gen_folder.glob("*.txt")):
             if text_file.resolve() == resolved_output:
                 continue  # Never include the output file itself
