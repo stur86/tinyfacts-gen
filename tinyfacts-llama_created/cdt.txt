@@ -1,0 +1,9 @@
+A computer date is a way to use numbers to make things happen. You can write a computer date in many ways. One way is to write a number from a big set of numbers that the computer understands. You can write three numbers, and the computer can use them to do things.
+
+Another way is to write a number in the form of hours and minutes. You can write a number like this:    hours. The number of hours is the first part. Then you have to write the number of minutes that are between those hours. The number of minutes is the second part.
+
+The computer can understand these numbers easily. It does not need words to tell it what to do. The computer can just use the numbers to find out what to do. This makes the computer very fast. It can do many things in a very short time.
+
+A computer date can be used for many things. You can use it to keep track of things. You can use it to plan things. You can use it to write books. You can use it to help people do work. It is a very important word in the world.
+
+You can also use computer dates to talk about time. You can say things like,    tomorrow or    next week. This helps people know what to do without having to look at a paper.

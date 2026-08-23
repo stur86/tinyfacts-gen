@@ -1,34 +1,44 @@
 import asyncio
 import json
 import re
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+from pathlib import Path
+from typing import Annotated, Any
+from urllib.request import urlopen
+
 import openai
+from dotenv import load_dotenv
+from pydantic_ai import PartDeltaEvent
 from rich.console import Console
 from rich.live import Live
 from rich.panel import Panel
-from pathlib import Path
-from urllib.request import urlopen
-from datetime import datetime, timedelta
-from dataclasses import dataclass
-from typing import Annotated, Any, Callable
-from typer import Typer, Argument, Option, Exit
-from dotenv import load_dotenv
-from pydantic_ai import PartDeltaEvent
-from tinyfacts.check_words import check_words_with_context, main as check_main
+from typer import Argument, Exit, Option, Typer
+
+from tinyfacts.agent import (
+    OutputText,
+    RunUsage,
+    SupportedProviders,
+    ThingExplainerAgent,
+)
+from tinyfacts.check_words import check_words_with_context
+from tinyfacts.check_words import main as check_main
 from tinyfacts.circumlocutions import (
     CircumlocutionError,
     CircumlocutionsDictionary,
     Suggestion,
 )
-from tinyfacts.word_forms import WordFormsDictionary
-from tinyfacts.agent import ThingExplainerAgent, SupportedProviders, OutputText, RunUsage
-from tinyfacts.question_agent import QuestionAgent
 from tinyfacts.custom_providers import CustomProviderError
-from tinyfacts.text_editor import SimpleTextEditor
+from tinyfacts.question_agent import QuestionAgent
 from tinyfacts.stats import FolderGenStats
+from tinyfacts.text_editor import SimpleTextEditor
+from tinyfacts.word_forms import WordFormsDictionary
 
 load_dotenv()  # Load environment variables from .env file if it exists
 app = Typer()
 
+_CWD = Path.cwd()
 
 def _print_suggestions(
     console: Console, suggestions: list[Suggestion], title: str = "Ways to say these:"
@@ -38,8 +48,12 @@ def _print_suggestions(
         return
     console.print(f"\n[bold blue]{title}[/bold blue]\n")
     for suggestion in suggestions:
-        via = "" if suggestion.is_exact else f" [grey](from '{suggestion.entry}')[/grey]"
-        console.print(f"  [bold]{suggestion.word}[/bold] → {suggestion.alternative}{via}")
+        via = (
+            "" if suggestion.is_exact else f" [grey](from '{suggestion.entry}')[/grey]"
+        )
+        console.print(
+            f"  [bold]{suggestion.word}[/bold] → {suggestion.alternative}{via}"
+        )
 
 
 @app.command()
@@ -47,7 +61,11 @@ def check(
     file: Path,
     full: Annotated[
         bool,
-        Option("--full", "-f", help="Show every invalid occurrence with surrounding context."),
+        Option(
+            "--full",
+            "-f",
+            help="Show every invalid occurrence with surrounding context.",
+        ),
     ] = False,
     suggest: Annotated[
         bool,
@@ -67,6 +85,7 @@ def check(
             Console(), circumlocutions.suggest_many([item.word for item in invalid])
         )
     return exit_code
+
 
 @app.command()
 def check_words(
@@ -102,7 +121,11 @@ def suggest(
     ] = None,
     search_text: Annotated[
         str | None,
-        Option("--search", "-s", help="List entries whose word or alternative contains this."),
+        Option(
+            "--search",
+            "-s",
+            help="List entries whose word or alternative contains this.",
+        ),
     ] = None,
     list_all: Annotated[
         bool,
@@ -130,8 +153,14 @@ def suggest(
             return 0
         console.print(f"[red]✗ Found {len(problems)} bad entry(s):[/red]\n")
         for problem in problems:
-            detail = f" ({', '.join(problem.invalid_words)})" if problem.invalid_words else ""
-            console.print(f"  [bold red]{problem.word}[/bold red]: {problem.reason}{detail}")
+            detail = (
+                f" ({', '.join(problem.invalid_words)})"
+                if problem.invalid_words
+                else ""
+            )
+            console.print(
+                f"  [bold red]{problem.word}[/bold red]: {problem.reason}{detail}"
+            )
         return 1
 
     if list_all:
@@ -170,7 +199,11 @@ def suggest(
             console.print(f"[green]✓ {key}[/green] is already in the word list.")
         elif key in by_word:
             suggestion = by_word[key]
-            via = "" if suggestion.is_exact else f" [grey](from '{suggestion.entry}')[/grey]"
+            via = (
+                ""
+                if suggestion.is_exact
+                else f" [grey](from '{suggestion.entry}')[/grey]"
+            )
             console.print(f"[bold]{key}[/bold] → {suggestion.alternative}{via}")
         else:
             console.print(
@@ -182,7 +215,9 @@ def suggest(
 @app.command()
 def suggest_add(
     word: Annotated[str, Argument(help="The word that is not in the word list.")],
-    alternative: Annotated[str, Argument(help="A way to say it using only allowed words.")],
+    alternative: Annotated[
+        str, Argument(help="A way to say it using only allowed words.")
+    ],
 ) -> int:
     """Add an entry to the circumlocutions database.
 
@@ -210,12 +245,14 @@ class _ExplanationResult:
 
     def output_path(self, output_folder: Path) -> Path:
         return (
-                output_folder
-                / f"{self.explanation.short_title.lower().replace(' ', '_')}.txt"
-            )
+            output_folder
+            / f"{self.explanation.short_title.lower().replace(' ', '_')}.txt"
+        )
 
 
-def _generate_agent_explanation(agent: ThingExplainerAgent, topic: str, event_logger: Callable[[Any], None]) -> _ExplanationResult:
+def _generate_agent_explanation(
+    agent: ThingExplainerAgent, topic: str, event_logger: Callable[[Any], None]
+) -> _ExplanationResult:
     start_time = datetime.now()
     explanation, usage = asyncio.run(
         agent.generate_explanation(topic, event_callback=event_logger)
@@ -224,6 +261,7 @@ def _generate_agent_explanation(agent: ThingExplainerAgent, topic: str, event_lo
     return _ExplanationResult(
         explanation=explanation, usage=usage, task_duration=task_duration
     )
+
 
 @app.command()
 def agent(
@@ -269,8 +307,8 @@ def agent(
         Option(
             "--topic",
             "-t",
-            help="Generate and save a single topic answer with no user prompting."
-        )
+            help="Generate and save a single topic answer with no user prompting.",
+        ),
     ] = None,
     output_folder_in: Annotated[
         Path | None,
@@ -285,7 +323,7 @@ def agent(
         Option(
             "--output-filename",
             "-f",
-            help="Filename to save the generated explanation (overrides default naming). Only" \
+            help="Filename to save the generated explanation (overrides default naming). Only"
             " used when --topic is specified.",
         ),
     ] = None,
@@ -318,9 +356,7 @@ def agent(
         output_folder = output_folder_in.resolve()
     output_folder.mkdir(parents=True, exist_ok=True)
 
-    console.print(
-        f"\n[bold blue]Using provider:[/bold blue] '{provider}'"
-    )
+    console.print(f"\n[bold blue]Using provider:[/bold blue] '{provider}'")
     console.print(f"[bold blue]Using model:[/bold blue] '{agent.model_name}'\n")
 
     if topic is not None:
@@ -329,10 +365,9 @@ def agent(
             output_path = output_folder / output_filename
         else:
             output_path = explanation_result.output_path(output_folder)
-        output_path.write_text(explanation_result.explanation.text)
+        _ = output_path.write_text(explanation_result.explanation.text)
         console.print(f"[green]Saved explanation to {output_path}[/green]")
         return
-
 
     # Ask the user for a topic, or whether to quit (loop until they do)
     try:
@@ -580,7 +615,7 @@ def compile(
             "-f",
             help="Folder containing text files to analyze.",
         ),
-    ] = Path.cwd(),
+    ] = _CWD,
     instruct: Annotated[
         bool,
         Option(
@@ -769,7 +804,6 @@ def _read_row_ids(output_file: Path) -> set[str]:
             ids.add(file_id)
     return ids
 
-
 @app.command()
 def stats(
     folder: Annotated[
@@ -779,13 +813,15 @@ def stats(
             "-f",
             help="Folder containing text files to analyze.",
         ),
-    ] = Path.cwd(),
+    ] = _CWD,
 ):
     """Generate statistics about text files in a folder."""
     stats = FolderGenStats(folder)
     console = Console()
     console.print(f"\n[bold]Generation Statistics for folder:[/bold] {folder}\n")
-    console.print(f"Total invalid files (skipped): [red]{stats.invalid_file_count}[/red]")
+    console.print(
+        f"Total invalid files (skipped): [red]{stats.invalid_file_count}[/red]"
+    )
     console.print(f"Total valid files: [green]{stats.file_count}[/green]")
     console.print(f"Total words across valid files: [green]{stats.word_count}[/green]")
     console.print(
