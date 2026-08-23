@@ -1,0 +1,11 @@
+When you take a number that is less than one hundred, and you do not have a whole number of times you can use it to build another number, you get a small number that is left over.
+
+Think of it this way: if you take ten, you can build many other numbers with it. If you take ten and you use it ten times, you get a number that is one hundred. But if you take ten and you use it ten times, you would have built a number that is one hundred times the number you started with, and it would be a very big number.
+
+A smaller number that is left over when you take a number that is less than one hundred is called a number with a small number. It is like the bit you need to build another number.
+
+The number you get from this is called the small number. It is the number you need to add to the number you start with. The number you get is a very small number, often smaller than one hundred.
+
+The number with a small number is always less than the number you start with. You can never build a number from nothing that is larger than the number you start with. This is why when you take a number, and you do not have a small number, you always get a number with a small number.
+
+If you take a small number, and you add it to another number, you get a new number. If you take a number with a small number, and you add it to another number, you always get the same number.

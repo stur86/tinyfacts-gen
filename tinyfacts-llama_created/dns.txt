@@ -1,0 +1,11 @@
+To look up something is to find it. When you look at a computer, the computer looks at a big book of numbers. This book tells the computer how to find a word or a picture. When you type a word into a computer, the computer looks at the book to see if the word is in it.
+
+Sometimes, when you are in a place with many computers, you need to tell the computers where to find a thing. This is where the word we are talking about comes in. A thing that is in the world is called a name. When you tell the computers where a thing is, you are giving them a name.
+
+Think of the word like this. Imagine you are looking for a book in a very big room. You are looking at the names of the books on a wall. You see the name of the book you want. You look at it again and again until you find it. This is like what the computer does when you tell it where to find something.
+
+But how does the computer know which name to look at? The computer looks at something else. The computer looks at the numbers that make up the name. It sees if the numbers are the same as the numbers it already knows. If they are the same, then it knows the name is the one you are looking for.
+
+Sometimes, computers use this to find people. You can tell them where to look for a person. You give them the name, and they find the person. You can also use this to find things in a place. If you know the name of a building, you can tell the computer where to look for it. It looks at the numbers that make up the name and finds the building.
+
+The word is important. It is about how computers find and know things. It helps us find people, places, and things in the world.

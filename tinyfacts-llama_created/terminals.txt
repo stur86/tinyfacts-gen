@@ -1,0 +1,9 @@
+A computer has many parts that work together. Each part does a very small job. When you type on the computer, the small jobs are done by many parts. One part sends what you type to the next part. The next part sends what the next part sends to the part after that. This goes on and on until the computer gets what it needs.
+
+The end of this line is where the computers talk to each other. The parts at the end send what they want to other parts on the other end. This lets other computers know what you did on your computer.
+
+Think of it like a line of people. Each person is a part. They all work together to get what they need done. When one person sends something to the next person, it goes down the line. In the end, the people all meet at the same place. They put what they got together.
+
+You can also think of it like a box with many doors. Each door is a part. When you push the door you want to open, the door opens. The person on the other side of the door gets the thing you sent. It is like a line of boxes where people go to get what they need.
+
+Sometimes, the end of the line is not a box. It is a place where people meet. They stand together and talk. They share what they learned and what they did. It is a way to share what you did with other people.

@@ -1,0 +1,7 @@
+The word you are looking for is called a big number. A big number is a very, very large number that you use to help you do many things.
+
+A small number is much smaller. To make it very big, you can use a long line of numbers. You write a number on a piece of paper, and then you add the numbers in front of it, one after another. This makes the number much bigger. You use these long lines of numbers for things like money, how much food to buy, and how many people to make.
+
+A big number is like a house number. You can use it to find a house on a street. The number tells you where the house is. You do this with numbers, but you use them very fast and in a very long line, so it is easier to remember than writing the numbers all by hand.
+
+In computers, big numbers are used for things like building things that can do many things very fast. They help make the world work right.

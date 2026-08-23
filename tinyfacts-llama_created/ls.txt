@@ -1,0 +1,11 @@
+When you type something into a computer, the computer looks for words to add to the line. Each word is made of many numbers. To put the words together in the right order, the computer has a way to look at the numbers.
+
+There are two ways to look at the numbers in a word. One way is to look at the numbers from the top down. This way looks like this:   hundred  ten  one  ten  two  ten  one  ten  two  ten  one  ten  two. This way is like reading a story.
+
+The other way is to look at the numbers from the bottom up. This way looks like this:  ten  one  ten  two  ten  one  ten  two  ten  one  ten  two  ten. This way is like building a number.
+
+Using this way, we can look at many words at once. When you type many words, the computer looks at the numbers from top to bottom. This way is faster than looking at the numbers from bottom to top.
+
+Sometimes, the computer looks at the numbers from top to bottom, and then looks at the numbers from bottom to top. This way can be better for writing things that need to be in a line.
+
+The word we are talking about today is a part of this way. It is a way to look at numbers that go down from top to bottom. We call it an  order. This order is very important in computers and other things that use numbers.

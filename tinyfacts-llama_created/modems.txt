@@ -1,0 +1,9 @@
+A computer uses many numbers very fast. These numbers are like numbers in your brain. We use them to send and get things. A computer does this with something called a hard drive. This hard drive is like a box with many numbers inside. It holds many numbers for every second.
+
+Think of it like a phone. When you talk to a friend, the phone is sending your words to them. Your words are numbers. The phone uses these numbers to go to the other phone. The other phone is also sending its words. When the two phones get the numbers, they put them together. This is how you talk to each other.
+
+Now, computers also need something to send these numbers. This is a thing that sends numbers very fast through air. It is like a long line with many small boxes. When the computer wants to talk to the other computer, it sends its numbers to this line. The line gets the numbers and sends them to the other computer. Then the computer gets the numbers and puts them together.
+
+There are two kinds of these lines. One line goes from a computer to the other computer. The other line goes from the computer to a person. We use the first kind to talk to other computers. We use the second kind to talk to people. When we send a number from a computer to a person, the person sees it. When a person wants to send a number to a computer, the computer gets it.
+
+Think of it like a box. A computer is the box. The hard drive is inside the box. The small boxes are on the outside. When the computer sends numbers, it sends them through the small boxes. When the person wants to see the numbers, the small boxes bring them out.

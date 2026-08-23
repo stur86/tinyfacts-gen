@@ -1,0 +1,7 @@
+An open way of writing words. You can put many words together in a long line. This way of writing words can tell computers what to do. It is like a set of words that says, when you see this word, do this. You can use these words to put pictures or sounds into a computer so it can understand them.
+
+The words are made from many small words. Each small word can have a few different ways. When you put these small words together, you get the big words. You can also add numbers to the words. Numbers tell computers how many of each small word to use.
+
+These words are often called a kind of computer way. They help computers make things like pictures of people, cars, and houses. They also help computers understand what we say so we can talk to each other.
+
+There are many ways to write these words. Some ways are good for computers, and some ways are good for people who read them. Computers use the good ways. People use the good ways to write things that are easy to read.

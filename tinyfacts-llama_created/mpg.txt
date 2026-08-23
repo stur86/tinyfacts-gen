@@ -1,0 +1,7 @@
+To make something move
+
+A car has a box under it with numbers on the side. The numbers tell how much air the car needs to go around the corner. The more air the car uses, the more it moves. To use the numbers, you need to know how many times the car moved in a short time.
+
+Think of it like this. If you drive to the park and back home three times, and you use a lot of air in the middle of each trip, you have made a lot of moves. If you drive one time and do not use any air, you have made a very few moves.
+
+To say a car has a good or not good number of moves is like saying if something is good or bad. If the number is high, the car was very good at making moves. If the number is low, the car was not very good.
