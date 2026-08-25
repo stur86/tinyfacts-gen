@@ -1,6 +1,4 @@
 import asyncio
-import json
-import re
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -30,13 +28,15 @@ from tinyfacts.circumlocutions import (
     Suggestion,
 )
 from tinyfacts.custom_providers import CustomProviderError
-from tinyfacts.question_agent import QuestionAgent
+from tinyfacts.dataset import find_document, read_document, utc_now, write_document
+from tinyfacts.dataset.cli import app as dataset_app
 from tinyfacts.stats import FolderGenStats
 from tinyfacts.text_editor import SimpleTextEditor
 from tinyfacts.word_forms import WordFormsDictionary
 
 load_dotenv()  # Load environment variables from .env file if it exists
 app = Typer()
+app.add_typer(dataset_app, name="dataset")
 
 _CWD = Path.cwd()
 
@@ -76,10 +76,14 @@ def check(
         ),
     ] = False,
 ) -> int:
-    """Check if a text file only uses words from the Thing Explainer 1000 word list."""
-    exit_code = check_main(file, full=full)
+    """Check if a text file only uses words from the Thing Explainer 1000 word list.
+
+    A `.md` file that starts with a YAML block is checked on its text alone.
+    """
+    text = read_document(file).text
+    exit_code = check_main(file, full=full, text=text)
     if suggest and exit_code != 0:
-        invalid = check_words_with_context(file.read_text()).invalid_words
+        invalid = check_words_with_context(text).invalid_words
         circumlocutions = CircumlocutionsDictionary()
         _print_suggestions(
             Console(), circumlocutions.suggest_many([item.word for item in invalid])
@@ -242,12 +246,28 @@ class _ExplanationResult:
     explanation: OutputText
     usage: RunUsage
     task_duration: timedelta
+    topic: str | None = None
+    model: str | None = None
+    provider: str | None = None
 
     def output_path(self, output_folder: Path) -> Path:
         return (
             output_folder
-            / f"{self.explanation.short_title.lower().replace(' ', '_')}.txt"
+            / f"{self.explanation.short_title.lower().replace(' ', '_')}.md"
         )
+
+    def metadata(self) -> dict[str, Any]:
+        """What is known about the text, to go in its YAML block."""
+        return {
+            "title": self.explanation.short_title,
+            "instruction": self.topic,
+            "model": self.model,
+            "provider": self.provider,
+            "created_at": utc_now().isoformat(),
+        }
+
+    def save(self, path: Path) -> Path:
+        return write_document(path, self.explanation.text, self.metadata())
 
 
 def _generate_agent_explanation(
@@ -259,7 +279,12 @@ def _generate_agent_explanation(
     )
     task_duration = datetime.now() - start_time
     return _ExplanationResult(
-        explanation=explanation, usage=usage, task_duration=task_duration
+        explanation=explanation,
+        usage=usage,
+        task_duration=task_duration,
+        topic=topic,
+        model=agent.model_name,
+        provider=agent.provider_name,
     )
 
 
@@ -365,7 +390,7 @@ def agent(
             output_path = output_folder / output_filename
         else:
             output_path = explanation_result.output_path(output_folder)
-        _ = output_path.write_text(explanation_result.explanation.text)
+        explanation_result.save(output_path)
         console.print(f"[green]Saved explanation to {output_path}[/green]")
         return
 
@@ -391,8 +416,7 @@ def agent(
                 f"\nSave explanation to [blue]{output_path}[/blue]? (y/n): "
             )
             if save_response.lower() == "y":
-                output_path.parent.mkdir(parents=True, exist_ok=True)
-                output_path.write_text(explanation.text)
+                explanation_result.save(output_path)
                 console.print(f"[green]Saved explanation to {output_path}[/green]")
     except KeyboardInterrupt:
         console.print("\n[bold red]Exiting.[/bold red]")
@@ -524,7 +548,7 @@ def generate(
     output_folder.mkdir(parents=True, exist_ok=True)
 
     pending = [
-        word for word in word_list if not (output_folder / f"{word}.txt").exists()
+        word for word in word_list if find_document(output_folder, word) is None
     ]
     skipped = len(word_list) - len(pending)
     # The server is a local one that wants no key, but the client asks for one
@@ -549,14 +573,10 @@ def generate(
                 live.update(progress.panel(word))
                 start_time = datetime.now()
                 try:
+                    prompt = f"Explain the following word: {word}"
                     response = client.chat.completions.create(
                         model=model,
-                        messages=[
-                            {
-                                "role": "user",
-                                "content": f"Explain the following word: {word}",
-                            }
-                        ],
+                        messages=[{"role": "user", "content": prompt}],
                     )
                     answer = response.choices[0].message.content or ""
                 except Exception as exc:  # One bad answer must not stop the run
@@ -564,7 +584,17 @@ def generate(
                     progress.add(datetime.now() - start_time, failed=True)
                     live.update(progress.panel(word))
                     continue
-                (output_folder / f"{word}.txt").write_text(answer)
+                write_document(
+                    output_folder / f"{word}.md",
+                    answer,
+                    {
+                        "title": word,
+                        "instruction": prompt,
+                        "model": model,
+                        "provider": "openai-compatible",
+                        "created_at": utc_now().isoformat(),
+                    },
+                )
                 progress.add(datetime.now() - start_time)
                 live.update(progress.panel(word))
     except KeyboardInterrupt:
@@ -601,208 +631,6 @@ def editor(
     editor = SimpleTextEditor(output_dir)
     editor.run()
 
-
-@app.command()
-def compile(
-    output_file: Annotated[
-        Path,
-        Argument(help="Path of the .jsonl file to write all valid documents into."),
-    ],
-    folder: Annotated[
-        Path,
-        Option(
-            "--folder",
-            "-f",
-            help="Folder containing text files to analyze.",
-        ),
-    ] = _CWD,
-    instruct: Annotated[
-        bool,
-        Option(
-            "--instruct",
-            "-i",
-            help="Write question and answer rows instead of plain text rows. An agent "
-            "suggests the user question that each text answers.",
-        ),
-    ] = False,
-    append: Annotated[
-        bool,
-        Option(
-            "--append",
-            "-a",
-            help="Keep the rows already in the output file and add only the files that "
-            "are not in it yet, matched by their id.",
-        ),
-    ] = False,
-    include: Annotated[
-        str | None,
-        Option(
-            "--include",
-            help="Regular expression. Use only the folders whose name matches it.",
-        ),
-    ] = None,
-    exclude: Annotated[
-        str | None,
-        Option(
-            "--exclude",
-            help="Regular expression. Leave out the folders whose name matches it. "
-            "It is used on the folders kept by --include, if that one is given too.",
-        ),
-    ] = None,
-    provider: Annotated[
-        str,
-        Option(
-            "--provider",
-            "-p",
-            help="The LLM provider used to suggest questions (only with --instruct).",
-        ),
-    ] = SupportedProviders.OPENAI.value,
-    model: Annotated[
-        str | None,
-        Option(
-            "--model",
-            "-m",
-            help="The model name used to suggest questions (only with --instruct).",
-        ),
-    ] = None,
-) -> int:
-    """Write all valid text files into one .jsonl file, one row per file.
-
-    Each row holds the file id, and either {"text": ...} or, with --instruct,
-    {"user": ..., "assistant": ...}. Rows are written as they are made, so a run
-    that stops early can be carried on later with --append.
-    """
-    console = Console()
-    try:
-        include_re = re.compile(include) if include is not None else None
-        exclude_re = re.compile(exclude) if exclude is not None else None
-    except re.error as exc:
-        console.print(f"[bold red]Bad regular expression: {exc}[/bold red]")
-        raise Exit(code=1)
-
-    documents: list[_CompileDocument] = []
-    invalid_files: list[Path] = []
-    resolved_output = output_file.resolve()
-    for gen_folder in sorted(folder.glob("*_created")):
-        if include_re is not None and not include_re.search(gen_folder.name):
-            continue
-        if exclude_re is not None and exclude_re.search(gen_folder.name):
-            continue
-        for text_file in sorted(gen_folder.glob("*.txt")):
-            if text_file.resolve() == resolved_output:
-                continue  # Never include the output file itself
-            text = text_file.read_text()
-            if check_words_with_context(text).invalid_words:
-                invalid_files.append(text_file)
-                continue
-            documents.append(_CompileDocument.from_file(text_file, folder, text))
-    if not documents:
-        console.print("[yellow]No valid files found, nothing written.[/yellow]")
-        return 1
-
-    already_done = _read_row_ids(output_file) if append else set()
-    if already_done:
-        documents = [doc for doc in documents if doc.file_id not in already_done]
-        console.print(
-            f"[blue]{len(already_done)} row(s) already in {output_file}, "
-            f"{len(documents)} file(s) left to do.[/blue]"
-        )
-        if not documents:
-            console.print("[green]Nothing left to do.[/green]")
-            return 0
-
-    question_agent = None
-    if instruct:
-        try:
-            question_agent = QuestionAgent(provider_name=provider, model_name=model)
-        except CustomProviderError as exc:
-            console.print(f"[bold red]{exc}[/bold red]")
-            raise Exit(code=1)
-        console.print(
-            f"[bold blue]Making questions with:[/bold blue] '{provider}' / "
-            f"'{question_agent.model_name}'\n"
-        )
-
-    output_file.parent.mkdir(parents=True, exist_ok=True)
-    written_count = 0
-    failed_count = 0
-    with output_file.open("a" if append else "w") as f:
-        for index, document in enumerate(documents, start=1):
-            if question_agent is None:
-                row = {"id": document.file_id, "text": document.text}
-            else:
-                console.print(f"\t[grey]Question {index} of {len(documents)}...[/grey]")
-                try:
-                    result = asyncio.run(
-                        question_agent.generate_question(document.text, document.title)
-                    )
-                except Exception as exc:  # One bad answer must not lose the whole run
-                    console.print(f"\t[red]{document.file_id}: {exc}[/red]")
-                    failed_count += 1
-                    continue
-                row = {
-                    "id": document.file_id,
-                    "user": result.question,
-                    "assistant": document.text,
-                }
-            f.write(json.dumps(row) + "\n")
-            f.flush()  # Keep the file usable if the run stops part way
-            written_count += 1
-
-    console.print(
-        f"[green]Compiled {written_count} valid file(s)[/green] "
-        f"({len(invalid_files)} skipped) into {output_file}."
-    )
-    if failed_count:
-        console.print(
-            f"[yellow]{failed_count} file(s) left out: no question could be made. "
-            f"Run again with --append to try them.[/yellow]"
-        )
-    if invalid_files:
-        console.print("[bold red]Skipped invalid files:[/bold red]")
-        for invalid_file in invalid_files:
-            console.print(f"\t[red]{invalid_file}[/red]")
-    return 0
-
-
-@dataclass
-class _CompileDocument:
-    """One valid text file, ready to be written as a row."""
-
-    file_id: str
-    title: str
-    text: str
-
-    @classmethod
-    def from_file(cls, path: Path, folder: Path, text: str) -> "_CompileDocument":
-        try:
-            file_id = path.relative_to(folder).as_posix()
-        except ValueError:
-            file_id = path.name
-        return cls(
-            file_id=file_id,
-            title=path.stem.replace("_", " "),
-            text=text.strip(),
-        )
-
-
-def _read_row_ids(output_file: Path) -> set[str]:
-    """Return the file ids already written into an output file, if it exists."""
-    if not output_file.exists():
-        return set()
-    ids: set[str] = set()
-    for line in output_file.read_text().splitlines():
-        line = line.strip()
-        if not line:
-            continue
-        try:
-            row = json.loads(line)
-        except json.JSONDecodeError:
-            continue  # A half written row from a run that stopped part way
-        file_id = row.get("id") if isinstance(row, dict) else None
-        if isinstance(file_id, str):
-            ids.add(file_id)
-    return ids
 
 @app.command()
 def stats(

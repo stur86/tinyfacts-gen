@@ -6,6 +6,8 @@ from textual.binding import Binding
 from rich.style import Style
 from .textarea import SimpleTextArea
 from .modals import ConfirmSave, LoadFile
+from ..dataset.documents import find_document, read_document, write_document
+from ..dataset.records import utc_now
 
 class SimpleTextEditor(App):
     """A text editor app using only the allowed words from Thing Explainer."""
@@ -66,8 +68,12 @@ class SimpleTextEditor(App):
         # Create output directory if it doesn't exist
         self.output_path.mkdir(parents=True, exist_ok=True)
         
-        # Create output path
-        output_file = self.output_path / f"{title}.txt"
+        # Create output path. Files are saved as markdown, with what is known
+        # about the text in a YAML block at the top of them.
+        name = title.replace(" ", "_")
+        output_file = find_document(self.output_path, name) or (
+            self.output_path / f"{name}.md"
+        )
         
         def save_file_confirmed(overwrite: bool | None) -> None:
             if not overwrite:
@@ -75,7 +81,11 @@ class SimpleTextEditor(App):
                 return
             # Save the file
             try:
-                output_file.write_text(self._text_area.text)
+                write_document(
+                    output_file,
+                    self._text_area.text,
+                    {"title": title, "provider": "human", "created_at": utc_now().isoformat()},
+                )
                 self.notify(f"Saved to {output_file}", severity="information")
             except Exception as e:
                 self.notify(f"Error saving file: {e}", severity="error")
@@ -102,10 +112,11 @@ class SimpleTextEditor(App):
         try:
             file_path_obj = Path(file_path)
             if file_path_obj.is_file():
-                content = file_path_obj.read_text()
+                # A YAML block at the top of a .md file is not part of the text
+                document = read_document(file_path_obj)
                 title_input = self.query_one("#title", Input)
-                title_input.value = file_path_obj.stem
-                self._text_area.text = content
+                title_input.value = document.title
+                self._text_area.text = document.text
                 self.notify(f"Loaded {file_path_obj.name}", severity="information")
             else:
                 self.notify(f"Not a file: {file_path}", severity="error")

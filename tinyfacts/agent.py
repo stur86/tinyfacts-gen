@@ -147,6 +147,7 @@ class ThingExplainerAgent(Agent[None, OutputText]):
 
         self._dict = WordFormsDictionary()
         self._model_name = model_name
+        self._provider_name = str(getattr(provider_name, "value", provider_name))
         self._use_example = use_example
         self._use_circumlocutions = use_circumlocutions
         self._save_circumlocutions = save_circumlocutions
@@ -234,7 +235,11 @@ class ThingExplainerAgent(Agent[None, OutputText]):
     @property
     def model_name(self) -> str:
         return self._model_name
-        
+
+    @property
+    def provider_name(self) -> str:
+        return self._provider_name
+
     async def generate_explanation(self, topic: str, event_callback: Callable[[Any], None] = lambda x: None) -> tuple[OutputText, RunUsage]:
         word_list_str = ', '.join(sorted(self._dict.allowed_words))
         if self._use_example:

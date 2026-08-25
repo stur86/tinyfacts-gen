@@ -2,6 +2,8 @@ import subprocess
 from pathlib import Path
 import argparse
 
+from tinyfacts.dataset import find_document
+
 def main():
     parser = argparse.ArgumentParser(description="Ask questions using the agent script.")
     parser.add_argument("--model", "-m", required=True, help="The model name to use for generation.")
@@ -19,8 +21,6 @@ def main():
         print(f"Input questions file '{input_questions}' does not exist.")
         return
 
-    # Scan existing answers to skip already processed questions
-    existing_answers = {file.stem for file in output_folder.glob("answer_*.txt")}
 
     with input_questions.open("r") as infile:
         for idx, question in enumerate(infile):
@@ -28,10 +28,12 @@ def main():
             if not question:
                 continue
 
-            output_file = output_folder / f"answer_{idx}.txt"
-            if output_file.stem in existing_answers:
+            # The agent saves the question it was given in the file itself, so
+            # a run can simply be started again: what is there is skipped.
+            if find_document(output_folder, f"answer_{idx}") is not None:
                 print(f"Skipping question {idx}: '{question}' (already answered)")
                 continue
+            output_file = output_folder / f"answer_{idx}.md"
 
             print(f"Processing question {idx}: '{question}'")
 

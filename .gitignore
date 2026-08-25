@@ -15,6 +15,9 @@ wheels/
 # User-defined LLM providers
 custom_providers.yaml
 
+# The working copy of the dataset: it lives on the Hugging Face Hub instead
+.dataset/
+
 # Any generated files
 **/*.jsonl
 **/*.json

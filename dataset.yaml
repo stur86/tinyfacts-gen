@@ -1,0 +1,103 @@
+# Where the dataset of generated texts lives, and what is known about the
+# folders it is built from. Used by `python main.py dataset ...`.
+
+hub:
+  # The dataset repository on the Hugging Face Hub. The TINYFACTS_HF_REPO
+  # environment variable, and `--repo`, both win over this.
+  repo_id: stur86/tinyfacts
+  # Only used when the repo is made for the first time.
+  private: false
+  data_dir: data
+  chunk_prefix: tinyfacts
+  license: mit
+
+store:
+  # The working copy on this machine. It is not kept in git.
+  path: .dataset
+  # How many rows go in one .jsonl chunk. Adding rows only rewrites the last
+  # one, so a push sends a small file instead of the whole dataset.
+  chunk_size: 2000
+
+# What is known about each folder of generated text. A folder that is not named
+# here still works: its source name and its model are taken from the folder
+# name, and its texts have no instruction until `dataset enrich` makes one.
+#
+# Keys are source names; the folder is '<source>_created' unless `folder` says
+# otherwise. Fields:
+#   model, provider        - who wrote the texts
+#   instruction_template   - the question every text answers, with '{title}'
+#                            standing for the title of the text
+#   instructions_file      - a file of questions, one per line, in the folder
+#   instructions_name_pattern - a regular expression on the file name whose
+#                            first group is the line of that file the text
+#                            answers, counting from 0
+#   title_template         - a title for texts whose file name says nothing,
+#                            with '{name}' and '{instruction}' in it
+#   instruction_model      - who wrote the questions, if a model did
+#   tags                   - labels put on every row
+#   skip                   - leave the folder out
+sources:
+  tinyfacts-llama:
+    model: tinyfacts-llama
+    provider: local
+    instruction_template: "Explain the following word: {title}"
+    tags: [word-explanation, fine-tuned]
+
+  questions_gemini-3-flash-preview_cloud:
+    model: gemini-3-flash-preview:cloud
+    provider: ollama
+    instructions_file: thing_explainer_questions.txt.q
+    instructions_name_pattern: "answer_(\\d+)"
+    # The files are only named answer_0, answer_1 and so on, so the question
+    # they answer makes a far better title than the file name does.
+    title_template: "{instruction}"
+    tags: [word-explanation]
+
+  gemini-3-flash-preview_cloud:
+    model: gemini-3-flash-preview:cloud
+    provider: ollama
+
+  gemini-2_5-flash:
+    model: gemini-2.5-flash
+    provider: google
+
+  gemini-2_5-pro:
+    model: gemini-2.5-pro
+    provider: google
+
+  gpt-5_1:
+    model: gpt-5.1
+    provider: openai
+
+  gpt-5-mini:
+    model: gpt-5-mini
+    provider: openai
+
+  gpt-oss_120b-cloud:
+    model: gpt-oss:120b-cloud
+    provider: ollama
+
+  nemotron-3-super_cloud:
+    model: nemotron-3-super:cloud
+    provider: ollama
+
+  gemma-e4b-long:
+    model: gemma-e4b-long
+    provider: ollama
+
+  big_pickle:
+    model: big_pickle
+    provider: ollama
+
+  claude_code:
+    model: claude-code
+    provider: anthropic
+
+  claude_sonnet_4_5:
+    model: claude-sonnet-4-5
+    provider: anthropic
+
+  manually:
+    model: null
+    provider: human
+    tags: [hand-written]

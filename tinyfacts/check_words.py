@@ -63,9 +63,17 @@ def check_words_with_context(text: str, context_length: int = 2) -> CheckWordsRe
     return CheckWordsResult(invalid_words=invalid_words)
 
 
-def main(file: Path, full: bool = False) -> int:
+def main(file: Path, full: bool = False, text: str | None = None) -> int:
+    """Report on the words of a file.
 
-    raw_text = file.read_text()
+    Args:
+        file: The file to name in the report.
+        full: Show every bad occurrence with the words around it.
+        text: The text to check. Read from `file` when it is not given, so that
+            a caller which has already taken a YAML block off the front of a
+            `.md` file can pass on just what is left.
+    """
+    raw_text = file.read_text() if text is None else text
     result = check_words_with_context(raw_text)
     word_count = len(split_words(raw_text))
 
