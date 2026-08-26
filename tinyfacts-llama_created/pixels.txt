@@ -1,9 +1,0 @@
-To break something down into small pieces, and then put those pieces together again in a different way, is a way that computers do. These small pieces are tiny and you can not see them, but they make up the whole picture.
-
-Imagine a picture of a house. The house is made of many small pieces that are like tiny pieces of paper. Each piece of paper is a little bit of the house. When you put all of these pieces together, you get the house.
-
-Computers do the same thing. They take many of these tiny pieces and put them together in a different way. They use a number for each tiny piece. The computer looks at the numbers and uses them to make the picture. The numbers can tell the computer where to put the tiny pieces on the paper.
-
-The numbers can also tell the computer how many tiny pieces are needed. If you want to make a picture with a lot of colors, you need more tiny pieces than if you just wanted a picture with one color. The computer makes sure the numbers are right so the picture looks good.
-
-Sometimes, these tiny pieces are small enough to be seen only with a tiny light. Other times, they are so small that you need a glass to see them. But they are always there, and they make the whole picture.

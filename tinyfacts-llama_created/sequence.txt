@@ -1,7 +1,0 @@
-A thing in a line can be a number. A number is a way to show how many of something there are. A line of numbers is called a number line. You can look at the numbers one after another to see how they are ordered.
-
-Another thing in a line can be a word. A word is a group of letters. The order of the letters is important. If you write a word that starts with a word, the word after it must start with the next word. This makes it clear which word comes first.
-
-There are many different kinds of lines. One is a straight line. This line goes in a straight direction. Another is a line of many steps. This line goes through many numbers. A line of many steps is used to show how a story goes.
-
-You can also have a line of days. This line shows when each day of the week is. It helps us know what day it is on a week.

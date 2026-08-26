@@ -1,3 +1,0 @@
-The word is a number. It is one more than the number that comes before it.
-
-If you look at the number two, then two, then three, you can see this. Two is the first number. Three is the second number. Four is the third number. Five is the number after that. This is the way the numbers go. And the word is made of these numbers. It is the word for five.

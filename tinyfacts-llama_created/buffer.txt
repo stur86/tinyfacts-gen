@@ -1,9 +1,0 @@
-A big thing in computers helps keep things safe. It sits between a computer and what the computer wants to read from. This is important because the computer can send out many lines of words at once. If this happens too fast, the computer can get confused and send the wrong words.
-
-Think of it like a door. Imagine you have a room with many books. If you open the door, all the books go out at once. The computer is like the door. It keeps the computer from sending too many lines at once. It is like a safe that holds many lines of words for you.
-
-Sometimes, a computer has many lines of words to read. This is good. But if it gets too many, it can start to act funny. It might send words that are not what it should send. The big thing in the computer helps stop this. It keeps the computer safe and makes sure what the computer wants to read is the right one.
-
-People also use this word in other ways. If you are writing a story and you want to keep your words safe, you might use a word to hold them. It is a way to keep your ideas safe so you can use them later.
-
-In a big place with many people, this word is also used. It is like a way to keep things safe for everyone. It helps keep people from getting confused or from doing the wrong thing.

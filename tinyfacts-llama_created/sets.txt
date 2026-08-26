@@ -1,7 +1,0 @@
-A set is a group of things. You can think of it as many or few things. You can have a set of numbers, a set of words, or a set of animals. A set does not tell you which ones are in the group or which ones are not. It just gives you the group of things.
-
-Think about your desk. You can have many books on that desk. You do not know if the books are all there or if one book is missing. You can say, I have a book, I have another book, I have a third book, and so on. This is like a set. You have many of them.
-
-You can also have a set of days. If you want to go to a party on the iced day and the day after the first day of the week, you have a set. You know which two days are the ones you are looking for.
-
-Sets can be very big. There are over  six hundred hundred sets in the world. But they are still groups of things. Each set has the same kind of things.

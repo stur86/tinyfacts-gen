@@ -16,20 +16,23 @@ hub:
 store:
   path: .dataset
   chunk_size: 2
-sources:
-  words:
-    model: tinyfacts-llama
-    instruction_template: "Explain the following word: {title}"
 """
 
 
 @pytest.fixture
 def repo(tmp_path: Path) -> Path:
     (tmp_path / "dataset.yaml").write_text(CONFIG)
+    (tmp_path / "README_HF.md").write_text("# Tinyfacts\n\n{{rows}} rows.\n")
     folder = tmp_path / "words_created"
     folder.mkdir()
-    (folder / "sun.txt").write_text("The sun is a big hot light.")
-    (folder / "rain.txt").write_text("Rain is water that falls from the sky.")
+    for name, text in [
+        ("sun", "The sun is a big hot light."),
+        ("rain", "Rain is water that falls from the sky."),
+    ]:
+        (folder / f"{name}.md").write_text(
+            f"---\ntitle: {name}\ninstruction: 'Explain the following word: {name}'\n"
+            f"model: tinyfacts-llama\n---\n\n{text}\n"
+        )
     (folder / "wind.md").write_text(
         "---\ntitle: Wind\ninstruction: What is wind?\n---\n\nWind is air that moves.\n"
     )
@@ -116,6 +119,115 @@ def test_the_repo_can_be_given_on_the_command_line(repo: Path, monkeypatch):
     assert api.commits == []
 
 
+def test_a_dry_run_leaves_the_card_where_it_can_be_read(repo: Path, monkeypatch):
+    from tinyfacts.dataset import hub
+
+    from .test_hub import FakeApi
+
+    monkeypatch.setattr(hub, "_api", lambda token=None: FakeApi())
+    run(repo, "add")
+    result = runner.invoke(
+        app, ["push", "--dry-run", "--config", str(repo / "dataset.yaml")]
+    )
+    assert result.exit_code == 0, result.output
+    preview = repo / ".preview" / "README.md"
+    assert preview.exists()
+    assert "3 rows." in preview.read_text()  # The template, filled in
+    assert ".preview" in result.output
+
+
+def test_a_dry_run_with_no_card_leaves_nothing(repo: Path, monkeypatch):
+    from tinyfacts.dataset import hub
+
+    from .test_hub import FakeApi
+
+    monkeypatch.setattr(hub, "_api", lambda token=None: FakeApi())
+    run(repo, "add")
+    runner.invoke(app, ["push", "--dry-run", "--no-card", "--config", str(repo / "dataset.yaml")])
+    assert not (repo / ".preview").exists()
+
+
+def test_push_says_when_there_is_no_card_to_send(repo: Path, monkeypatch):
+    from tinyfacts.dataset import hub
+
+    from .test_hub import FakeApi
+
+    monkeypatch.setattr(hub, "_api", lambda token=None: FakeApi())
+    monkeypatch.setenv("TINYFACTS_HF_TOKEN", "tok")
+    (repo / "README_HF.md").unlink()
+    run(repo, "add")
+    result = runner.invoke(app, ["push", "--config", str(repo / "dataset.yaml")])
+    assert result.exit_code == 1
+    assert "No dataset card" in result.output
+    # ...and it can be pushed anyway without one
+    result = runner.invoke(app, ["push", "--no-card", "--config", str(repo / "dataset.yaml")])
+    assert result.exit_code == 0, result.output
+
+
+def test_remove_takes_a_row_out_once_it_is_agreed_to(repo: Path):
+    run(repo, "add")
+    result = runner.invoke(
+        app, ["remove", "words/sun", "--config", str(repo / "dataset.yaml")], input="y\n"
+    )
+    assert result.exit_code == 0, result.output
+    assert "Took out 1 row" in result.output
+    # A sync would put it back, so the command has to say so
+    assert "not `dataset sync`" in result.output
+    assert run(repo, "show", "words/sun").output.count("No row with id") == 1
+    assert "Rows: 2 of 2" in run(repo, "stats").output
+
+
+def test_remove_leaves_everything_alone_when_it_is_not_agreed_to(repo: Path):
+    run(repo, "add")
+    result = runner.invoke(
+        app, ["remove", "words/sun", "--config", str(repo / "dataset.yaml")], input="n\n"
+    )
+    assert result.exit_code == 1
+    assert "Nothing was taken out" in result.output
+    assert "Rows: 3 of 3" in run(repo, "stats").output
+
+
+def test_remove_can_take_out_everything_a_filter_picks(repo: Path):
+    run(repo, "add")
+    result = run(repo, "remove", "--title", "^(sun|rain)$", "--yes")
+    assert "Took out 2 row" in result.output
+    assert "Rows: 1 of 1" in run(repo, "stats").output
+
+
+def test_remove_with_nothing_to_go_on_takes_nothing_out(repo: Path):
+    """Left to itself it would match every row, so it has to be told."""
+    run(repo, "add")
+    result = runner.invoke(app, ["remove", "--yes", "--config", str(repo / "dataset.yaml")])
+    assert result.exit_code == 1
+    assert "Say which rows to take out" in result.output
+    assert "Rows: 3 of 3" in run(repo, "stats").output
+
+
+def test_remove_will_not_take_ids_and_a_filter_at_once(repo: Path):
+    run(repo, "add")
+    result = runner.invoke(
+        app,
+        ["remove", "words/sun", "--source", "words", "--yes", "--config", str(repo / "dataset.yaml")],
+    )
+    assert result.exit_code == 1
+    assert "not both" in result.output
+
+
+def test_remove_says_when_an_id_is_not_there(repo: Path):
+    run(repo, "add")
+    result = run(repo, "remove", "words/nothing", "--yes")
+    assert "No row with id 'words/nothing'" in result.output
+    assert "nothing taken out" in result.output
+
+
+def test_remove_can_be_asked_what_would_go(repo: Path):
+    run(repo, "add")
+    result = run(repo, "remove", "--source", "words", "--dry-run")
+    assert "3 row(s) of 3 would go" in result.output
+    assert "nothing was taken out" in result.output
+    assert "Rows: 3 of 3" in run(repo, "stats").output
+
+
 class FakeQuestionAgent:
     """Stands in for the agent that works out questions."""
 
@@ -140,8 +252,7 @@ def test_enrich_keeps_the_questions_it_makes(repo: Path, monkeypatch):
 
     monkeypatch.setattr(cli, "QuestionAgent", build)
     run(repo, "add")
-    # Only 'wind' has a question of its own; the other two get one from the
-    # folder's template, so there is nothing left to ask about.
+    # Every file came with a question of its own, so there is nothing to ask about.
     result = run(repo, "enrich")
     assert "already has an instruction" in result.output
     assert made == []

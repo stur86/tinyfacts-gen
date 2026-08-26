@@ -1,9 +1,0 @@
-A small box that you put on a wall or a thing that makes things move. It looks for things around it. If it sees a green light, it might say the room is green. If it sees a bright light, it might say the room is very bright.
-
-Inside the box, there are tiny pieces that look at the light. These pieces change how they see the light. When the light is bright, they change to a light color. When the light is green, they change to a color that is between the two. This color is what the box tells you.
-
-You can put many of these boxes together in a long line. When all the boxes say the same thing, it means the room is the same color. If they all say different colors, the room is different.
-
-Sometimes, these boxes can tell you if you are near a thing. If a box is near a wall, it might tell you if the wall is hot. If it sees the wall is very hot, it sends a word to your computer. This helps you stay safe.
-
-These boxes are used in many ways. You can use them to keep a room warm or cool. You can use them to see if a car is there. You can even use them to watch the sky. They help us see and understand our world.

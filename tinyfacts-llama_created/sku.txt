@@ -1,5 +1,0 @@
-A thing you buy can have many numbers. One number tells how many you already have. Another number tells how many are left. If a thing has many numbers, you can buy more. If you buy too many, you might have to throw some away.
-
-Sometimes a thing has only one number. This number shows how many you still need. If you have only one number, you need to buy one more. You can only buy one more if you already have none.
-
-You can also see how many numbers a thing has. If a thing has ten numbers, you know it has ten parts. You can use numbers like this to counters things.

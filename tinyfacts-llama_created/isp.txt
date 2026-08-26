@@ -1,5 +1,0 @@
-When a computer wants to send things to another computer, it uses the phone lines that go through the walls. These phone lines are like roads for the computer words. The computer says, this is the word I want to send. The computer gets the word from a big computer that is far away, and it sends the word through the phone lines.
-
-The phone lines are very good at carrying words. They are like a long walk for the word. When the word gets to the far computer, the computer reads it. The computer then sends the word back to the computer that wants it. This is how the computers talk to each other.
-
-But the phone lines can be broken. If the phone lines get very long or if the lines are very old, the word might not get through at all. This happens when the lines are too far or when the old lines are broken. In this case, the computer says, the word is not there, but the computer still wants to send it to the other computer.

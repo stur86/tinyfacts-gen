@@ -5,7 +5,7 @@ mirrored to a dataset repository on the Hugging Face Hub. Nothing here is kept
 in git, so the repository does not grow with every generation.
 """
 
-from .config import ConfigError, DatasetConfig, HubConfig, SourceConfig, StoreConfig, resolve_token
+from .config import ConfigError, DatasetConfig, HubConfig, StoreConfig, resolve_token
 from .documents import (
     GeneratedDocument,
     find_document,
@@ -31,7 +31,6 @@ __all__ = [
     "HubConfig",
     "IngestReport",
     "RecordFilter",
-    "SourceConfig",
     "StoreConfig",
     "StoreError",
     "document_to_record",

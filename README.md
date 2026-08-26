@@ -97,8 +97,8 @@ Then run e.g. `python main.py agent --provider myserver`.
 
 The generated texts are kept as a dataset of `.jsonl` chunks and live on the
 [Hugging Face Hub](https://huggingface.co/datasets), not in this repository. The working
-copy sits in `.dataset/` (gitignored); `dataset.yaml` says which Hub repo it belongs to,
-how big a chunk is, and what is known about each folder of generated text.
+copy sits in `.dataset/` (gitignored); `dataset.yaml` says which Hub repo it belongs to
+and how big a chunk is.
 
 One row per text:
 
@@ -122,14 +122,31 @@ python main.py dataset sync         # pull the Hub copy, merge, push it back
 ```
 
 `add` only puts in what is not there yet, matched by id, and leaves out any text that
-uses words outside the list. What a file says about itself in its YAML block wins over
-what `dataset.yaml` says about the folder it is in; `--overwrite` lets the files on disk
-win over the dataset as well.
+uses words outside the list. Everything a row knows comes out of the YAML block of the
+file it was read from; `--overwrite` lets the files on disk win over the dataset as
+well.
 
-`enrich` fills in `instruction` for the rows that have none, using the same kind of agent
-`compile --instruct` used to use — the difference being that the question is now kept in
-the dataset instead of being made afresh on every export. Rows are saved as they are
-made, so a run that stops can simply be started again.
+`enrich` fills in `instruction` for the rows that have none, by asking a model what
+question each text answers. The question is then kept in the dataset, instead of being
+made afresh on every export. Rows are saved as they are made, so a run that stops can
+simply be started again.
+
+### Taking rows out
+
+`remove` takes rows out of the working copy, either by id or by the same filters the
+other commands use — one or the other, not both, so that what is about to go is never in
+doubt. It asks before it does anything, unless `--yes` is given, and `--dry-run` says
+what would go without taking anything out.
+
+```bash
+python main.py dataset remove tinyfacts-llama/aaa      # by id
+python main.py dataset remove --source big_pickle -y   # a whole run
+```
+
+Send the result up with `dataset push`. **Not `dataset sync`**: a sync brings down what
+is on the Hub before it sends anything, so the rows would come straight back. Note also
+that taking out an early row shifts every chunk after it, so the push is a big one; ids
+are matched exactly, so this is cheapest for rows near the end.
 
 ### Filtering
 
@@ -164,7 +181,8 @@ their own, and `--dry-run` says what would be sent without sending it.
 The Hub repo comes from `dataset.yaml`, and either `--repo` or the `TINYFACTS_HF_REPO`
 environment variable wins over it. A token with write rights is needed to push: pass
 `--token`, or set `TINYFACTS_HF_TOKEN`, `HF_TOKEN` or `HUGGINGFACE_TOKEN` (a `.env` file
-works). A dataset card is written along with the rows; `--no-card` leaves it alone.
+works). The dataset card is written along with the rows, out of `README_HF.md`;
+`--no-card` leaves the one on the Hub alone.
 
 ```bash
 python main.py dataset sync --token hf_...          # or set HF_TOKEN
@@ -172,25 +190,41 @@ python main.py dataset pull                         # start from what is on the 
 python main.py dataset push --dry-run               # see what would go up
 ```
 
-### Folders the dataset is built from
+### The dataset card
 
-`dataset.yaml` says what is known about each `*_created` folder: the model that wrote its
-texts, the provider, and where its questions come from. A folder that is not named there
-still works — its source name and model are taken from the folder name — but naming it
-means its rows carry the right model, and their questions can be worked out instead of
-asked for:
+The card that sits on the Hub is `README_HF.md`, which describes the dataset and not
+this software. It is a template: anywhere it says `{{rows}}`, `{{models_table}}` or the
+like, the number or the table is put in from the dataset itself as it is pushed, so
+nothing in the card can fall out of step with the rows. `dataset push` says which names
+it knows if one is asked for that it does not. `--dry-run` sends nothing but leaves the
+card it would have sent in `.preview/README.md` (gitignored), so it can be read over
+first.
 
-```yaml
-sources:
-  tinyfacts-llama:
-    model: tinyfacts-llama
-    # every text answers the same question about its own title
-    instruction_template: "Explain the following word: {title}"
+### What a text says about itself
 
-  questions_gemini-3-flash-preview_cloud:
-    model: gemini-3-flash-preview:cloud
-    # answer_<n>.txt answers line <n> (counting from 0) of this file
-    instructions_file: thing_explainer_questions.txt.q
-    instructions_name_pattern: "answer_(\\d+)"
-    title_template: "{instruction}"
+Nothing in `dataset.yaml` describes any particular folder. A row is built out of
+the YAML block at the top of the file it comes from, and the folder name only gives
+the row its `source`:
+
+```markdown
+---
+title: What is rain?
+instruction: What is rain?
+model: gemini-3-flash-preview:cloud
+provider: ollama
+created_at: '2026-01-28T08:26:36+00:00'
+tags:
+- word-explanation
+---
+
+Rain is water that falls out of the sky...
 ```
+
+`agent`, `generate` and `editor` all write this block themselves, so a new run of
+generations needs no new lines anywhere. A file with no block still makes a row: its
+title comes from its file name, and everything else is empty until `dataset enrich`
+fills the question in.
+
+The texts that were made before the block existed were given one, once, by
+`scripts/migrate_dataset.py`. That script is kept as the record of where their
+titles, questions and model names came from; it is not meant to be run again.

@@ -78,8 +78,18 @@ def fake(monkeypatch, tmp_path):
     return api
 
 
+CARD = """# Tinyfacts
+
+{{rows}} explanations, {{words}} words, from {{models}} model(s).
+{{with_instruction}} ({{instruction_percent}}) carry a question.
+
+{{sources_table}}
+"""
+
+
 @pytest.fixture
 def config(tmp_path) -> DatasetConfig:
+    (tmp_path / "README_HF.md").write_text(CARD)
     return DatasetConfig(root=tmp_path)
 
 
@@ -181,13 +191,60 @@ def test_an_empty_dataset_is_not_pushed(fake, config, tmp_path):
         hub.push(DatasetStore(tmp_path / "store"), config, token="tok")
 
 
-def test_the_card_says_what_is_in_the_dataset(fake, config, tmp_path):
+def test_the_card_is_the_written_one_with_the_numbers_put_in(fake, config, tmp_path):
     store = store_with(tmp_path, ["a", "b"], instruction="What is it?")
     card = hub.dataset_card(store, config)
-    assert card.startswith("---\nlicense: mit")
+    # The block on top is made from the hub settings, so the viewer can find the rows
+    assert card.startswith("---\nlicense: cc-by-4.0")
     assert "path: data/tinyfacts-*.jsonl" in card
-    assert "Rows: **2**" in card
+    # The words are the ones in README_HF.md, with the counts filled in
+    assert "# Tinyfacts" in card
+    assert "2 explanations, 6 words, from 0 model(s)." in card
+    assert "2 (100%) carry a question." in card
     assert "| `test` | 2 |" in card
+    assert "{{" not in card
+
+
+def test_a_hand_written_text_is_not_counted_as_an_unknown_model(fake, config, tmp_path):
+    (tmp_path / "README_HF.md").write_text("{{models_table}}")
+    store = store_with(tmp_path, ["a"], model="gpt-5.1")
+    store.add(
+        DatasetRecord.build(
+            id="test/b", text="Words about b.", source="test", provider="human", model=None
+        )
+    )
+    store.add(DatasetRecord.build(id="test/c", text="Words about c.", source="test"))
+    card = hub.dataset_card(store, config)
+    assert "| `hand-written` | 1 |" in card
+    assert "| `unknown` | 1 |" in card  # This one really has no model
+    assert "| `gpt-5.1` | 1 |" in card
+
+
+def test_a_card_that_asks_for_something_that_is_not_there_says_so(config, tmp_path):
+    (tmp_path / "README_HF.md").write_text("{{rows}} rows, {{nonsense}} of them.")
+    store = store_with(tmp_path, ["a"])
+    with pytest.raises(hub.HubError, match="nonsense"):
+        hub.dataset_card(store, config)
+
+
+def test_a_missing_card_says_to_write_one_or_leave_it_alone(config, tmp_path):
+    (tmp_path / "README_HF.md").unlink()
+    store = store_with(tmp_path, ["a"])
+    with pytest.raises(hub.HubError, match="--no-card"):
+        hub.dataset_card(store, config)
+
+
+def test_the_card_can_add_to_the_block_on_top(config, tmp_path):
+    """A block in README_HF.md is kept, and wins where the two say the same thing."""
+    (tmp_path / "README_HF.md").write_text(
+        "---\nlicense: apache-2.0\npretty_name: Tinyfacts\n---\n\n{{rows}} rows.\n"
+    )
+    store = store_with(tmp_path, ["a"])
+    card = hub.dataset_card(store, config)
+    assert "license: apache-2.0" in card
+    assert "pretty_name: Tinyfacts" in card
+    assert "path: data/tinyfacts-*.jsonl" in card  # Still there
+    assert "1 rows." in card
 
 
 def test_a_file_that_is_the_same_up_there_is_told_apart_by_its_hash(fake, config, tmp_path):

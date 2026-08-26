@@ -1,9 +1,0 @@
-A computer is a thing that does many things. It can do work, play music, and talk to other computers. It needs a thing that lets it talk to other computers.
-
-When you want to send something from your computer to another computer, you use the computer to send the word. But the computer doesn't know where the word is going. So you use the thing that lets the computer talk to other computers.
-
-This thing is like a long line with many numbers on it. You put the word on the line and the line sends it to the other computer. The computer then reads the word. You are sending a word from one computer to another.
-
-A computer is also like a phone. You send a word to another person, and they hear you. But a computer is much faster. It sends the word very fast and does many other things while it is sending it.
-
-There are many kinds of these things. Some have many numbers on them. Others have only one number. Some are very small and some are very big. Some are for work and some are for fun.

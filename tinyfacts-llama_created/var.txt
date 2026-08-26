@@ -1,9 +1,0 @@
-The word you are looking for is called a word that changes when you change its place. Imagine you have a book. You read a few lines. Now you want to read the next few lines. The word is the same, but the place is different. This is what a word like this does.
-
-When you write a word, you are changing the word. You can change where it starts, where it ends, or what it looks like. You can change the word so that it is different from the word you started with.
-
-This happens with numbers too. If you have a number, you can change it. If you change it once, you get a new number. If you change it many times, you get a very different number. It is like you are changing the word.
-
-This is important in how computers work. When a computer reads a line of words, it might change the words. If the words are the same, the computer might get confused. If the words are different, the computer can understand them and do what you want.
-
-Sometimes, this word is used to talk about how people change. If you have a name, you might change it. If you change your name, you are changing the word.

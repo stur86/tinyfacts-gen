@@ -1,7 +1,0 @@
-When you look through a book, you can find many words. If you need to find the word that means a small animal, you look for it in the book. You might have to read through many other words to find it.
-
-An ordered set is a group of numbers or words in a very clear order. Imagine you have a box with many small boxes inside. Each small box has a number on it. The numbers tell you where the small box should go. You can open all the small boxes and see what they are.
-
-If you have a large set of many many numbers, you can order them. This order is like a line. You can go through the line one number at a time. You can find a number by looking at the first number, then the next number, and so on.
-
-The word we use is an ordered set. It is an ordered set that is very clear. You can look at it one number at a time. You can find any number in the set. You can not find any number without looking at it first. This is why we say it is an ordered set.

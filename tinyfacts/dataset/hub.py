@@ -6,11 +6,13 @@ chunk files that really changed go back up.
 """
 
 import hashlib
+import re
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
 
 from .config import DatasetConfig
+from .documents import join_frontmatter, split_frontmatter
 from .records import DatasetRecord
 from .store import DatasetStore, read_jsonl_records
 
@@ -31,8 +33,18 @@ class HubError(Exception):
     """Something went wrong talking to the Hugging Face Hub."""
 
 
+#: What the card is called on the Hub.
 CARD_NAME = "README.md"
-_CARD_MARK = "<!-- Written by `python main.py dataset push`. Changes here are lost. -->"
+
+#: The file in this repository the card is written in. It is kept apart from the
+#: project's own README.md, which is about the software and not the dataset.
+CARD_SOURCE = "README_HF.md"
+
+#: Where a dry run leaves the card it would have sent, for reading over first.
+PREVIEW_DIR = ".preview"
+
+#: A place in the card where a count or a table goes: {{rows}}, {{models_table}}.
+_PLACEHOLDER_RE = re.compile(r"\{\{\s*(\w+)\s*\}\}")
 
 
 def _require_hub() -> None:
@@ -82,6 +94,8 @@ class PushResult:
     rows: int = 0
     dry_run: bool = False
     commit_url: str | None = None
+    #: Where a dry run left the card, so it can be read before it is sent.
+    card_preview: Path | None = None
 
     @property
     def is_empty(self) -> bool:
@@ -158,78 +172,84 @@ def pull(
     )
 
 
-def dataset_card(store: DatasetStore, config: DatasetConfig) -> str:
-    """The README.md that goes with the dataset on the Hub."""
-    hub = config.hub
-    by_source = Counter(record.source for record in store)
-    by_model = Counter(record.model or "unknown" for record in store)
-    with_instruction = sum(1 for record in store if record.instruction)
-    words = sum(record.word_count for record in store)
-    header = [
-        "---",
-        *([f"license: {hub.license}"] if hub.license else []),
-        "language:",
-        "- en",
-        "task_categories:",
-        "- text-generation",
-        "tags:",
-        "- thing-explainer",
-        "- simple-english",
-        "configs:",
-        "- config_name: default",
-        "  data_files:",
-        "  - split: train",
-        f"    path: {hub.data_dir}/{hub.chunk_prefix}-*.jsonl",
-        "---",
-    ]
-    lines = [
-        *header,
-        "",
-        "# Tinyfacts",
-        "",
-        _CARD_MARK,
-        "",
-        "Short explanations of things, written with only the 1000 most common English "
-        "words (the word list from xkcd's *Up Goer Five*). Made with "
-        "[tinyfacts-gen](https://github.com/stur86/tinyfacts-gen).",
-        "",
-        "## What is in it",
-        "",
-        f"- Rows: **{len(store)}**",
-        f"- Words: **{words}**",
-        f"- Rows with an instruction: **{with_instruction}** "
-        f"({(100 * with_instruction / len(store)) if len(store) else 0:.0f}%)",
-        "",
-        "## Fields",
-        "",
-        "| Field | What it is |",
-        "| --- | --- |",
-        "| `id` | Row id, `<source>/<name>`. |",
-        "| `text` | The explanation. |",
-        "| `title` | What the text is about. |",
-        "| `source` | The run or folder the text came from. |",
-        "| `model` | The model that wrote the text. |",
-        "| `provider` | Where that model was asked. |",
-        "| `instruction` | The question the text answers, when it is known. |",
-        "| `instruction_model` | The model that worked out the question, if one did. |",
-        "| `tags` | Free labels. |",
-        "| `word_count` | Words in the text. |",
-        "| `added_at` | When the row was made. |",
-        "",
-        "## Sources",
-        "",
-        "| Source | Rows |",
-        "| --- | --- |",
-        *[f"| `{name}` | {count} |" for name, count in sorted(by_source.items())],
-        "",
-        "## Models",
-        "",
-        "| Model | Rows |",
-        "| --- | --- |",
-        *[f"| `{name}` | {count} |" for name, count in sorted(by_model.items())],
-        "",
-    ]
+def _counts_table(heading: str, counts: "Counter[str]") -> str:
+    """A markdown table of how many rows each name has, most first."""
+    rows = sorted(counts.items(), key=lambda pair: (-pair[1], pair[0]))
+    lines = [f"| {heading} | Rows |", "| --- | ---: |"]
+    lines += [f"| `{name}` | {count:,} |" for name, count in rows]
     return "\n".join(lines)
+
+
+def card_values(store: DatasetStore, config: DatasetConfig) -> dict[str, str]:
+    """What the card template can ask for, worked out from the rows themselves.
+
+    Keeping these out of the card means the numbers in it are never stale: they
+    are made afresh from the dataset every time it is pushed.
+    """
+    total = len(store)
+    with_instruction = sum(1 for record in store if record.instruction)
+    return {
+        "repo_id": config.hub.repo_id,
+        "rows": f"{total:,}",
+        "words": f"{sum(record.word_count for record in store):,}",
+        "with_instruction": f"{with_instruction:,}",
+        "instruction_percent": f"{(100 * with_instruction / total) if total else 0:.0f}%",
+        "sources": f"{len({record.source for record in store}):,}",
+        "models": f"{len({record.model for record in store if record.model}):,}",
+        "sources_table": _counts_table("Source", Counter(r.source for r in store)),
+        "models_table": _counts_table("Written by", Counter(r.model_label for r in store)),
+    }
+
+
+def fill_card(body: str, values: dict[str, str]) -> str:
+    """Put the numbers into the card, and say so when one is asked for by a name
+    that means nothing."""
+    asked = {match.group(1) for match in _PLACEHOLDER_RE.finditer(body)}
+    unknown = sorted(asked - set(values))
+    if unknown:
+        raise HubError(
+            f"{CARD_SOURCE} asks for {', '.join(unknown)}, which the dataset cannot "
+            f"give. It knows: {', '.join(sorted(values))}."
+        )
+    return _PLACEHOLDER_RE.sub(lambda match: values[match.group(1)], body)
+
+
+def dataset_card(store: DatasetStore, config: DatasetConfig) -> str:
+    """The README.md that goes with the dataset on the Hub.
+
+    The words are `README_HF.md`, written by hand: what the dataset is, what is
+    in a row, what it is good for. It is a template, and anywhere it says
+    `{{rows}}` or `{{models_table}}` the number or the table is put in from the
+    dataset itself, so nothing in the card can fall out of step with the rows.
+
+    The YAML block on top is made here out of the `hub` settings, because it has
+    to name the chunk files exactly for the dataset viewer to find them. A block
+    in `README_HF.md` is kept as well, and wins where the two say the same thing.
+    """
+    hub = config.hub
+    path = config.root / CARD_SOURCE
+    if not path.exists():
+        raise HubError(
+            f"No dataset card at {path}. Write one, or push with --no-card to "
+            f"leave the card on the Hub alone."
+        )
+    written, body = split_frontmatter(path.read_text())
+    metadata = {
+        "license": hub.license,
+        "language": ["en"],
+        "task_categories": ["text-generation"],
+        "tags": ["thing-explainer", "simple-english"],
+        "configs": [
+            {
+                "config_name": "default",
+                "data_files": [
+                    {"split": "train", "path": f"{hub.data_dir}/{hub.chunk_prefix}-*.jsonl"}
+                ],
+            }
+        ],
+    }
+    metadata.update(written)
+    return join_frontmatter(metadata, fill_card(body, card_values(store, config)))
 
 
 def push(
@@ -263,9 +283,8 @@ def push(
     wanted: dict[str, bytes] = {}
     for chunk in chunks:
         wanted[f"{hub.data_dir}/{chunk.name}"] = chunk.read_bytes()
-    if write_card:
-        card = dataset_card(store, config)
-        (store.path / CARD_NAME).write_text(card)
+    card = dataset_card(store, config) if write_card else None
+    if card is not None:
         wanted[CARD_NAME] = card.encode()
 
     operations = []
@@ -293,6 +312,12 @@ def push(
         rows=len(store),
         dry_run=dry_run,
     )
+    if dry_run and card is not None:
+        # Nothing is sent, so leave the card where it can be read over first.
+        preview = config.root / PREVIEW_DIR / CARD_NAME
+        preview.parent.mkdir(parents=True, exist_ok=True)
+        preview.write_text(card)
+        result.card_preview = preview
     if dry_run or not operations:
         return result
     try:

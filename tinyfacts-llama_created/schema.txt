@@ -1,9 +1,0 @@
-A computer uses many numbers to stay safe. These numbers are like a set of directions. When a computer needs to do something, it follows these directions. Think of it like following a street. You must follow the same way every time.
-
-A computer has many of these numbers. They are called a computer memory. This memory is like a big box where the computer keeps all the numbers it needs to work on. It is very fast so it can do many things at once.
-
-The numbers in this memory tell the computer how to do things. If a computer wants to know who is sitting in a chair, it must follow those numbers. It looks at the numbers and follows the directions. It does not think about what it is doing. It just follows what the numbers tell it.
-
-A computer also has many of these numbers for the people who use it. If someone wants to see a picture of a cat, the computer must follow those numbers. It looks at the numbers and shows the picture.
-
-In a big group of computers, each one has its own set of numbers. They are all the same, but each one follows its own way. This makes the computers work together and help each other do their jobs.

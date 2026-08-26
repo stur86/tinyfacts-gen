@@ -9,7 +9,7 @@ from typing import Annotated, Any, Iterable
 
 from rich.console import Console
 from rich.table import Table
-from typer import Argument, Exit, Option, Typer
+from typer import Argument, Exit, Option, Typer, confirm
 
 from ..agent import SupportedProviders
 from ..custom_providers import CustomProviderError
@@ -406,7 +406,7 @@ def stats(
         f"({100 * with_instruction / len(rows):.0f}%)\n"
     )
     console.print(_counts_table(rows, "Source", lambda r: r.source))
-    console.print(_counts_table(rows, "Model", lambda r: r.model or "unknown"))
+    console.print(_counts_table(rows, "Written by", lambda r: r.model_label))
     console.print()
     return 0
 
@@ -436,6 +436,102 @@ def show(
         console.print(f"[bold red]No row with id '{record_id}'.[/bold red]")
         return 1
     console.print_json(record.to_json_line())
+    return 0
+
+
+@app.command()
+def remove(
+    ids: Annotated[
+        list[str] | None,
+        Argument(help="Ids of the rows to take out, as `dataset show` gives them."),
+    ] = None,
+    yes: Annotated[bool, Option("--yes", "-y", help="Do not ask first.")] = False,
+    dry_run: Annotated[
+        bool, Option("--dry-run", help="Say which rows would go, and take none of them out.")
+    ] = False,
+    id: IdOpt = None,
+    title: TitleOpt = None,
+    text: TextOpt = None,
+    instruction: InstructionOpt = None,
+    source: SourceOpt = None,
+    model: ModelOpt = None,
+    tag: TagOpt = None,
+    has_instruction: HasInstructionOpt = None,
+    min_words: MinWordsOpt = None,
+    max_words: MaxWordsOpt = None,
+    config_path: ConfigOpt = None,
+) -> int:
+    """Take rows out of the dataset.
+
+    Give the ids to take out, or a filter that picks them; not both, so that
+    what is about to go is never in doubt. Nothing is taken out until you say
+    so.
+
+    Send the result up with `dataset push`. **Not `dataset sync`**: a sync
+    brings down what is on the Hub first, which would put the rows back.
+    """
+    console = Console()
+    config, store = _load(config_path)
+    record_filter = _make_filter(
+        id=id,
+        title=title,
+        text=text,
+        instruction=instruction,
+        source=source,
+        model=model,
+        tag=tag,
+        has_instruction=has_instruction,
+        min_words=min_words,
+        max_words=max_words,
+    )
+    if ids and not record_filter.is_empty:
+        console.print(
+            "[bold red]Give ids or a filter, not both, so that what goes is plain.[/bold red]"
+        )
+        raise Exit(code=1)
+    if not ids and record_filter.is_empty:
+        console.print(
+            "[bold red]Say which rows to take out: give their ids, or a filter "
+            "such as --source. Nothing was taken out.[/bold red]"
+        )
+        raise Exit(code=1)
+
+    if ids:
+        found = [store.get(record_id) for record_id in ids]
+        missing = [record_id for record_id, row in zip(ids, found) if row is None]
+        targets = [row for row in found if row is not None]
+        for record_id in missing:
+            console.print(f"[yellow]No row with id '{record_id}'.[/yellow]")
+    else:
+        targets = record_filter.apply(store)
+        missing = []
+    if not targets:
+        console.print("[yellow]No row matches, nothing taken out.[/yellow]")
+        raise Exit(code=1)
+
+    console.print(f"\n[bold]{len(targets)}[/bold] row(s) of {len(store)} would go:")
+    for record in targets[:10]:
+        console.print(f"\t{record.id}  [grey]({record.word_count} words)[/grey]")
+    if len(targets) > 10:
+        console.print(f"\t...and {len(targets) - 10} more.")
+    if dry_run:
+        console.print("[yellow]--dry-run: nothing was taken out.[/yellow]\n")
+        return 0
+    if not yes and not confirm(f"Take {len(targets)} row(s) out for good?"):
+        console.print("[yellow]Nothing was taken out.[/yellow]\n")
+        raise Exit(code=1)
+
+    for record in targets:
+        store.remove(record.id)
+    chunks = store.save()
+    console.print(
+        f"[green]Took out {len(targets)} row(s).[/green] The dataset now holds "
+        f"[bold]{len(store)}[/bold] row(s) in {len(chunks)} chunk(s)."
+    )
+    console.print(
+        "[yellow]Send this up with `dataset push`, not `dataset sync`: a sync brings "
+        "down what is on the Hub first, which would put these rows back.[/yellow]\n"
+    )
     return 0
 
 
@@ -561,6 +657,8 @@ def sync(
 
 
 def _report_push(console: Console, result) -> None:
+    if result.card_preview is not None:
+        console.print(f"[blue]The card it would send is in[/blue] {result.card_preview}")
     if result.is_empty:
         console.print("[green]The Hub is already up to date.[/green]\n")
         return

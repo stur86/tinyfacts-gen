@@ -37,6 +37,20 @@ class DatasetRecord(BaseModel):
     added_at: datetime = Field(default_factory=utc_now, description="When the row was made.")
 
     @property
+    def model_label(self) -> str:
+        """Who wrote the text, for a table of counts.
+
+        A text with no model is not always one whose model was forgotten: the
+        hand-written ones never had one. Those say so, and only a text that
+        really does not know where it came from is counted as unknown.
+        """
+        if self.model:
+            return self.model
+        if (self.provider or "").strip().lower() == "human":
+            return "hand-written"
+        return "unknown"
+
+    @property
     def name(self) -> str:
         """The part of the id after the source."""
         return self.id.split("/", 1)[-1]
