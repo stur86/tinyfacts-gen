@@ -340,7 +340,7 @@ def agent(
         Option(
             "--output-folder",
             "-o",
-            help="Folder to save generated explanations (default: created_<model_name>).",
+            help="Folder to save generated explanations (default: <model_name>_created).",
         ),
     ] = None,
     output_filename: Annotated[

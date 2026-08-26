@@ -1,6 +1,6 @@
 ---
 name: writing-thing-explainer
-description: Use when writing new Thing Explainer explanations in this repository, checking whether text is valid, or creating content for the claude_code_created folder.
+description: Use when writing new Thing Explainer explanations in this repository, checking whether text is valid, or saving a new entry as a markdown file in a *_created folder (such as claude_code_created).
 ---
 
 # Writing Thing Explainer Content
@@ -103,6 +103,65 @@ Whole families of ordinary words are also missing with no obvious warning: `thin
 - **Proper nouns** (names of people, places) are not in the list and will fail the check — this is expected and acceptable
 - **`itself`** is not allowed — always restructure
 
-## Output Location
+## Writing a New Entry
 
-Save generated files to `claude_code_created/` using lowercase snake_case filenames.
+A new text is one markdown file in a folder whose name ends in `_created`. That is all
+`main.py dataset add` needs to find it; nothing has to be told about the folder anywhere
+else.
+
+### 1. Pick the folder and the file name
+
+- Folder: `claude_code_created/` for texts written here. The part before `_created`
+  becomes the `source` of the rows the folder gives (`claude_code`).
+- File name: lowercase, `_` between the words, `.md` at the end — `how_rain_works.md`.
+- The file name, with no suffix, names the row: `<source>/<name>`, e.g.
+  `claude_code/how_rain_works`. Keep the name once it is in the dataset: renaming a file
+  makes a **new** row, it does not change the old one.
+
+### 2. Write the YAML block, then the text
+
+```markdown
+---
+title: How rain works
+instruction: How does rain work?
+model: claude-opus-5
+provider: claude-code
+created_at: '2026-08-26T09:14:00+00:00'
+tags:
+- how-things-work
+---
+
+Water goes up into the air when the sun makes it hot...
+```
+
+- `title`: short, and about the thing, not about the file. Without it, the file name
+  with its `_` turned into spaces is used instead.
+- `instruction`: the question the text answers. Write it — it is what makes the row
+  usable for training, and a row without one has to have one worked out later by a model
+  (`dataset enrich`).
+- `model` and `provider`: who really wrote the text. `provider: human` with no model is
+  what a hand-written text says, so do not use it for a text a model wrote.
+- `created_at`: the time now, with a time zone on it (`2026-08-26T09:14:00+00:00`).
+- `tags`: free labels, and optional.
+
+Everything in the block is optional, and the block is left out of every word check and
+word count, so `check` reads the text alone.
+
+### 3. Check it before you call it done
+
+```bash
+uv run python main.py check --full --suggest claude_code_created/how_rain_works.md
+```
+
+`dataset add` leaves out any text that uses words outside the list, so a file that does
+not pass is simply not part of the dataset. Fix it until the check passes.
+
+### 4. Put it in the dataset
+
+Adding the file to the dataset, and sending it to the Hugging Face Hub, is its own job:
+see the `update-tinyfacts-dataset` skill. The short of it:
+
+```bash
+uv run python main.py dataset add
+uv run python main.py dataset sync
+```

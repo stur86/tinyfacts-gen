@@ -4,23 +4,33 @@ Helps generating text that follows the '1000 most common words of English' (plus
 
 ## How to use
 
+The project is managed with [uv](https://docs.astral.sh/uv/):
+
+```bash
+uv sync                          # make the environment
+uv run python main.py --help     # see every command
+```
+
 Run `main.py` with one of the following arguments:
 
 * `editor`: launch a terminal text editor that automatically highlights any incorrect words and helps you write compliant text;
 * `agent`: launch an agent connecting to the OpenAI API (credentials are loaded from a `.env` file if present), or to a local ollama instance, to generate and refine a text via tool-calling;
+* `generate`: go through a whole word list with a model that already knows the word list, one text per word, with no agent and no checking (see [Going through a whole word list](#going-through-a-whole-word-list));
 * `check`: verify whether a given text file is compliant with the standard and report any violations;
 * `check-words`: check whether specific words are in the list;
 * `suggest`: look up a compliant way to say a word that is *not* in the list;
 * `suggest-add`: add a new entry to the circumlocutions database;
 * `dataset`: build the dataset out of the generated texts, filter it, and keep it in step with the Hugging Face Hub (see [The dataset](#the-dataset));
-* `stats`: produce statistics on the total number of generated files and words in the repository.
+* `stats`: produce statistics on the number of generated files and words in a folder (`--folder`, the current one by default).
 
 With any of these options, use `--help` for more information.
 
 ### Where generated text goes
 
-`agent`, `generate` and `editor` all save into a `<model_name>_created` folder as a
-markdown file with a YAML block at the top of it:
+`agent` and `generate` save into a `<model_name>_created` folder, and `editor` into
+`manually_created`; `-o` sends any of them somewhere else. Every folder whose name ends
+in `_created` is read by `dataset add`, and what comes before the `_created` becomes the
+`source` of its rows. Each text is a markdown file with a YAML block at the top of it:
 
 ```markdown
 ---
@@ -36,7 +46,13 @@ The sun is a big hot light...
 
 Everything in the block is optional, and older `.txt` files with no block still work
 everywhere. The block is what carries the question a text answers, so it does not have
-to be worked out again later. It is left out of every word check and word count.
+to be worked out again later. It is left out of every word check and word count. The
+editor writes `provider: human` and no model, which is how a hand-written text is told
+apart from a generated one later.
+
+The file name, with no suffix, names the row the text becomes: `<source>/<name>`. Use
+lowercase names with `_` between the words, and keep them as they are, since renaming a
+file makes a new row rather than changing the old one.
 
 ### Circumlocutions
 
@@ -93,6 +109,25 @@ providers:
 
 Then run e.g. `python main.py agent --provider myserver`.
 
+### Going through a whole word list
+
+`generate` explains every word of a list, one text per word. It talks straight to an
+OpenAI style API — a local server by default — and it uses no agent and makes no word
+check: the model is expected to be fine-tuned so that it keeps to the allowed words on
+its own.
+
+```bash
+python main.py generate                                  # the built-in list, localhost:8137
+python main.py generate --words words.txt --model my-llm # a list of your own
+python main.py generate -b http://other-box --port 9000 -o my_run_created
+```
+
+`--words` takes a file path or a URL, one word per line; it defaults to the
+`google-10000-english-no-swears` list. The API is `<base-url>:<port>/v1`, so `--base-url`
+takes no port on it. Each word makes one file named after the word, and a word that
+already has a file is skipped, so a run that stops can simply be started again. A call
+that fails is counted and named at the end while the run carries on.
+
 ## The dataset
 
 The generated texts are kept as a dataset of `.jsonl` chunks and live on the
@@ -121,15 +156,26 @@ python main.py dataset enrich       # ask a model for the questions that are mis
 python main.py dataset sync         # pull the Hub copy, merge, push it back
 ```
 
-`add` only puts in what is not there yet, matched by id, and leaves out any text that
-uses words outside the list. Everything a row knows comes out of the YAML block of the
-file it was read from; `--overwrite` lets the files on disk win over the dataset as
-well.
+`add` reads every `*_created` folder next to `dataset.yaml`, or under the folder given
+by `--folder`; `--include` and `--exclude` keep to the folder names that match. It only
+puts in what is not there yet, matched by id, and leaves out any text that uses words
+outside the list, unless `--allow-invalid` is given. Everything a row knows comes out of
+the YAML block of the file it was read from; `--overwrite` lets the files on disk win
+over the dataset as well, and `--dry-run` says what would happen and writes nothing.
 
 `enrich` fills in `instruction` for the rows that have none, by asking a model what
-question each text answers. The question is then kept in the dataset, instead of being
-made afresh on every export. Rows are saved as they are made, so a run that stops can
-simply be started again.
+question each text answers, with `--provider` and `--question-model` saying who to ask.
+The question is then kept in the dataset, instead of being made afresh on every export.
+Rows are saved as they are made, so a run that stops can simply be started again. Use
+`--limit` to try a few first, and `--overwrite` to make a new question even for rows
+that have one.
+
+`show` prints one row as it is kept, which is the way to see what a text ended up
+knowing about itself:
+
+```bash
+python main.py dataset show tinyfacts-llama/rain
+```
 
 ### Taking rows out
 
@@ -150,9 +196,11 @@ are matched exactly, so this is cheapest for rows near the end.
 
 ### Filtering
 
-`export`, `enrich` and `stats` all take the same filters, and every one that is given has
-to pass. `--title`, `--id`, `--text` and `--instruction` are regular expressions;
-`--source`, `--model` and `--tag` take a name, or several, or a comma separated list.
+`export`, `enrich`, `stats` and `remove` all take the same filters, and every one that is
+given has to pass. `--title`, `--id`, `--text` and `--instruction` are regular
+expressions; `--source`, `--model` and `--tag` take a name, or several, or a comma
+separated list; `--with-instruction`/`--without-instruction` keep to the rows that do, or
+do not, have a question, and `--min-words`/`--max-words` to the rows of a given length.
 
 ```bash
 # every text a given model wrote, as question and answer rows
@@ -228,3 +276,21 @@ fills the question in.
 The texts that were made before the block existed were given one, once, by
 `scripts/migrate_dataset.py`. That script is kept as the record of where their
 titles, questions and model names came from; it is not meant to be run again.
+
+## The other scripts
+
+Two small scripts sit outside `main.py`, for making many texts in one go:
+
+```bash
+uv run python generate_questions.py words.txt > questions.txt
+uv run python ask_questions.py -p ollama -m my-model -o my_run_created -i questions.txt
+```
+
+`generate_questions.py` turns a list of words into questions, one per line, using the
+part of speech of each word ("What is a *rock*?", "What does it mean to *melt*
+something?"). `--format detailed` groups them under their word instead.
+
+`ask_questions.py` then calls `main.py agent` once per question, saving the answers as
+`answer_<n>.md` in the given folder. A question whose file is already there is skipped,
+so a run that stops can be started again. `questions_cmd.sh` holds the last run of it as
+an example.
