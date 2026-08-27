@@ -22,6 +22,9 @@ dependencies = [
 dev = [
     "pytest>=8.0.0",
 ]
+scraping = [
+    "beautifulsoup4>=4.15.0",
+]
 
 [build-system]
 requires = ["uv_build>=0.8.11,<0.9.0"]
