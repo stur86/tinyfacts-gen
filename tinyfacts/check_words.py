@@ -41,8 +41,22 @@ def find_word_matches(text: str) -> list[tuple[str, int, int]]:
     return matches
 
 
+def find_invalid_words(text: str) -> set[str]:
+    """Which words of a text are not in the Thing Explainer word list.
+
+    Only which words are wrong, not where they are or how often: one set
+    difference, rather than a look at every word of the text in turn. This is
+    all a caller needs that only wants to tell a good text from a bad one.
+    """
+    return set(split_words(text)) - WordFormsDictionary().allowed_words
+
+
 def check_words_with_context(text: str, context_length: int = 2) -> CheckWordsResult:
     """Check text against the Thing Explainer word list, returning each occurrence with context.
+
+    Which words are wrong is worked out first, all at once; the text is only
+    walked through afterwards, to find where those words are. A text that is
+    already good is done with after the first step, which is the usual case.
 
     Args:
         text: The text to check.
@@ -51,15 +65,21 @@ def check_words_with_context(text: str, context_length: int = 2) -> CheckWordsRe
     Returns:
         CheckWordsResult with each invalid word occurrence, its index, and context snippet.
     """
-    word_forms_dict = WordFormsDictionary()
     words = split_words(text)
-    invalid_words: list[InvalidWord] = []
-    for index, word in enumerate(words):
-        if word not in word_forms_dict.allowed_words:
-            start = max(0, index - context_length)
-            end = min(len(words), index + context_length + 1)
-            context = ' '.join(words[start:end])
-            invalid_words.append(InvalidWord(word=word, index=index, context=context))
+    invalid = set(words) - WordFormsDictionary().allowed_words
+    if not invalid:
+        return CheckWordsResult(invalid_words=[])
+    invalid_words = [
+        InvalidWord(
+            word=word,
+            index=index,
+            context=' '.join(
+                words[max(0, index - context_length) : index + context_length + 1]
+            ),
+        )
+        for index, word in enumerate(words)
+        if word in invalid
+    ]
     return CheckWordsResult(invalid_words=invalid_words)
 
 
@@ -75,9 +95,8 @@ def main(file: Path, full: bool = False, text: str | None = None) -> int:
     """
     raw_text = file.read_text() if text is None else text
     result = check_words_with_context(raw_text)
-    word_count = len(split_words(raw_text))
 
-    rich.print(f"Checked {word_count} words in {file}.")
+    rich.print(f"Checked {len(split_words(raw_text))} words in {file}.")
 
     if not result.invalid_words:
         rich.print(f"[green]✓ All words in {file} are in the Thing Explainer word list![/green]")

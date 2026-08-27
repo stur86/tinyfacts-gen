@@ -13,6 +13,11 @@ from typing import Any, Iterator
 
 import yaml
 
+#: The YAML blocks are small, but a whole folder of them is not: use the C
+#: reader when the installed PyYAML was built with it, and fall back if not.
+_Loader = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
+_Dumper = getattr(yaml, "CSafeDumper", yaml.SafeDumper)
+
 #: The file kinds a generation may be saved as. `.md` comes first because it is
 #: the one new generations use.
 DOCUMENT_SUFFIXES = (".md", ".txt")
@@ -36,7 +41,7 @@ def split_frontmatter(raw: str) -> tuple[dict[str, Any], str]:
     if match is None:
         return {}, raw
     try:
-        metadata = yaml.safe_load(match.group(1)) or {}
+        metadata = yaml.load(match.group(1), Loader=_Loader) or {}
     except yaml.YAMLError:
         return {}, raw
     if not isinstance(metadata, dict):
@@ -50,7 +55,9 @@ def join_frontmatter(metadata: dict[str, Any], text: str) -> str:
     clean = {key: value for key, value in metadata.items() if value not in (None, "", [])}
     if not clean:
         return text
-    block = yaml.safe_dump(clean, sort_keys=False, allow_unicode=True).strip()
+    block = yaml.dump(
+        clean, Dumper=_Dumper, sort_keys=False, allow_unicode=True
+    ).strip()
     return f"{_FENCE}\n{block}\n{_FENCE}\n\n{text}"
 
 

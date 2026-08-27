@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterator
 
-from ..check_words import check_words_with_context
+from ..check_words import find_invalid_words
 from .config import DatasetConfig
 from .documents import iter_documents, read_document
 from .records import DatasetRecord, make_id
@@ -78,7 +78,7 @@ def iter_folder_records(
         if record is None:
             report.empty.append(path)
             continue
-        if not allow_invalid and check_words_with_context(record.text).invalid_words:
+        if not allow_invalid and find_invalid_words(record.text):
             report.invalid.append(path)
             continue
         yield record

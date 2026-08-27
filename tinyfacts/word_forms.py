@@ -3,6 +3,7 @@
 Generate word-forms.json using NLTK to find all valid inflections of the base 1000 words.
 """
 import json
+from functools import lru_cache
 from pathlib import Path
 from lemminflect import getAllInflections
 from dataclasses import dataclass
@@ -65,23 +66,44 @@ class TaggedWord:
         if self.tag and self.tag not in _SUPPORTED_TAGS:
             raise ValueError(f"Unsupported tag: {self.tag}")
         
+@lru_cache(maxsize=1)
+def _load_word_forms() -> tuple[dict[str, dict[str, str]], frozenset[str], dict[str, TaggedWord]]:
+    """Read `word-forms.json` and work out what can be looked up in it.
+
+    The file is written once by this module and does not change while a program
+    runs, but reading it and building the maps takes long enough that doing it
+    again for every text was most of the time that checking a whole folder took.
+    It is done once, and every dictionary shares the result.
+    """
+    word_forms: dict[str, dict[str, str]] = json.loads(
+        _WORD_LIST_PATH.with_name("word-forms.json").read_text()
+    )
+    allowed_words = frozenset(
+        word for forms in word_forms.values() for word in forms.values()
+    )
+    # Now map each form to its base, plus the appropriate tag if needed
+    word_map: dict[str, TaggedWord] = {}
+    for base, forms in word_forms.items():
+        for tag, form in forms.items():
+            if tag == 'base':
+                word_map[form] = TaggedWord(base=base)
+            else:
+                word_map[form] = TaggedWord(base=base, tag=tag)
+    return word_forms, allowed_words, word_map
+
+
 class WordFormsDictionary:
-    
+    """The allowed words, and what each of them is a form of.
+
+    Making one of these is cheap: they all share the one loaded copy of the
+    word forms, which is read only.
+    """
+
     def __init__(self):
-        # Read existing word forms
-        self._word_forms: dict[str, dict[str, str]] = json.loads(_WORD_LIST_PATH.with_name("word-forms.json").read_text())
-        self._allowed_words = set([word for forms in self._word_forms.values() for word in forms.values()])
-        # Now map each form to its base, plus the appropriate tag if needed
-        self._word_map: dict[str, TaggedWord] = {}
-        for base, forms in self._word_forms.items():
-            for tag, form in forms.items():
-                if tag == 'base':
-                    self._word_map[form] = TaggedWord(base=base)
-                else:
-                    self._word_map[form] = TaggedWord(base=base, tag=tag)
-                    
+        self._word_forms, self._allowed_words, self._word_map = _load_word_forms()
+
     @property
-    def allowed_words(self) -> set[str]:
+    def allowed_words(self) -> frozenset[str]:
         return self._allowed_words
     
     def get_tagged_word(self, word: str) -> TaggedWord | None:

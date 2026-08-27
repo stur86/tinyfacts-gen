@@ -1,6 +1,7 @@
 from pathlib import Path
 
-from tinyfacts.check_words import check_words_with_context, split_words
+from tinyfacts.check_words import split_words
+from tinyfacts.word_forms import WordFormsDictionary
 from tinyfacts.dataset.documents import iter_documents, read_document
 
 
@@ -25,13 +26,15 @@ class FolderGenStats:
         self.word_count = 0
         self.file_count = 0
         self.invalid_files = []
-        word_set = set()
+        word_set: set[str] = set()
 
+        # Counting needs the words anyway, so they are split once and the check
+        # is made on them: which words are wrong is enough, where they are is not.
+        allowed_words = WordFormsDictionary().allowed_words
         for fold in gen_folders:
             for text_file in iter_documents(fold):
-                text = read_document(text_file).text
-                words = split_words(text)
-                if check_words_with_context(text).invalid_words:
+                words = split_words(read_document(text_file).text)
+                if not set(words) <= allowed_words:
                     self.invalid_files.append(text_file)
                     continue  # Skip files with invalid words
                 self.file_count += 1
