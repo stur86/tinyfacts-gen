@@ -422,20 +422,72 @@ def agent(
         console.print("\n[bold red]Exiting.[/bold red]")
 
 
-_DEFAULT_WORD_LIST = (
+_DEFAULT_ARGUMENT_LIST = (
     "https://raw.githubusercontent.com/first20hours/google-10000-english/"
     "refs/heads/master/google-10000-english-no-swears.txt"
 )
 
+#: The spot in a prompt template that each line of the argument list goes into.
+_ARGUMENT_PLACEHOLDER = "{{argument}}"
 
-def _read_word_list(source: str) -> list[str]:
-    """Read the word list from a file, or download it if the source is a URL."""
+_DEFAULT_PROMPT_TEMPLATE = f"Explain the following word: {_ARGUMENT_PLACEHOLDER}"
+
+
+def _read_arguments(source: str) -> list[str]:
+    """Read the argument list from a file, or download it if the source is a URL.
+
+    One argument per line. Blank lines are left out, and the order of the file
+    is kept, so a run always goes through the list from the top.
+    """
     if source.startswith(("http://", "https://")):
         with urlopen(source) as response:
             text = response.read().decode("utf-8")
     else:
         text = Path(source).read_text()
-    return sorted({word.strip() for word in text.splitlines() if word.strip()})
+    return [line.strip() for line in text.splitlines() if line.strip()]
+
+
+def _read_prompt_template(source: str) -> str:
+    """The prompt template: the text of a file, if `source` names one, or itself."""
+    try:
+        path = Path(source)
+        if path.is_file():
+            return path.read_text().strip()
+    except OSError:  # A long or odd template is a template, not a bad path
+        pass
+    return source
+
+
+def _slugify(text: str) -> str:
+    """Make a text safe to name a file by.
+
+    Everything that is not a letter or a number becomes a space, what is left
+    is lowercased, and runs of spaces become single underscores.
+    """
+    cleaned = "".join(character if character.isalnum() else " " for character in text)
+    return "_".join(cleaned.lower().split())
+
+
+def _make_name(argument: str, prefix: str | None = None) -> str:
+    """The name one line of the argument list is saved under, with its prefix."""
+    parts = [_slugify(prefix or ""), _slugify(argument)]
+    return "_".join(part for part in parts if part)
+
+
+def _name_arguments(arguments: list[str], prefix: str | None = None) -> list[str]:
+    """One name per argument, with lines that come to the same name told apart.
+
+    The same line may be there more than once, to ask for the same thing more
+    than once; the second and later ones get a number so that they do not all
+    write over one file.
+    """
+    seen: dict[str, int] = {}
+    names: list[str] = []
+    for argument in arguments:
+        name = _make_name(argument, prefix) or "item"
+        seen[name] = seen.get(name, 0) + 1
+        names.append(name if seen[name] == 1 else f"{name}_{seen[name]}")
+    return names
 
 
 def _format_duration(duration: timedelta) -> str:
@@ -444,10 +496,10 @@ def _format_duration(duration: timedelta) -> str:
 
 @dataclass
 class _GenerationProgress:
-    """How many words are done, and how long they took.
+    """How many arguments are done, and how long they took.
 
-    Words that were already on disk are left out of the count, so that the mean
-    time and the time left keep to the words that really call the model.
+    Arguments that were already on disk are left out of the count, so that the
+    mean time and the time left keep to the ones that really call the model.
     """
 
     total: int
@@ -472,14 +524,14 @@ class _GenerationProgress:
         mean = self.mean_time
         return None if mean is None else mean * (self.total - self.done)
 
-    def panel(self, word: str) -> Panel:
+    def panel(self, argument: str) -> Panel:
         mean = self.mean_time
         time_left = self.time_left
         lines = [
-            f"[bold blue]Word:[/bold blue] {word}",
+            f"[bold blue]Doing:[/bold blue] {argument}",
             f"[bold blue]Done:[/bold blue] {self.done}/{self.total}",
             "[bold blue]Mean time:[/bold blue] "
-            + ("-" if mean is None else f"{mean.total_seconds():.1f} s/word"),
+            + ("-" if mean is None else f"{mean.total_seconds():.1f} s/line"),
             "[bold blue]Time left:[/bold blue] "
             + ("-" if time_left is None else _format_duration(time_left)),
         ]
@@ -490,15 +542,35 @@ class _GenerationProgress:
 
 @app.command()
 def generate(
-    words: Annotated[
+    arguments: Annotated[
         str,
         Option(
+            "--arguments",
+            "-a",
             "--words",
             "-w",
-            help="Word list source: a file path, or a URL to download it from. "
-            "One word per line.",
+            help="Argument list source: a file path, or a URL to download it from. "
+            "One argument per line, one line per generation.",
         ),
-    ] = _DEFAULT_WORD_LIST,
+    ] = _DEFAULT_ARGUMENT_LIST,
+    prompt_template_in: Annotated[
+        str,
+        Option(
+            "--prompt",
+            "-p",
+            help="The prompt to send, with a "
+            f"'{_ARGUMENT_PLACEHOLDER}' spot for the line. A file path is read as "
+            "the template; anything else is the template itself.",
+        ),
+    ] = _DEFAULT_PROMPT_TEMPLATE,
+    name_prefix: Annotated[
+        str | None,
+        Option(
+            "--name",
+            "-n",
+            help="Put this in front of every file name, to tell one run apart from another.",
+        ),
+    ] = None,
     base_url: Annotated[
         str,
         Option(
@@ -524,19 +596,31 @@ def generate(
         ),
     ] = None,
 ) -> int:
-    """Explain every word of a list with a model that already knows the word list.
+    """Run one prompt over a whole list of arguments, with a model that knows the word list.
+
+    Each line of the list is put into the prompt template in place of
+    `{{argument}}`, and every filled in prompt makes one call and one text file.
+    The file is named after the line: lowercased, stripped of everything that is
+    not a letter or a number, and with spaces turned into underscores. Lines
+    that already have a file are skipped, so a run that stops can be started
+    again.
 
     This talks straight to an OpenAI style API (a local server by default). It
     makes no use of an agent, and it does not check the answers: the model is
     expected to be fine-tuned so that it keeps to the allowed words by itself.
-    Each word gets one call and one text file, named after the word. Words that
-    already have a file are skipped, so a run that stops can be started again.
     """
     console = Console()
+    prompt_template = _read_prompt_template(prompt_template_in)
+    if _ARGUMENT_PLACEHOLDER not in prompt_template:
+        console.print(
+            f"[bold red]The prompt has no '{_ARGUMENT_PLACEHOLDER}' in it, so every "
+            "line would be asked the same thing.[/bold red]"
+        )
+        raise Exit(code=1)
     try:
-        word_list = _read_word_list(words)
+        argument_list = _read_arguments(arguments)
     except OSError as exc:
-        console.print(f"[bold red]Could not read the word list: {exc}[/bold red]")
+        console.print(f"[bold red]Could not read the argument list: {exc}[/bold red]")
         raise Exit(code=1)
 
     if output_folder_in is None:
@@ -547,10 +631,13 @@ def generate(
         output_folder = output_folder_in.resolve()
     output_folder.mkdir(parents=True, exist_ok=True)
 
+    names = _name_arguments(argument_list, name_prefix)
     pending = [
-        word for word in word_list if find_document(output_folder, word) is None
+        (argument, name)
+        for argument, name in zip(argument_list, names)
+        if find_document(output_folder, name) is None
     ]
-    skipped = len(word_list) - len(pending)
+    skipped = len(argument_list) - len(pending)
     # The server is a local one that wants no key, but the client asks for one
     client = openai.OpenAI(
         base_url=f"{base_url.rstrip('/')}:{port}/v1", api_key="dummy"
@@ -559,7 +646,7 @@ def generate(
     console.print(f"\n[bold blue]Using model:[/bold blue] '{model}'")
     console.print(f"[bold blue]Saving into:[/bold blue] {output_folder}")
     console.print(
-        f"[bold blue]Words:[/bold blue] {len(pending)} to do, {skipped} already there\n"
+        f"[bold blue]Arguments:[/bold blue] {len(pending)} to do, {skipped} already there\n"
     )
     if not pending:
         console.print("[green]Nothing left to do.[/green]")
@@ -568,27 +655,27 @@ def generate(
     progress = _GenerationProgress(total=len(pending))
     errors: list[str] = []
     try:
-        with Live(progress.panel(pending[0]), console=console) as live:
-            for word in pending:
-                live.update(progress.panel(word))
+        with Live(progress.panel(pending[0][0]), console=console) as live:
+            for argument, name in pending:
+                live.update(progress.panel(argument))
                 start_time = datetime.now()
+                prompt = prompt_template.replace(_ARGUMENT_PLACEHOLDER, argument)
                 try:
-                    prompt = f"Explain the following word: {word}"
                     response = client.chat.completions.create(
                         model=model,
                         messages=[{"role": "user", "content": prompt}],
                     )
                     answer = response.choices[0].message.content or ""
                 except Exception as exc:  # One bad answer must not stop the run
-                    errors.append(f"{word}: {exc}")
+                    errors.append(f"{argument}: {exc}")
                     progress.add(datetime.now() - start_time, failed=True)
-                    live.update(progress.panel(word))
+                    live.update(progress.panel(argument))
                     continue
                 write_document(
-                    output_folder / f"{word}.md",
+                    output_folder / f"{name}.md",
                     answer,
                     {
-                        "title": word,
+                        "title": argument,
                         "instruction": prompt,
                         "model": model,
                         "provider": "openai-compatible",
@@ -596,7 +683,7 @@ def generate(
                     },
                 )
                 progress.add(datetime.now() - start_time)
-                live.update(progress.panel(word))
+                live.update(progress.panel(argument))
     except KeyboardInterrupt:
         console.print("\n[bold red]Stopped.[/bold red]")
 
@@ -605,7 +692,7 @@ def generate(
         f"{_format_duration(progress.elapsed)} ({skipped} skipped)."
     )
     if errors:
-        console.print(f"[bold red]{len(errors)} word(s) failed:[/bold red]")
+        console.print(f"[bold red]{len(errors)} line(s) failed:[/bold red]")
         for error in errors:
             console.print(f"\t[red]{error}[/red]")
         return 1

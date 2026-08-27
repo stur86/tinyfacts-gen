@@ -15,7 +15,7 @@ Run `main.py` with one of the following arguments:
 
 * `editor`: launch a terminal text editor that automatically highlights any incorrect words and helps you write compliant text;
 * `agent`: launch an agent connecting to the OpenAI API (credentials are loaded from a `.env` file if present), or to a local ollama instance, to generate and refine a text via tool-calling;
-* `generate`: go through a whole word list with a model that already knows the word list, one text per word, with no agent and no checking (see [Going through a whole word list](#going-through-a-whole-word-list));
+* `generate`: run one prompt over a whole list of arguments with a model that already knows the word list, one text per line, with no agent and no checking (see [Going through a whole list](#going-through-a-whole-list));
 * `check`: verify whether a given text file is compliant with the standard and report any violations;
 * `check-words`: check whether specific words are in the list;
 * `suggest`: look up a compliant way to say a word that is *not* in the list;
@@ -109,22 +109,36 @@ providers:
 
 Then run e.g. `python main.py agent --provider myserver`.
 
-### Going through a whole word list
+### Going through a whole list
 
-`generate` explains every word of a list, one text per word. It talks straight to an
-OpenAI style API — a local server by default — and it uses no agent and makes no word
-check: the model is expected to be fine-tuned so that it keeps to the allowed words on
-its own.
+`generate` asks one prompt over and over, once for every line of a list. It talks
+straight to an OpenAI style API — a local server by default — and it uses no agent and
+makes no word check: the model is expected to be fine-tuned so that it keeps to the
+allowed words on its own.
 
 ```bash
-python main.py generate                                  # the built-in list, localhost:8137
-python main.py generate --words words.txt --model my-llm # a list of your own
+python main.py generate                                    # the built-in word list, localhost:8137
+python main.py generate -a topics.txt -p "Tell me about {{argument}}."
+python main.py generate -a questions.txt -p prompt.txt -n round2
 python main.py generate -b http://other-box --port 9000 -o my_run_created
 ```
 
-`--words` takes a file path or a URL, one word per line; it defaults to the
-`google-10000-english-no-swears` list. The API is `<base-url>:<port>/v1`, so `--base-url`
-takes no port on it. Each word makes one file named after the word, and a word that
+`--arguments` (`-a`, also `--words`/`-w`) takes a file path or a URL, one argument per
+line, one line per generation; it defaults to the `google-10000-english-no-swears` list.
+`--prompt` (`-p`) is the prompt to send, with `{{argument}}` where the line goes; it
+defaults to `Explain the following word: {{argument}}`, which is what `generate` always
+used to ask. If what you pass names a file, the file is read as the template, so a long
+prompt can live on disk. A prompt with no `{{argument}}` in it is refused, since every
+line would then be asked the same thing.
+
+Each line makes one file, named after the line itself: lowercased, stripped of
+everything that is not a letter or a number, and with spaces turned into underscores, so
+`What is rain?` is saved as `what_is_rain.md`. `--name` (`-n`) puts a fixed piece in
+front of every name, to keep one run apart from another. Two lines that come to the same
+name get a number (`sun`, `sun_2`), so the same line can be there more than once to ask
+for the same thing more than once.
+
+The API is `<base-url>:<port>/v1`, so `--base-url` takes no port on it. A line that
 already has a file is skipped, so a run that stops can simply be started again. A call
 that fails is counted and named at the end while the run carries on.
 

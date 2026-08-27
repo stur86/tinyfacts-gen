@@ -18,6 +18,15 @@ custom_providers.yaml
 # The working copy of the dataset: it lives on the Hugging Face Hub instead
 .dataset/
 
+# What `dataset push --dry-run` would have sent, left there to be read over
+.preview/
+
+# Generated explanations. They live in the dataset on the Hugging Face Hub, not
+# here. Only the text files are ignored: anything else in a folder, such as the
+# list of questions a run was given, is an input and stays in git.
+/*_created/*.md
+/*_created/*.txt
+
 # Any generated files
 **/*.jsonl
 **/*.json
