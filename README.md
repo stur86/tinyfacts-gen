@@ -216,12 +216,23 @@ expressions; `--source`, `--model` and `--tag` take a name, or several, or a com
 separated list; `--with-instruction`/`--without-instruction` keep to the rows that do, or
 do not, have a question, and `--min-words`/`--max-words` to the rows of a given length.
 
+All four commands take the other way round as well: `--exclude-id`, `--exclude-title`,
+`--exclude-text`, `--exclude-instruction`, `--exclude-source`, `--exclude-model` and
+`--exclude-tag`, which take the same kinds of value and throw rows out. They are used
+first, so a row that any of them names is gone even when a keep filter such as `--model`
+names it too.
+
 ```bash
 # every text a given model wrote, as question and answer rows
 python main.py dataset export train.jsonl --format instruct --model gpt-5.1
 
-# the long ones about how things work, with no question yet
-python main.py dataset stats --title "^how " --min-words 300 --without-instruction
+# everything but the texts two models wrote, and nothing from the pickle run
+python main.py dataset export train.jsonl --format instruct \
+    --exclude-model gpt-5.1,tinyfacts-llama --exclude-source big_pickle
+
+# the long ones about how things work, with no question yet, but not the pickle run
+python main.py dataset stats --title "^how " --min-words 300 --without-instruction \
+    --exclude-source big_pickle
 
 # make questions for just those, then write them out as chat messages
 python main.py dataset enrich --title "^how " --provider openai
