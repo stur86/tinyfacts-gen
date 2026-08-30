@@ -142,6 +142,22 @@ The API is `<base-url>:<port>/v1`, so `--base-url` takes no port on it. A line t
 already has a file is skipped, so a run that stops can simply be started again. A call
 that fails is counted and named at the end while the run carries on.
 
+### The lists that come with it
+
+`genlists/` holds lists to run over, and the prompt that goes with each one:
+
+| List | What is in it | Prompt |
+| --- | --- | --- |
+| `novels500.txt` | 500 novels, as title and writer | `novels500_prompt.txt` |
+| `topics10k.txt` | 10000 things to explain, from every field | `topics10k_prompt.txt` |
+
+```bash
+python main.py generate -a genlists/topics10k.txt -p genlists/topics10k_prompt.txt
+```
+
+`topics10k.txt` is shuffled rather than grouped by field, so a run that is stopped part
+way through has still asked about every field and not only the first one.
+
 ## The dataset
 
 The generated texts are kept as a dataset of `.jsonl` chunks and live on the
