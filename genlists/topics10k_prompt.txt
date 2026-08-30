@@ -1,3 +1,5 @@
-Explain the following topic.
+Explain the following topic:
 
 {{argument}}
+
+without using complex words or proper nouns.
